@@ -103,5 +103,23 @@ System.out.println("Inserted record's ID: " + generatedKey);
 	};
 
 	jTableProfessor.setModel(model);
+	
+	//Ou
+	
+	 void naoPermitirEdicaoJTable() {
+
+        TableModel model = new DefaultTableModel() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 4 || column == 5;
+            }
+        };
+
+        jTableDisciplinas.setModel(model);
+
+    }
+	
 ```
 
