@@ -1,8 +1,23 @@
 # snippets-codes
 
-> ## Adicionar created_at e update_at a alguma tabela:
- ```sql
-ALTER TABLE `turma` 
-ADD `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+> ## Adicionar __created_at__ e __update_at__ a alguma tabela:
+
+```sql
+ALTER TABLE `turma`
+ADD `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 ADD `update_at` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+```
+
+> ## Adicionar dados pareados _(label e value)_ a um **ComboBox**:
+
+```java
+ Disciplina disciplinas[] = DisciplinaController.listarTudo();
+
+    Vector model = new Vector();
+
+    for (Disciplina disciplina : disciplinas) {
+        model.addElement(new ComboItem(disciplina.getCodigoDisciplina(), disciplina.getNomeDisciplina()));
+    }
+
+ jComboBoxDisciplina.setModel(new javax.swing.DefaultComboBoxModel<>(model));
 ```
