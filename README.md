@@ -72,3 +72,36 @@ if (rs.next()) {
  
 System.out.println("Inserted record's ID: " + generatedKey);
 ```
+
+> ## N?o permitir edi??o em uma jTable
+
+```
+  String[] columnNames = {"ID", "NOME", "CPF", "STATUS", "OP??O"}; //As colunas ser?o adicionadas:
+
+
+	Professor professores[] = ProfessorController.listarTudo(); //Os dados
+
+	Object[][] data = new Object[professores.length][5]; //O 2, aqui, ? a quantidade de colunas
+
+	int index = 0;
+
+	for (Professor s : professores) {
+		data[index][0] = s.getId(); //
+		data[index][1] = s.getNome(); //
+		data[index][2] = s.getCPF(); //
+		data[index][3] = s.getStatus(); //
+		data[index][4] = "Excluir"; //
+		index++;
+	}
+
+	TableModel model = new DefaultTableModel(data, columnNames) {
+		private static final long serialVersionUID = 1L;
+
+		public boolean isCellEditable(int row, int column) {
+			return column == 4 || column == 5;
+		}
+	};
+
+	jTableProfessor.setModel(model);
+```
+
