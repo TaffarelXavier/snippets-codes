@@ -26,7 +26,7 @@ ADD `update_at` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_T
 > ## Pegar o valor: value e label de um **ComboBox**:
 ```
 private void jComboBoxDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {                                                    
-        // TODO add your handling code here:
+
         JComboBox comboBox = (JComboBox) evt.getSource();
 
         ComboItem item = (ComboItem) comboBox.getSelectedItem();
@@ -38,4 +38,18 @@ private void jComboBoxDisciplinaActionPerformed(java.awt.event.ActionEvent evt) 
         model.addRow(new Object[]{item.getValue(), item.getLabel()});
 
     }  
+```
+----
+> ## How to Retrieve JTable Data as an Array
+
+```
+public Object[][] getTableData (JTable table) {
+    DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+    int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
+    Object[][] tableData = new Object[nRow][nCol];
+    for (int i = 0 ; i < nRow ; i++)
+        for (int j = 0 ; j < nCol ; j++)
+            tableData[i][j] = dtm.getValueAt(i,j);
+    return tableData;
+}
 ```
