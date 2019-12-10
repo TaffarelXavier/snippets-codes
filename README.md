@@ -53,3 +53,22 @@ public Object[][] getTableData (JTable table) {
     return tableData;
 }
 ```
+
+> ## How to get ID of the newly inserted record in database
+
+```
+String sql = "YOUR INSERT STATEMENT HERE";
+ 
+PreparedStatement ps = conn.prepareStatement(sql,
+        Statement.RETURN_GENERATED_KEYS); //Segredo está aqui
+ 
+ps.execute();
+ 
+ResultSet rs = ps.getGeneratedKeys();
+int generatedKey = 0;
+if (rs.next()) {
+    generatedKey = rs.getInt(1);
+}
+ 
+System.out.println("Inserted record's ID: " + generatedKey);
+```
