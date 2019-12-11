@@ -1,15 +1,30 @@
 <!DOCTYPE html>
-    <html>
+<html>
     <head>
-        <meta charset="UTF-8">
-        <title>snippets-codes</title>
-        
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
-        
+        <meta charset="UTF-8" />
+        <title>Snippets-Codes - Trechos de Códigos</title>
+
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css"
+        />
+
         <style>
-.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
-</style>
+            .task-list-item {
+                list-style-type: none;
+            }
+            .task-list-item-checkbox {
+                margin-left: -20px;
+                vertical-align: middle;
+            }
+            #snippets-codes---trechos-de-codigos{
+                font-size:40px;
+            }
+        </style>
         <style>
             body {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
@@ -17,68 +32,42 @@
                 line-height: 1.6;
             }
         </style>
-        
-        
     </head>
     <body class="vscode-light">
-        <h1 id="snippets-codes">snippets-codes</h1>
-<blockquote>
-<h2 id="adicionar-createdat-e-updateat-a-alguma-tabela">Adicionar <strong>created_at</strong> e <strong>update_at</strong> a alguma tabela:</h2>
-</blockquote>
-<pre><code class="language-sql"><div><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-string">`turma`</span>
+        <h1 id="snippets-codes---trechos-de-codigos"><strong>Snippets-Codes - Trechos de Códigos</strong></h1>
+        <h1 id="1-sql"><strong>1 SQL</strong></h1>
+        <blockquote>
+            <h2 id="adicionar-createdat-e-updateat-a-alguma-tabela">
+                Adicionar <strong>created_at</strong> e <strong>update_at</strong> a alguma tabela:
+            </h2>
+        </blockquote>
+        <pre><code class="language-sql"><div><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-string">`turma`</span>
 <span class="hljs-keyword">ADD</span> <span class="hljs-string">`created_at`</span> <span class="hljs-built_in">TIMESTAMP</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">CURRENT_TIMESTAMP</span>,
 <span class="hljs-keyword">ADD</span> <span class="hljs-string">`update_at`</span> <span class="hljs-built_in">TIMESTAMP</span> <span class="hljs-keyword">on</span> <span class="hljs-keyword">update</span> <span class="hljs-keyword">CURRENT_TIMESTAMP</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">CURRENT_TIMESTAMP</span>;
 </div></code></pre>
-<hr>
-<blockquote>
-<h2 id="adicionar-dados-pareados-label-e-value-a-um-combobox">Adicionar dados pareados <em>(label e value)</em> a um <strong>ComboBox</strong>:</h2>
-</blockquote>
-<pre><code class="language-java"><div> Disciplina disciplinas[] = DisciplinaController.listarTudo();
-
-    Vector model = <span class="hljs-keyword">new</span> Vector();
-
-    <span class="hljs-keyword">for</span> (Disciplina disciplina : disciplinas) {
-        model.addElement(<span class="hljs-keyword">new</span> ComboItem(disciplina.getCodigoDisciplina(), disciplina.getNomeDisciplina()));
-    }
-
- jComboBoxDisciplina.setModel(<span class="hljs-keyword">new</span> javax.swing.DefaultComboBoxModel&lt;&gt;(model));
-</div></code></pre>
-<hr>
-<blockquote>
-<h2 id="pegar-o-valor-value-e-label-de-um-combobox">Pegar o valor: value e label de um <strong>ComboBox</strong>:</h2>
-</blockquote>
-<pre><code class="language-java"><div><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">jComboBoxDisciplinaActionPerformed</span><span class="hljs-params">(java.awt.event.ActionEvent evt)</span> </span>{                                                    
-
-        JComboBox comboBox = (JComboBox) evt.getSource();
-
-        ComboItem item = (ComboItem) comboBox.getSelectedItem();
-
-        habilitarBotoes();
-
-        DefaultTableModel model = (DefaultTableModel) jTableDisciplinasProfessor.getModel();
-
-        model.addRow(<span class="hljs-keyword">new</span> Object[]{item.getValue(), item.getLabel()});
-
-    }  
-</div></code></pre>
-<hr>
-<blockquote>
-<h2 id="how-to-retrieve-jtable-data-as-an-array">How to Retrieve JTable Data as an Array</h2>
-</blockquote>
-<pre><code class="language-java"><div><span class="hljs-keyword">public</span> Object[][] getTableData (JTable table) {
-    DefaultTableModel dtm = (DefaultTableModel) table.getModel();
-    <span class="hljs-keyword">int</span> nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
-    Object[][] tableData = <span class="hljs-keyword">new</span> Object[nRow][nCol];
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span> ; i &lt; nRow ; i++)
-        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span> ; j &lt; nCol ; j++)
-            tableData[i][j] = dtm.getValueAt(i,j);
-    <span class="hljs-keyword">return</span> tableData;
+        <hr />
+        <h1 id="2-jtable"><strong>2 jTable</strong></h1>
+        <blockquote>
+            <h2 id="21-como-obter-dados-de-uma-jtable-como-um-array">2.1 Como obter dados de uma JTable como um Array</h2>
+            <pre><code class="language-java"><div><span class="hljs-keyword">public</span> Object[][] getTableData (JTable table) {
+   DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+   <span class="hljs-keyword">int</span> nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
+   Object[][] tableData = <span class="hljs-keyword">new</span> Object[nRow][nCol];
+   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span> ; i &lt; nRow ; i++)
+       <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span> ; j &lt; nCol ; j++)
+           tableData[i][j] = dtm.getValueAt(i,j);
+   <span class="hljs-keyword">return</span> tableData;
 }
 </div></code></pre>
-<blockquote>
-<h2 id="how-to-get-id-of-the-newly-inserted-record-in-database">How to get ID of the newly inserted record in database</h2>
-</blockquote>
-<pre><code class="language-java"><div>String sql = <span class="hljs-string">"YOUR INSERT STATEMENT HERE"</span>;
+            <br />
+        </blockquote>
+        <hr />
+        <blockquote>
+            <h2 id="22-how-to-get-id-of-the-newly-inserted-record-in-database">
+                2.2 How to get ID of the newly inserted record in database
+            </h2>
+        </blockquote>
+        <pre><code class="language-java"><div>String sql = <span class="hljs-string">"YOUR INSERT STATEMENT HERE"</span>;
  
 PreparedStatement ps = conn.prepareStatement(sql,
         Statement.RETURN_GENERATED_KEYS); <span class="hljs-comment">//Segredo está aqui</span>
@@ -93,11 +82,21 @@ ResultSet rs = ps.getGeneratedKeys();
  
 System.out.println(<span class="hljs-string">"Inserted record's ID: "</span> + generatedKey);
 </div></code></pre>
-<blockquote>
-<h2 id="n%c3%a3o-permitir-edi%c3%a7%c3%a3o-em-uma-jtable">Não permitir edição em uma jTable</h2>
-</blockquote>
-<pre><code class="language-java"><div>  String[] columnNames = {<span class="hljs-string">"ID"</span>, <span class="hljs-string">"NOME"</span>, <span class="hljs-string">"CPF"</span>, <span class="hljs-string">"STATUS"</span>, <span class="hljs-string">"OPÇÃO"</span>}; <span class="hljs-comment">//As colunas ser?o adicionadas:</span>
-
+        <hr />
+        <blockquote>
+            <h2 id="23-como-to-clear-jtable--como-limpar-uma-jtable">2.3 Como to clear JTable / Como limpar uma JTable</h2>
+            <pre><code class="language-java"><div>JTable table; <span class="hljs-comment">//A tabela</span>
+DefaultTableModel model = (DefaultTableModel) table.getModel();
+model.setRowCount(<span class="hljs-number">0</span>);
+</div></code></pre>
+            <br />
+        </blockquote>
+        <hr />
+        <blockquote>
+            <h2 id="24-n%c3%a3o-permitir-edi%c3%a7%c3%a3o-em-uma-jtable">2.4 Não permitir edição em uma jTable</h2>
+        </blockquote>
+        <pre><code class="language-java"><div>  <span class="hljs-comment">//Exemplo 1</span>
+  String[] columnNames = {<span class="hljs-string">"ID"</span>, <span class="hljs-string">"NOME"</span>, <span class="hljs-string">"CPF"</span>, <span class="hljs-string">"STATUS"</span>, <span class="hljs-string">"OPÇÃO"</span>}; <span class="hljs-comment">//As colunas ser?o adicionadas:</span>
 
 	Professor professores[] = ProfessorController.listarTudo(); <span class="hljs-comment">//Os dados</span>
 
@@ -123,9 +122,9 @@ System.out.println(<span class="hljs-string">"Inserted record's ID: "</span> + g
 		}
 	};
 
-	jTableProfessor.setModel(model);
+	jTableProfessor.setModel(model); <span class="hljs-comment">//Fim exemplo 1</span>
 	
-	<span class="hljs-comment">//Ou</span>
+	<span class="hljs-comment">//Exemplo 2</span>
 	
 	 <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">naoPermitirEdicaoJTable</span><span class="hljs-params">()</span> </span>{
 
@@ -141,23 +140,129 @@ System.out.println(<span class="hljs-string">"Inserted record's ID: "</span> + g
         jTableDisciplinas.setModel(model);
 
     }
+
+    <span class="hljs-comment">//Exemplo 3</span>
+    jTableDisciplina.setModel(<span class="hljs-keyword">new</span> DefaultTableModel(data, columnNames) {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> serialVersionUID = <span class="hljs-number">1L</span>;
+
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isCellEditable</span><span class="hljs-params">(<span class="hljs-keyword">int</span> row, <span class="hljs-keyword">int</span> column)</span> </span>{
+            <span class="hljs-comment">//return column == 4 || column == 5; Alguma coluna</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>; <span class="hljs-comment">//Todas as colunas;</span>
+        }
+    });
 	
 </div></code></pre>
-<hr>
-<blockquote>
-<h2 id="como-mostrar-di%c3%a1logo-de-confirma%c3%a7%c3%a3o">Como mostrar diálogo de confirmação:</h2>
-</blockquote>
-<pre><code class="language-java"><div><span class="hljs-keyword">int</span> dialogResult = JOptionPane.showConfirmDialog(<span class="hljs-keyword">null</span>, <span class="hljs-string">"Deseja realmente pagar?"</span>, <span class="hljs-string">"Warning"</span>,JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE );
+        <hr />
+        <blockquote>
+            <h2 id="25-pega-o-index-da-tabela-jtable-ao-clicar-sobre-ela">2.5 Pega o index da Tabela (jTable) ao clicar sobre ela:</h2>
+            <pre><code class="language-java"><div><span class="hljs-comment">//Pega o  index da Tabela ao clicar sobre ela:</span>
+<span class="hljs-keyword">int</span> rowIndex = jTableAluno.convertRowIndexToModel(jTableAluno.getSelectedRow());
+<span class="hljs-comment">//Pega o modelo da tabela</span>
+TableModel model = jTableAluno.getModel();
+<span class="hljs-comment">//Pega o Id da linha selecionada, na coluna 1, (1-1=0):</span>
+<span class="hljs-keyword">int</span> id = Integer.parseInt(model.getValueAt(rowIndex, <span class="hljs-number">0</span>).toString());
+
+</div></code></pre>
+            <p>
+                <strong>Geralmente, usa-se este trecho de código com o evento myTableNameMouseClicked. <br /><br /></strong>
+            </p>
+        </blockquote>
+        <hr />
+        <blockquote>
+            <h1 id="3-joptionpane"><strong>3 JOptionPane</strong></h1>
+        </blockquote>
+        <blockquote>
+            <h2 id="31-como-mostrar-di%c3%a1logo-de-confirma%c3%a7%c3%a3o">3.1 Como mostrar diálogo de confirmação:</h2>
+        </blockquote>
+        <pre><code class="language-java"><div><span class="hljs-keyword">int</span> dialogResult = JOptionPane.showConfirmDialog(<span class="hljs-keyword">null</span>, <span class="hljs-string">"Deseja realmente pagar?"</span>, <span class="hljs-string">"Warning"</span>,JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE );
 <span class="hljs-keyword">if</span> (dialogResult == JOptionPane.YES_OPTION) {
     <span class="hljs-comment">// Saving code here</span>
-}```
-
-&gt; ## how to clear JTable / Como limpar uma Jtable
-```java
-JTable table; <span class="hljs-comment">//A tabela</span>
-DefaultTableModel model = (DefaultTableModel) table.getModel();
-model.setRowCount(<span class="hljs-number">0</span>);
+} 
 </div></code></pre>
+        <hr />
+        <h1 id="4-jcombobox"><strong>4 JCOMBOBOX</strong></h1>
+        <blockquote>
+            <h2 id="41-adicionar-um-item">4.1 Adicionar um item</h2>
+            <pre><code class="language-java"><div>comboBox.addItem(<span class="hljs-string">"item"</span>);
+</div></code></pre>
+            <br />
+        </blockquote>
+        <hr />
+        <blockquote>
+            <h2 id="42-mostra-o-componente-que-foi-selecionado">4.2 Mostra o componente que foi selecionado:</h2>
+            <pre><code class="language-java"><div>jComboBoxClienteCNH.getSelectedItem();
+</div></code></pre>
+            <br />
+        </blockquote>
+        <hr />
+        <blockquote>
+            <h2 id="43-retorna-a-posi%c3%a7%c3%a3o-do-componente-selecionado">4.3 Retorna a posição do componente selecionado:</h2>
+            <pre><code class="language-java"><div>jComboBox1.getSelectedIndex();
+</div></code></pre>
+            <br />
+        </blockquote>
+        <hr />
+        <blockquote>
+            <h2 id="44-selecionar-um-item-conforme-algum-crit%c3%a9rio">4.4 Selecionar um item conforme algum critério</h2>
+            <pre><code class="language-java"><div>jComboBox1.setSelectedItem(<span class="hljs-string">"AB"</span>);
+</div></code></pre>
+            <br />
+        </blockquote>
+        <hr />
+        <blockquote>
+            <h2 id="45-remover-todos-os-itens">4.5 Remover todos os itens</h2>
+            <pre><code class="language-java"><div>jComboBox1.removeAllItems();
+</div></code></pre>
+            <br />
+        </blockquote>
+        <hr />
+        <blockquote>
+            <h2 id="46-adicionar-itens-de-um-array-a-um-combobox">4.6 Adicionar itens de um array a um combobox</h2>
+            <pre><code class="language-java"><div>JComboBox b = <span class="hljs-keyword">new</span> JComboBox(<span class="hljs-keyword">new</span> String[]{<span class="hljs-string">"String1"</span>,<span class="hljs-string">"String2"</span>});
+</div></code></pre>
+            <br />
+        </blockquote>
+        <hr />
+        <blockquote>
+            <h2 id="46-retorna-a-quantidade-de-elementos-de-um-combobox">4.6 Retorna a quantidade de elementos de um combobox</h2>
+            <pre><code class="language-java"><div>jComboBox1.getItemCount();
+</div></code></pre>
+            <br />
+        </blockquote>
+        <hr />
+        <blockquote>
+            <h2 id="47-adicionar-dados-pareados-label-e-value-a-um-combobox">
+                4.7 Adicionar dados pareados <em>(label e value)</em> a um <strong>ComboBox</strong>:
+            </h2>
+            <pre><code class="language-java"><div>Disciplina disciplinas[] = DisciplinaController.listarTudo();
 
+   Vector model = <span class="hljs-keyword">new</span> Vector();
+
+   <span class="hljs-keyword">for</span> (Disciplina disciplina : disciplinas) {
+       model.addElement(<span class="hljs-keyword">new</span> ComboItem(disciplina.getCodigoDisciplina(), disciplina.getNomeDisciplina()));
+   }
+
+jComboBoxDisciplina.setModel(<span class="hljs-keyword">new</span> javax.swing.DefaultComboBoxModel&lt;&gt;(model));
+</div></code></pre>
+            <br />
+        </blockquote>
+        <blockquote>
+            <h2 id="48-pegar-o-valor-value-e-label-de-um-combobox">4.8 Pegar o valor: value e label de um <strong>ComboBox</strong>:</h2>
+            <pre><code class="language-java"><div><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">jComboBoxDisciplinaActionPerformed</span><span class="hljs-params">(java.awt.event.ActionEvent evt)</span> </span>{                 &gt;
+       JComboBox comboBox = (JComboBox) evt.getSource();
+
+       ComboItem item = (ComboItem) comboBox.getSelectedItem();
+
+       habilitarBotoes();
+
+      DefaultTableModel model = (DefaultTableModel) jTableDisciplinasProfessor.getModel();
+
+       model.addRow(<span class="hljs-keyword">new</span> Object[]{item.getValue(), item.getLabel()});
+
+   }  
+</div></code></pre>
+            <br />
+        </blockquote>
     </body>
-    </html>
+</html>
