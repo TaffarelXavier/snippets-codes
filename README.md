@@ -24,7 +24,7 @@ ADD `update_at` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_T
 ----
 
 > ## Pegar o valor: value e label de um **ComboBox**:
-```
+```java
 private void jComboBoxDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {                                                    
 
         JComboBox comboBox = (JComboBox) evt.getSource();
@@ -42,7 +42,7 @@ private void jComboBoxDisciplinaActionPerformed(java.awt.event.ActionEvent evt) 
 ----
 > ## How to Retrieve JTable Data as an Array
 
-```
+```java
 public Object[][] getTableData (JTable table) {
     DefaultTableModel dtm = (DefaultTableModel) table.getModel();
     int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
@@ -56,7 +56,7 @@ public Object[][] getTableData (JTable table) {
 
 > ## How to get ID of the newly inserted record in database
 
-```
+```java
 String sql = "YOUR INSERT STATEMENT HERE";
  
 PreparedStatement ps = conn.prepareStatement(sql,
@@ -73,10 +73,10 @@ if (rs.next()) {
 System.out.println("Inserted record's ID: " + generatedKey);
 ```
 
-> ## N?o permitir edi??o em uma jTable
+> ## Não permitir edição em uma jTable
 
-```
-  String[] columnNames = {"ID", "NOME", "CPF", "STATUS", "OP??O"}; //As colunas ser?o adicionadas:
+```java
+  String[] columnNames = {"ID", "NOME", "CPF", "STATUS", "OPÇÃO"}; //As colunas ser?o adicionadas:
 
 
 	Professor professores[] = ProfessorController.listarTudo(); //Os dados
@@ -98,7 +98,8 @@ System.out.println("Inserted record's ID: " + generatedKey);
 		private static final long serialVersionUID = 1L;
 
 		public boolean isCellEditable(int row, int column) {
-			return column == 4 || column == 5;
+			//return column == 4 || column == 5; Alguma coluna
+			return false; //Todas as colunas;
 		}
 	};
 
@@ -122,4 +123,21 @@ System.out.println("Inserted record's ID: " + generatedKey);
     }
 	
 ```
+---
 
+> ## Como mostrar diálogo de confirmação: 
+
+``` java
+int dialogResult = JOptionPane.showConfirmDialog(null, "Deseja realmente pagar?", "Warning",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE );
+if (dialogResult == JOptionPane.YES_OPTION) {
+    // Saving code here
+} 
+```
+
+> ## how to clear JTable / Como limpar uma Jtable
+
+```java
+JTable table; //A tabela
+DefaultTableModel model = (DefaultTableModel) table.getModel();
+model.setRowCount(0);
+```
