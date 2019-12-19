@@ -19,18 +19,13 @@ class CategoryController {
    * @param {View} ctx.view
    */
   async index({ request, response, view }) {
-    const categories = await Category.query()
-      .with("notes")
-      .fetch();
-
-    //innerJoin('categories','category_id','note_category_id')
-    //.groupBy('category_id').fetch();
+    const categories = await Category.query().select("category_id","category_name").fetch()
     return categories;
   }
   
   /*
    */
-  async getCategoriesWithTotal({ request, response, view }) {
+  async getCategoriesComTotalDeNotas({ request, response, view }) {
     const categories = await Category.query()
       .select(
         "categories.category_id",

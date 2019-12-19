@@ -113,7 +113,6 @@ var modalCategory = (titulo, idModal, idButton) => {
               <input type="text" class="form-control" autofocus id="category-name">
             </div>
           </form>
-
       <ul class="mdc-list" id="gd-get-categories" style="max-height: 400px;overflow: auto;">
         </ul>
         </div>
@@ -130,6 +129,22 @@ var modalCategory = (titulo, idModal, idButton) => {
  * Cria uma nova nota
  */
 var modalCriarNota = (titulo, idModal, idButton) => {
+ 
+  setTimeout(function() {
+    fetch('http://127.0.0.1:3333/buscar-todas-categorias', {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'default'
+    }).then(async response => {
+      let data = await response.json();
+      data.map(({ category_id, category_name }) => {
+        $('#categories_id').append(
+          `<option value='${category_id}'>${category_name}</option>`
+        );
+      });
+    });
+  }, 2500);
+
   let content = `<!-- Modal Criar Nota -->
 <div class="modal fade bd-example-modal-lg" id="${idModal}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog modal-lg" role="document"><!--modal-lg-->
@@ -164,36 +179,18 @@ var modalCriarNota = (titulo, idModal, idButton) => {
           <div class="col-sm-6 col-md-6">
           <div class="form-group">
           <label for="message-text" class="col-form-label"><strong>Categoria:</strong></label>
-          <select class="custom-select mr-sm-2" name="languages">
-          <option selected>Choose...</option>`;
-  // for (let data of categories) {
-  //   content += `<option value="${
-  //     data.category_id
-  //   }">${data.category_name.toUpperCase()}</option>`;
-  // }
-  // content += `</select>
-  //       </div>
-  //         </div>
-  //         <!--COLUNA 2-->
-  //         <div class="col-sm-6 col-md-6">
-  //         <label for="message-text" class="col-form-label"><strong>Linguagem para Formatação:</strong></label>
-  //         <select class="custom-select mr-sm-2" name="formatacao-language">`;
-  // for (let data of languages) {
-  //   content += `<option value="${data.lang_id}">${data.lang_name.toUpperCase()}</option>`;
-  // }
-  content += `</select>
+          <select class="custom-select mr-sm-2" name="languages" id="categories_id">
+          <option selected>Escolher...</option></select>
           </div>
         </div>
-
         <div class="row">
           <div class="col-sm-12 col-md-12">
             <div class="form-group">
               <label for="message-text" class="col-form-label"><strong>Código:</strong></label>
-              <textarea class="form-control" name="code" id="code" placeholder="Digite seu snipper-code aqui" rows=5></textarea>
+              <textarea class="form-control" name="code" id="code" placeholder="Digite seu snipper-code aqui" rows='5'></textarea>
             </div>
           </div>
         </div>
-
       </form>
     </div>
     <div class="modal-footer">
@@ -202,8 +199,7 @@ var modalCriarNota = (titulo, idModal, idButton) => {
     </div>
   </div>
 </div>
-</div>
-`;
+</div>`;
   return content;
 };
 

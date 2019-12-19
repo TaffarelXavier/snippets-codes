@@ -24,6 +24,10 @@ Route.get("/", async () => {
 
 Route.get("notes", "NoteController.index");
 
-Route.get("categories", "CategoryController.getCategoriesWithTotal");
+//Busca as categorias
+Route.get("categories", "CategoryController.getCategoriesComTotalDeNotas");
 
+Route.get("buscar-todas-categorias", "CategoryController.index");
+
+//Mostra notas por categoria id
 Route.get("notes-por-category-id/:category_id", "NoteController.getCategoriesWithTotal");
