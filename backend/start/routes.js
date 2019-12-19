@@ -22,10 +22,13 @@ Route.get("/", async () => {
   return { greeting: notas };
 });
 
-Route.get("notes", "NoteController.index");
+Route.resource('notes', 'NoteController');
 
+Route.resource('languages', 'LanguageController');
 //Busca as categorias
 Route.get("categories", "CategoryController.getCategoriesComTotalDeNotas");
+
+Route.get("get-all-categories", "CategoryController.getAll");
 
 Route.get("buscar-todas-categorias", "CategoryController.index");
 

@@ -129,9 +129,18 @@ var modalCategory = (titulo, idModal, idButton) => {
  * Cria uma nova nota
  */
 var modalCriarNota = (titulo, idModal, idButton) => {
- 
+  const config = [
+    {
+      baseApiRestUrl: window.location.protocol + '//127.0.0.1:3333'
+    },
+    {
+      baseApiRestUrl: window.location.protocol + '//192.168.129.171:3333'
+    }
+  ];
+
+  const INDEX = 1;
   setTimeout(function() {
-    fetch('http://127.0.0.1:3333/buscar-todas-categorias', {
+    fetch(config[INDEX].baseApiRestUrl + '/get-all-categories', {
       method: 'GET',
       mode: 'cors',
       cache: 'default'
@@ -141,6 +150,17 @@ var modalCriarNota = (titulo, idModal, idButton) => {
         $('#categories_id').append(
           `<option value='${category_id}'>${category_name}</option>`
         );
+      });
+    });
+
+    fetch(config[INDEX].baseApiRestUrl + '/languages', {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'default'
+    }).then(async response => {
+      let data = await response.json();
+      data.map(({ lang_id, lang_name }) => {
+        $('#languages').append(`<option value='${lang_id}'>${lang_name}</option>`);
       });
     });
   }, 2500);
@@ -170,17 +190,24 @@ var modalCriarNota = (titulo, idModal, idButton) => {
 
         <div class="form-group"> <!--TAGS-->
           <label for="recipient-name" class="col-form-label"><strong>Tags:</strong></label>
-          <select id="select-tags" multiple="multiple" style="border:1px solid red !important;width:100%;" class="form-control">
+          <select id="select-tags" multiple="multiple" name="tags" style="border:1px solid red !important;width:100%;" class="form-control">
           </select>
         </div>
 
         <div class="row">
           <!--COLUNA 1-->
           <div class="col-sm-6 col-md-6">
-          <div class="form-group">
-          <label for="message-text" class="col-form-label"><strong>Categoria:</strong></label>
-          <select class="custom-select mr-sm-2" name="languages" id="categories_id">
-          <option selected>Escolher...</option></select>
+            <div class="form-group">
+            <label for="message-text" class="col-form-label"><strong>Categoria:</strong></label>
+            <select class="custom-select mr-sm-2" name="category" id="categories_id">
+            <option selected>Escolher...</option></select>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+            <label for="message-text" class="col-form-label"><strong>Linguagem para Formatação:</strong></label>
+            <select class="custom-select mr-sm-2" name="formatacao-language" id="languages"></select>
+            </div>
           </div>
         </div>
         <div class="row">

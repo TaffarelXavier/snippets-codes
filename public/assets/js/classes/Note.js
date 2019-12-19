@@ -1,6 +1,7 @@
 var Connection = require("../Connection.js");
 
 class Note {
+  
   static conn() {
     return Connection.conn();
   }
@@ -17,7 +18,6 @@ class Note {
    */
   static create(note) {
     try {
-      var conn = Note.conn();
 
       var {
         note_title,
@@ -40,11 +40,10 @@ class Note {
 
       if (res.error) return console.error(res.error);
 
-      conn.close();
-
       note.note_id = res != undefined || res != null ? res : -1;
 
       return note;
+
     } catch (error) {
       console.error(error);
     }

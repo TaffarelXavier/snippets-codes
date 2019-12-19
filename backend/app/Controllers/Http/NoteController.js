@@ -5,7 +5,6 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Note = use("App/Models/Note");
-const Database = use("Database");
 /**
  * Resourceful controller for interacting with notes
  */
@@ -26,30 +25,17 @@ class NoteController {
 
   /*
    */
-  async getCategoriesWithTotal({ request, params, response, view }) {
-    
-    const {category_id} = params;
-
-    console.log(category_id);
+  async getCategoriesWithTotal({ params }) {
+    const { category_id } = params;
 
     const categories = await Note.query()
       .select("*")
-      .where('category_id', parseInt(category_id))
+      .where("category_id", parseInt(category_id))
       .innerJoin("languages", "notes.note_type_language", "languages.lang_id")
-      .orderBy("notes.created_at","DESC")
+      .orderBy("notes.created_at", "DESC")
       .fetch();
     return categories;
   }
-  /**
-   * Render a form to be used for creating a new note.
-   * GET notes/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create({ request, response, view }) {}
 
   /**
    * Create/save a new note.
@@ -59,18 +45,22 @@ class NoteController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request, response }) {}
+  async store({ request, response }) {
+    
+    const body = request.post();
 
-  /**
-   * Display a single note.
-   * GET notes/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show({ params, request, response, view }) {}
+    const { title, description, category, code } = body;
+
+    const note = new Note();
+    note.note_title = title;
+    note.note_description = description;
+    note.note_code = code;
+    note.category_id = parseInt(category);
+    note.note_type_language = parseInt(body["formatacao-language"]);
+    note.created_at = Date.now();
+
+    note.save();
+  }
 
   /**
    * Render a form to update an existing note.

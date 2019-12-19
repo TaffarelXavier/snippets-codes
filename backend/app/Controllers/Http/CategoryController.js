@@ -22,6 +22,13 @@ class CategoryController {
     const categories = await Category.query().select("category_id","category_name").fetch()
     return categories;
   }
+  /**
+   * 
+   */
+  async getAll({ request, response, view }) {
+    const categories = await Category.all();
+    return categories;
+  }
   
   /*
    */
@@ -30,6 +37,7 @@ class CategoryController {
       .select(
         "categories.category_id",
         "categories.category_name",
+        "categories.category_icon",
         Database.raw("COUNT(*) AS total")
       )
       .innerJoin("notes", "categories.category_id", "notes.category_id ")
