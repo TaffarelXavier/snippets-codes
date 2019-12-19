@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+        
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+        
+    </head>
+    <body class="vscode-light">
+        <pre><code class="language-java"><div><span class="hljs-comment">//O pacote donde se encontra a classe AlunoController</span>
+<span class="hljs-keyword">package</span> controllers;
+
+<span class="hljs-keyword">import</span> servicos.Funcoes;
+<span class="hljs-keyword">import</span> java.sql.PreparedStatement;
+<span class="hljs-keyword">import</span> java.sql.ResultSet;
+<span class="hljs-keyword">import</span> java.sql.SQLException;
+<span class="hljs-keyword">import</span> javax.swing.JOptionPane;
+<span class="hljs-keyword">import</span> modelos.Aluno;
+<span class="hljs-keyword">import</span> servicos.Conexao;
+
+
+ * <span class="hljs-meta">@author</span> Taffarel Xavier &lt;taffarel_deus<span class="hljs-meta">@hotmail</span>.com&gt;
+ */
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AlunoController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Funcoes</span> </span>{
+
+    <span class="hljs-comment">/**
+     * *
+     *
+     * <span class="hljs-doctag">@param</span> nome
+     * <span class="hljs-doctag">@param</span> dataNascimento
+     * <span class="hljs-doctag">@param</span> cpf
+     * <span class="hljs-doctag">@param</span> telefone
+     * <span class="hljs-doctag">@param</span> email
+     * <span class="hljs-doctag">@return</span>
+     */</span>
+</div></code></pre>
+<blockquote>
+<h1 id="incluir--insert">Incluir / Insert</h1>
+</blockquote>
+<pre><code class="language-java"><div>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">incluir</span><span class="hljs-params">(String nome, String dataNascimento, String cpf, String telefone, String email)</span> </span>{
+        <span class="hljs-keyword">try</span> {
+            String sql = <span class="hljs-string">"INSERT INTO aluno (nomealuno, data_nascimento,"</span>
+                    + <span class="hljs-string">" cpf, telefone, email) VALUES (?,?,?,?,?);"</span>;
+            PreparedStatement preparedStatement = Conexao.conectar().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(<span class="hljs-number">1</span>, nome.trim());
+            preparedStatement.setString(<span class="hljs-number">2</span>, dataNascimento.trim());
+            preparedStatement.setString(<span class="hljs-number">3</span>, cpf.trim());
+            preparedStatement.setString(<span class="hljs-number">4</span>, telefone.trim());
+            preparedStatement.setString(<span class="hljs-number">5</span>, email.trim());
+
+            <span class="hljs-keyword">int</span> affectedRows = preparedStatement.executeUpdate();
+
+            <span class="hljs-keyword">if</span> (affectedRows == <span class="hljs-number">0</span>) {
+                JOptionPane.showMessageDialog(<span class="hljs-keyword">null</span>, <span class="hljs-string">"A criação do usuário falhou!"</span>, <span class="hljs-string">"Atenção"</span>, <span class="hljs-number">1</span>);
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+            }
+
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+
+            <span class="hljs-keyword">int</span> generatedKey = <span class="hljs-number">0</span>;
+
+            <span class="hljs-keyword">if</span> (rs.next()) {
+                generatedKey = rs.getInt(<span class="hljs-number">1</span>); <span class="hljs-comment">//Retorna o ID da inserção.</span>
+            } <span class="hljs-keyword">else</span> {
+                JOptionPane.showMessageDialog(<span class="hljs-keyword">null</span>, <span class="hljs-string">"A criação do usuário falhou!"</span>, <span class="hljs-string">"Atenção"</span>, <span class="hljs-number">1</span>);
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+            }
+
+            <span class="hljs-keyword">return</span> generatedKey;
+
+        } <span class="hljs-keyword">catch</span> (Exception e) {
+            JOptionPane.showMessageDialog(<span class="hljs-keyword">null</span>, e.getMessage(), <span class="hljs-string">"Atenção: erro!"</span>, <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+</div></code></pre>
+<blockquote>
+<h1 id="excluir--delete">Excluir / Delete</h1>
+</blockquote>
+<pre><code class="language-java"><div>    <span class="hljs-comment">/**
+     *
+     * <span class="hljs-doctag">@param</span> alunoId
+     * <span class="hljs-doctag">@return</span>
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">excluir</span><span class="hljs-params">(<span class="hljs-keyword">int</span> alunoId)</span> </span>{
+        String sql = <span class="hljs-string">"DELETE FROM aluno WHERE codaluno = ?;"</span>;
+        PreparedStatement preparedStatement;
+        <span class="hljs-keyword">try</span> {
+            preparedStatement = Conexao.conectar().prepareStatement(sql,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            preparedStatement.setInt(<span class="hljs-number">1</span>, alunoId);
+            <span class="hljs-keyword">return</span> preparedStatement.executeUpdate();
+        } <span class="hljs-keyword">catch</span> (Exception ex) {
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+</div></code></pre>
+<blockquote>
+<h1 id="atualizar--update">Atualizar / UPDATE</h1>
+</blockquote>
+<pre><code class="language-java"><div>    <span class="hljs-comment">/**
+     *
+     * <span class="hljs-doctag">@param</span> nome
+     * <span class="hljs-doctag">@param</span> dataNascimento
+     * <span class="hljs-doctag">@param</span> cpf
+     * <span class="hljs-doctag">@param</span> telefone
+     * <span class="hljs-doctag">@param</span> email
+     * <span class="hljs-doctag">@param</span> alunoIDd
+     * <span class="hljs-doctag">@return</span>
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">alterar</span><span class="hljs-params">(String nome, String dataNascimento, String cpf, String telefone, String email, <span class="hljs-keyword">int</span> alunoIDd)</span> </span>{
+        <span class="hljs-keyword">try</span> {
+            String sql = <span class="hljs-string">"UPDATE aluno SET nomealuno = ?, data_nascimento =?,"</span>
+                    + <span class="hljs-string">" cpf = ?, telefone =?, email=? WHERE codaluno=?"</span>;
+            PreparedStatement preparedStatement = Conexao.conectar().prepareStatement(sql,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            preparedStatement.setString(<span class="hljs-number">1</span>, nome.trim());
+            preparedStatement.setString(<span class="hljs-number">2</span>, dataNascimento.trim());
+            preparedStatement.setString(<span class="hljs-number">3</span>, cpf.trim());
+            preparedStatement.setString(<span class="hljs-number">4</span>, telefone.trim());
+            preparedStatement.setString(<span class="hljs-number">5</span>, email.trim());
+            preparedStatement.setInt(<span class="hljs-number">6</span>, alunoIDd);
+            <span class="hljs-keyword">return</span> preparedStatement.executeUpdate();
+        } <span class="hljs-keyword">catch</span> (Exception e) {
+            JOptionPane.showMessageDialog(<span class="hljs-keyword">null</span>, e.getMessage(), <span class="hljs-string">"Atenção: erro!"</span>, <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+</div></code></pre>
+<blockquote>
+<h1 id="listar-tudo--listing--read">Listar Tudo / Listing / Read</h1>
+</blockquote>
+<pre><code class="language-java"><div>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Aluno[] listarTodos() <span class="hljs-keyword">throws</span> Exception {
+
+        PreparedStatement stm;
+
+        <span class="hljs-keyword">try</span> {
+
+            stm = Conexao.conectar().prepareStatement(<span class="hljs-string">"SELECT * FROM aluno;"</span>);
+
+            ResultSet rs = stm.executeQuery();
+
+            <span class="hljs-keyword">if</span> (!rs.next()) {
+                System.out.println(<span class="hljs-string">"Nenhum registro encontrado."</span>);
+            } <span class="hljs-keyword">else</span> {
+
+                Aluno[] alunos = <span class="hljs-keyword">new</span> Aluno[getTotalDeRegistros(rs)];
+
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+
+                <span class="hljs-keyword">while</span> (rs.next()) {
+                    <span class="hljs-comment">//String nomeALuno, int codigoAluno, String , String , String , String </span>
+                    alunos[i] = <span class="hljs-keyword">new</span> Aluno(rs.getString(<span class="hljs-string">"nomealuno"</span>),
+                            rs.getInt(<span class="hljs-string">"codaluno"</span>),
+                            rs.getString(<span class="hljs-string">"data_nascimento"</span>),
+                            rs.getString(<span class="hljs-string">"cpf"</span>),
+                            rs.getString(<span class="hljs-string">"email"</span>),
+                            rs.getString(<span class="hljs-string">"telefone"</span>)
+                    );
+                    ++i;
+                }
+
+                <span class="hljs-keyword">return</span> alunos;
+            }
+
+        } <span class="hljs-keyword">catch</span> (SQLException ex) {
+            JOptionPane.showMessageDialog(<span class="hljs-keyword">null</span>, ex.getMessage());
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    }
+</div></code></pre>
+<blockquote>
+<h1 id="filtrar-dados">Filtrar dados</h1>
+</blockquote>
+<pre><code class="language-java"><div>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Aluno[] filtrarDadosAluno(String filtro, String filtroTipo) <span class="hljs-keyword">throws</span> Exception {
+
+        PreparedStatement preparedStatement = <span class="hljs-keyword">null</span>;
+
+        <span class="hljs-keyword">try</span> {
+            String sql;
+
+            ResultSet rs = <span class="hljs-keyword">null</span>;
+
+            <span class="hljs-keyword">if</span> (filtroTipo.toLowerCase().equals(<span class="hljs-string">"nome"</span>.toLowerCase())) {
+                sql = <span class="hljs-string">"SELECT * FROM aluno WHERE nomealuno LIKE ?;"</span>;
+                preparedStatement = Conexao.conectar().prepareStatement(sql);
+                preparedStatement.setString(<span class="hljs-number">1</span>, <span class="hljs-string">"%"</span> + filtro + <span class="hljs-string">"%"</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (filtroTipo.toLowerCase().equals(<span class="hljs-string">"cpf"</span>.toLowerCase())) {
+                sql = <span class="hljs-string">"SELECT * FROM aluno WHERE cpf = ?;"</span>;
+                preparedStatement = Conexao.conectar().prepareStatement(sql);
+                preparedStatement.setString(<span class="hljs-number">1</span>, filtro);
+
+            }
+            rs = preparedStatement.executeQuery();
+
+            <span class="hljs-keyword">if</span> (!rs.next()) {
+                System.out.println(<span class="hljs-string">"Nenhum registro encontrado para alunos."</span>);
+            } <span class="hljs-keyword">else</span> {
+
+                Aluno[] alunos = <span class="hljs-keyword">new</span> Aluno[getTotalDeRegistros(rs)];
+
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+
+                <span class="hljs-keyword">while</span> (rs.next()) {
+                    <span class="hljs-comment">//String nomeALuno, int codigoAluno, String , String , String , String </span>
+                    alunos[i] = <span class="hljs-keyword">new</span> Aluno(rs.getString(<span class="hljs-string">"nomealuno"</span>),
+                            rs.getInt(<span class="hljs-string">"codaluno"</span>),
+                            rs.getString(<span class="hljs-string">"data_nascimento"</span>),
+                            rs.getString(<span class="hljs-string">"cpf"</span>),
+                            rs.getString(<span class="hljs-string">"email"</span>),
+                            rs.getString(<span class="hljs-string">"telefone"</span>)
+                    );
+                    ++i;
+                }
+                <span class="hljs-keyword">return</span> alunos;
+            }
+
+        } <span class="hljs-keyword">catch</span> (SQLException ex) {
+            JOptionPane.showMessageDialog(<span class="hljs-keyword">null</span>, ex.getMessage());
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    }
+</div></code></pre>
+<blockquote>
+<h1 id="obter-dados-por-id-do-aluno-por-exemplo">Obter dados por id do aluno, por exemplo:</h1>
+</blockquote>
+<pre><code class="language-java"><div>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Aluno[] getDadosPorAlunoId(<span class="hljs-keyword">int</span> alunoId) <span class="hljs-keyword">throws</span> Exception {
+
+        PreparedStatement preparedStatement;
+
+        <span class="hljs-keyword">try</span> {
+
+            preparedStatement = Conexao.conectar().prepareStatement(<span class="hljs-string">"SELECT * FROM aluno WHERE codaluno = ? LIMIT 1;"</span>);
+
+            preparedStatement.setInt(<span class="hljs-number">1</span>, alunoId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            <span class="hljs-keyword">if</span> (!rs.next()) {
+                System.out.println(<span class="hljs-string">"Nenhum registro encontrado para alunos."</span>);
+            } <span class="hljs-keyword">else</span> {
+
+                Aluno[] alunos = <span class="hljs-keyword">new</span> Aluno[getTotalDeRegistros(rs)];
+
+                <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+
+                <span class="hljs-keyword">while</span> (rs.next()) {
+                    <span class="hljs-comment">//String nomeALuno, int codigoAluno, String , String , String , String </span>
+                    alunos[i] = <span class="hljs-keyword">new</span> Aluno(rs.getString(<span class="hljs-string">"nomealuno"</span>),
+                            rs.getInt(<span class="hljs-string">"codaluno"</span>),
+                            rs.getString(<span class="hljs-string">"data_nascimento"</span>),
+                            rs.getString(<span class="hljs-string">"cpf"</span>),
+                            rs.getString(<span class="hljs-string">"email"</span>),
+                            rs.getString(<span class="hljs-string">"telefone"</span>)
+                    );
+                    ++i;
+                }
+                <span class="hljs-keyword">return</span> alunos;
+            }
+
+        } <span class="hljs-keyword">catch</span> (SQLException ex) {
+            JOptionPane.showMessageDialog(<span class="hljs-keyword">null</span>, ex.getMessage());
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    }
+}
+</div></code></pre>
+
+    </body>
+    </html>

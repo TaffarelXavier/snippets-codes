@@ -57,6 +57,16 @@ System.out.println("Inserted record's ID: " + generatedKey);
 > <br>
 ---
 
+> ## Remove todas as colunas de uma jTable qualquer:
+
+```java
+//jTable1_info é o nomeJTable   ....
+model_info=(DefaultTableModel)jTable1_info.getModel();
+//Limpa todas as colunas da tabela com o nome jTable1_info
+model_info.setColumnCount(0);
+```
+
+
 > ## 2.4 Não permitir edição em uma jTable
 
 ```java
@@ -219,3 +229,14 @@ if (dialogResult == JOptionPane.YES_OPTION) {
 >    }  
 > ```
 > <br>
+
+
+
+> # __5 jFormattedTextField__
+__5.1 Formatando um Campo__
+> Como colocar máscara em um jFormattedTextField
+> ```java
+> jFormattedTextFieldQualquer.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+ > ```
+ > <br>
+**No exemplo acima, o campo (jFormattedTextFieldQualquer) só aceitará uma entrada nesse formado: ##/##/####, ou seja, dois números, uma barra, dois números, uma barra e 4 números.**

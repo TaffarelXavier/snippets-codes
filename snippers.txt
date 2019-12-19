@@ -1,0 +1,36 @@
+DefaultTableModel model = new DefaultTableModel(new Object[]{"<html><b>Happy</b></html>", "Sad"}, 0);
+JTable table = new JTable(model);
+
+
+Configuração da JTable Java Largura da coluna
+
+        jTableProfessor.getColumnModel().getColumn(0).setPreferredWidth(10);
+        jTableProfessor.getColumnModel().getColumn(1).setPreferredWidth(220);
+        jTableProfessor.getColumnModel().getColumn(2).setPreferredWidth(100);
+
+
+-------------------------------------------------------------------------------------------------------
+Do you want to do something like this ?
+
+  //Criação de um método para os eventos de pressionar alguma tecla.
+    void eventosInputs() {
+
+        KeyAdapter action = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                //Criei um evento para disparar todas as vezes que o usuário pressionar a tecla
+                //enter
+                if (e.getKeyCode() == 10) {
+                    jButtonSalvar.doClick();
+                }
+            }
+        };
+        //Aqui, atribui o evento às entradas:
+        jTF_Nome.addKeyListener(action);
+        jTF_CPF.addKeyListener(action);
+        jTF_RG.addKeyListener(action);
+        jFormtTF_DataNascimento.addKeyListener(action);
+        jTF_Telefone.addKeyListener(action);
+        jTF_Email.addKeyListener(action);
+    }
+-------------------------------------------------------------------------------------------------------
