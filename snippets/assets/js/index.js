@@ -4,7 +4,7 @@ const config = [
     baseApiRestUrl: window.location.protocol + '//127.0.0.1:3333'
   },
   {
-    baseApiRestUrl: window.location.protocol + '//192.168.129.171:3333'
+    baseApiRestUrl: 'http://192.168.129.171:3333'
   } 
 ];
 
