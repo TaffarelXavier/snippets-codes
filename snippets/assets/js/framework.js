@@ -1,10 +1,18 @@
 ﻿`use strict`;
 
-//sqlite.connect(dir + path.sep + 'notes_db.db');
+const config = [
+  {
+    baseApiRestUrl: window.location.protocol + '//127.0.0.1:3333'
+  },
+  {
+    baseApiRestUrl: 'http://192.168.129.171:3333'
+  }, 
+  {
+    baseApiRestUrl: 'https://api.rsvtelecom.com.br'
+  } 
+];
 
-//let categories = sqlite.run("SELECT * FROM category;");
-
-//let languages = sqlite.run("SELECT * FROM languages ORDER BY lang_name;");
+const INDEX = 2;
 
 var escapeHtml = unsafe => {
   return unsafe
@@ -19,7 +27,6 @@ var escapeHtml = unsafe => {
  * Mostra as notas
  */
 var notas = (notas, tagsArr) => {
-  //console.log(notas);
 
   let {
     note_id,
@@ -129,16 +136,7 @@ var modalCategory = (titulo, idModal, idButton) => {
  * Cria uma nova nota
  */
 var modalCriarNota = (titulo, idModal, idButton) => {
-  const config = [
-    {
-      baseApiRestUrl: window.location.protocol + '//127.0.0.1:3333'
-    },
-    {
-      baseApiRestUrl: 'http://192.168.129.171:3333'
-    }
-  ];
 
-  const INDEX = 1;
   setTimeout(function() {
     fetch(config[INDEX].baseApiRestUrl + '/get-all-categories', {
       method: 'GET',
