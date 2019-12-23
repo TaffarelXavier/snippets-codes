@@ -19,7 +19,7 @@ class NoteController {
    * @param {View} ctx.view
    */
   async index({ request, response, view }) {
-    const notes = await Note.all();
+    const notes = await Note.query().select("*").limit(10).fetch();
     return notes;
   }
 

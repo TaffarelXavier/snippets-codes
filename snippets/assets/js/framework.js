@@ -2,14 +2,14 @@
 
 const config = [
   {
-    baseApiRestUrl: window.location.protocol + '//127.0.0.1:3333'
+    baseApiRestUrl: window.location.protocol + '//127.0.0.1:3000'
   },
   {
-    baseApiRestUrl: 'http://192.168.129.171:3333'
-  }, 
+    baseApiRestUrl: 'http://192.168.129.171:3000'
+  },
   {
     baseApiRestUrl: 'https://api.rsvtelecom.com.br'
-  } 
+  }
 ];
 
 const INDEX = 2;
@@ -27,7 +27,6 @@ var escapeHtml = unsafe => {
  * Mostra as notas
  */
 var notas = (notas, tagsArr) => {
-
   let {
     note_id,
     note_title,
@@ -62,36 +61,40 @@ var notas = (notas, tagsArr) => {
     <div class="card-header" style="border-bottom:1px solid rgba(0,0,0,0.1);padding-top:15px;padding-bottom:15px;">
       <a class="card-title" style="font-size:20px;"><strong><b class="note-title" data-note-id="${note_id}">${note_title}</b></strong></a>
     </div>
-    <div class="card-body text-secondary">
+    <div class="card-body text-secondary" style="margin:0px !important">
     <div>${tags}</div>
     <input value='${JSON.stringify(tagsArr)}' type="hidden" id="tags_${note_id}"/>
       <p class="card-description" style="padding-top:5px;padding-bottom:5px;">${note_description}</p>
-      <i class="material-icons copiar" data-id="${note_id}"
-      title="Copiar código"
-      id="copiar_${note_id}" title="Clique para copiar">file_copy</i>
-      <i class="material-icons excluir-nota"
-      title="Excluir nota"
-      data-nota-id="${note_id}">
-        delete
-      </i>
-      <i class="material-icons editar-nota" 
-      title="Editar Nota"
-      data-nota='${JSON.stringify(edicao)}'>
-        edit
-      </i>
-      <i class="material-icons open-code" 
-      title="Editar Nota"
-      data-nota='${JSON.stringify(edicao)}'>
-        refresh
-      </i>
     </div>
     <!--ACE EDITOR-->
-    <div class="row">
+    <div class="row" style="margin:0px !important;">
+          <div class="col-sm-12 col-md-12" style='padding:0px 25px 35px 25px;'>
+          <div class="row">
           <div class="col-sm-12 col-md-12">
+              <i class="material-icons copiar" data-id="${note_id}"
+              title="Copiar código"
+              id="copiar_${note_id}" title="Clique para copiar">file_copy</i>
+              <i class="material-icons excluir-nota"
+              title="Excluir nota"
+              data-nota-id="${note_id}">
+                delete
+              </i>
+              <i class="material-icons editar-nota" 
+              title="Editar Nota"
+              data-nota='${JSON.stringify(edicao)}'>
+                edit
+              </i>
+              <i class="material-icons open-code" 
+              title="Editar Nota"
+              data-nota='${JSON.stringify(edicao)}'>
+                refresh
+              </i>
+            </div>
+        </div>
             <div class="editor" id="note_${note_id}" data-note='${JSON.stringify(
     edicao
-  )}' style="width:100%;">${escapeHtml(note_code)}</div>
-          </div>
+  )}' style="width:100%;border-radius:8px;">${escapeHtml(note_code)}</div>
+        </div>
     </div>
   </div>
   <br/><br/><div class="dropdown-divider"></div></div><br/><br/>`;
@@ -136,7 +139,6 @@ var modalCategory = (titulo, idModal, idButton) => {
  * Cria uma nova nota
  */
 var modalCriarNota = (titulo, idModal, idButton) => {
-
   setTimeout(function() {
     fetch(config[INDEX].baseApiRestUrl + '/get-all-categories', {
       method: 'GET',
@@ -144,6 +146,26 @@ var modalCriarNota = (titulo, idModal, idButton) => {
       cache: 'default'
     }).then(async response => {
       let data = await response.json();
+
+      function dynamicSort(property) {
+        var sortOrder = 1;
+    
+        if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+    
+        return function (a,b) {
+            if(sortOrder == -1){
+                return b[property].localeCompare(a[property]);
+            }else{
+                return a[property].localeCompare(b[property]);
+            }        
+        }
+    }
+
+
+console.log(data.sort(dynamicSort("category_name")));
       data.map(({ category_id, category_name }) => {
         $('#categories_id').append(
           `<option value='${category_id}'>${category_name}</option>`
@@ -158,7 +180,9 @@ var modalCriarNota = (titulo, idModal, idButton) => {
     }).then(async response => {
       let data = await response.json();
       data.map(({ lang_id, lang_name }) => {
-        $('#languages').append(`<option value='${lang_id}'>${lang_name}</option>`);
+        $('#languages').append(
+          `<option value='${lang_id}'>${lang_name.toUpperCase()}</option>`
+        );
       });
     });
   }, 2500);

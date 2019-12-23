@@ -1,161 +1,169 @@
 function selectOptionByValue(selectElement, value) {
-    var options = selectElement.options;
-    for (var i = 0, optionsLength = options.length; i < optionsLength; i++) {
-        if (options[i].value == value) {
-            selectElement.selectedIndex = i;
-            return true;
-        }
+  var options = selectElement.options;
+  for (var i = 0, optionsLength = options.length; i < optionsLength; i++) {
+    if (options[i].value == value) {
+      selectElement.selectedIndex = i;
+      return true;
     }
-    return false;
+  }
+  return false;
 }
 
 /**
  *
  */
 function funcoesNota() {
-    //Editar Nota
-    $('.editar-nota').click(function() {
-        var { note_id, note_title, note_description, note_tags, note_type_language, category_id, type_language } = JSON.parse(
-            $(this).attr('data-nota')
+  //Editar Nota
+  $('.editar-nota').click(function() {
+    var {
+      note_id,
+      note_title,
+      note_description,
+      note_tags,
+      note_type_language,
+      category_id,
+      type_language
+    } = JSON.parse($(this).attr('data-nota'));
+
+    var categoriaElement = document.getElementById('gd-gategory'),
+      linguagemFormatacaoElement = document.getElementById('gd-language'),
+      tagsElement = document.getElementById('gd-select-tags');
+
+    var tags = document.getElementById(`tags_${note_id}`).value;
+
+    try {
+      if (JSON.parse(tags).length > 0) {
+        tags = JSON.parse(tags);
+      } else {
+        tags = '';
+      }
+    } catch (error) {
+      console.error('Erro Tx1: ', error);
+    }
+
+    //Add option ao select
+    if (tags.length > 0) {
+      $(tagsElement).html('');
+      tags.map(({ tag_id, tag_name }) => {
+        $(tagsElement).append(
+          `<option value='${tag_id}' selected="selected">${tag_name}</option>`
         );
+      });
+    }
 
-        var categoriaElement = document.getElementById('gd-gategory'),
-            linguagemFormatacaoElement = document.getElementById('gd-language'),
-            tagsElement = document.getElementById('gd-select-tags');
+    selectOptionByValue(categoriaElement, category_id);
 
-        var tags = document.getElementById(`tags_${note_id}`).value;
+    selectOptionByValue(linguagemFormatacaoElement, type_language);
 
-        try {
-            if (JSON.parse(tags).length > 0) {
-                tags = JSON.parse(tags);
-            } else {
-                tags = '';
-            }
-        } catch (error) {
-            console.error('Erro Tx1: ', error);
-        }
+    $('#modalEditarNota').modal('show');
 
-        //Add option ao select
-        if (tags.length > 0) {
-            $(tagsElement).html('');
-            tags.map(({ tag_id, tag_name }) => {
-                $(tagsElement).append(`<option value='${tag_id}' selected="selected">${tag_name}</option>`);
-            });
-        }
+    $('#gd-title').val(note_title);
 
-        selectOptionByValue(categoriaElement, category_id);
+    $('#gd-description').val(note_description);
 
-        selectOptionByValue(linguagemFormatacaoElement, type_language);
+    $('#gd-tags').val(note_tags);
 
-        $('#modalEditarNota').modal('show');
+    var editor = ace.edit(document.getElementById(`note_${note_id}`));
 
-        $('#gd-title').val(note_title);
+    $('#gd-get-note')
+      .html(escapeHtml(editor.getValue()))
+      .addClass(note_type_language);
 
-        $('#gd-description').val(note_description);
+    $('#nota-id').val(note_id);
 
-        $('#gd-tags').val(note_tags);
+    $('pre code').each(function(i, e) {
+      hljs.highlightBlock(e);
+    });
+  });
 
-        var editor = ace.edit(document.getElementById(`note_${note_id}`));
+  //Para copiar uma nota:
+  $('.copiar').each(function(index, element) {
+    $(this).click(function(ev) {
+      let note_id = $(this).attr('data-id');
 
-        $('#gd-get-note')
-            .html(escapeHtml(editor.getValue()))
-            .addClass(note_type_language);
+      var editor = ace.edit(document.getElementById(`note_${note_id}`));
 
-        $('#nota-id').val(note_id);
+      //beautify.beautify(editor.session);
 
-        $('pre code').each(function(i, e) {
-            hljs.highlightBlock(e);
-        });
+      var beautify = ace.require('ace/ext/beautify'); // get reference to extension
+      beautify.beautify(editor.session);
+
+      //Copiar o código
+      //clipboard.writeText(editor.getValue());
+
+      var options = {
+        content: 'Código copiado com sucesso!', // text of the snackbar
+        style: 'toast', // add a custom class to your snackbar
+        timeout: 2000 // time in milliseconds after the snackbar autohides, 0 is disabled
+      };
+
+      $.snackbar(options);
+    });
+  });
+
+  //Ace Editor
+  $('.editor').each(function(i, el) {
+    var _this = $(this);
+
+    let { lang_name } = JSON.parse(_this.attr('data-note'));
+
+    var editor = ace.edit(el, {
+      mode: 'ace/mode/' + lang_name,
+      maxLines: 800,
+      wrap: true,
+      autoScrollEditorIntoView: true,
+      minLines: 1
     });
 
-    //Para copiar uma nota:
-    $('.copiar').each(function(index, element) {
-        $(this).click(function(ev) {
-            let note_id = $(this).attr('data-id');
+    el.style.fontSize = '16px'; //1.5vmin
 
-            var editor = ace.edit(document.getElementById(`note_${note_id}`));
+    editor.setTheme('ace/theme/dracula');
 
-            //beautify.beautify(editor.session);
+    editor.session.setTabSize(4);
 
-            var beautify = ace.require('ace/ext/beautify'); // get reference to extension
-            beautify.beautify(editor.session);
+    editor.resize();
 
-            //Copiar o código
-            //clipboard.writeText(editor.getValue());
-
-            var options = {
-                content: 'Código copiado com sucesso!', // text of the snackbar
-                style: 'toast', // add a custom class to your snackbar
-                timeout: 2000 // time in milliseconds after the snackbar autohides, 0 is disabled
-            };
-
-            $.snackbar(options);
-        });
+    editor.setOptions({
+      autoScrollEditorIntoView: true,
+      copyWithEmptySelection: true
     });
+  });
 
-    //Ace Editor
-    $('.editor').each(function(i, el) {
-        var _this = $(this);
+  $('.open-code').click(function() {
+    var _this = $(this);
 
-        let { lang_name } = JSON.parse(_this.attr('data-note'));
+    let { note_id } = JSON.parse(_this.attr('data-nota'));
+  });
 
-        var editor = ace.edit(el, {
-            mode: 'ace/mode/' + lang_name,
-            maxLines: 800,
-            wrap: true,
-            autoScrollEditorIntoView: true,
-            minLines: 1
-        });
+  //Exluir nota:
+  $('.excluir-nota').click(function() {
+    let note_id = parseInt($(this).attr('data-nota-id'));
 
-        el.style.fontSize = '16px'; //1.5vmin
+    let options = {
+      type: 'question',
+      buttons: ['Não', 'Sim'],
+      title: 'Deseja realmente excluir esta nota?',
+      message: 'Esta operação não poderá ser revertida.',
+      detail: 'Algum detalhe aqui',
+      defaultId: 0,
+      cancelId: -1
+    };
 
-        editor.setTheme('ace/theme/dracula');
-
-        editor.session.setTabSize(4);
-
-        editor.resize();
-
-        editor.setOptions({
-            autoScrollEditorIntoView: true,
-            copyWithEmptySelection: true
-        });
+    remote.dialog.showMessageBox(win, options, response => {
+      if (response == 1) {
+        $(`#note_card_${note_id}`).remove();
+        // delete a row based on id
+        console.log(Note.delete(note_id));
+        carregarCategorias();
+      }
     });
+  });
 
-    $('.open-code').click(function() {
-        var _this = $(this);
-
-        let { note_id } = JSON.parse(_this.attr('data-nota'));
-    });
-
-    //Exluir nota:
-    $('.excluir-nota').click(function() {
-        let note_id = parseInt($(this).attr('data-nota-id'));
-
-        let options = {
-            type: 'question',
-            buttons: ['Não', 'Sim'],
-            title: 'Deseja realmente excluir esta nota?',
-            message: 'Esta operação não poderá ser revertida.',
-            detail: 'Algum detalhe aqui',
-            defaultId: 0,
-            cancelId: -1
-        };
-
-        remote.dialog.showMessageBox(win, options, response => {
-            if (response == 1) {
-                $(`#note_card_${note_id}`).remove();
-                // delete a row based on id
-                console.log(Note.delete(note_id));
-                carregarCategorias();
-            }
-        });
-    });
-
-    $('.tag').click(function(ev) {
-        let keyword = ev.target.innerText;
-        $('#input-pesquisar-tag').val(keyword);
-        pesquisarPorTag(keyword);
-    });
+  $('.tag').click(function(ev) {
+    let keyword = ev.target.innerText;
+    $('#input-pesquisar-tag').val(keyword);
+    pesquisarPorTag(keyword);
+  });
 }
 
 /**
@@ -163,96 +171,141 @@ function funcoesNota() {
  * @param {*} keyword
  */
 function pesquisarPorTag(keyword) {
-    if (keyword.length > 0) {
-        var tags = $('.tag');
-        $('.notas')
-            .removeClass('d-flex')
-            .attr('hidden', true)
-            .hide();
-        for (var k = 0; k < tags.size(); k++) {
-            if (tags[k].innerText.toUpperCase() == keyword.toUpperCase()) {
-                var note_id = tags[k].getAttribute('data-note-id');
-                $('#note_card_' + note_id)
-                    .removeAttr('hidden')
-                    .show();
-            }
-        }
-    } else {
-        $('.notas')
-            .removeAttr('hidden')
-            .show();
+  if (keyword.length > 0) {
+    var tags = $('.tag');
+    $('.notas')
+      .removeClass('d-flex')
+      .attr('hidden', true)
+      .hide();
+    for (var k = 0; k < tags.size(); k++) {
+      if (tags[k].innerText.toUpperCase() == keyword.toUpperCase()) {
+        var note_id = tags[k].getAttribute('data-note-id');
+        $('#note_card_' + note_id)
+          .removeAttr('hidden')
+          .show();
+      }
     }
+  } else {
+    $('.notas')
+      .removeAttr('hidden')
+      .show();
+  }
 }
 
 /**
  * Função para Buscar notas por categoria_id
  * */
 function getNotesByCategoryId(category_id, callback) {
-    var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
+  var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
 
-    fetch(config[INDEX].baseApiRestUrl + '/notes-por-category-id/' + parseInt(category_id), myInit).then(function(response) {
-        if (response.status !== 200) {
-            console.log('Looks like there was a problem. Status Code: ' + response.status);
-            return;
-        }
-        response.json().then(function(result) {
-            callback(result);
-        });
+  fetch(
+    config[INDEX].baseApiRestUrl + '/notes-por-category-id/' + parseInt(category_id),
+    myInit
+  ).then(function(response) {
+    if (response.status !== 200) {
+      console.log('Looks like there was a problem. Status Code: ' + response.status);
+      return;
+    }
+    response.json().then(function(result) {
+      callback(result);
     });
+  });
+}
+
+/**
+ * Carrega todos os Snippets
+ */
+function loadTodosSnippets() {
+  fetch(config[INDEX].baseApiRestUrl + '/notes', {
+    method: 'GET'
+  }).then(response => {
+    if (response.status !== 200) {
+    } else {
+      response.json().then(result => {
+        let content = '';
+
+        result.map(nota => {
+          content += notas(nota, []);
+        });
+
+        $('#get-notes').html(content);
+
+        funcoesNota();
+        if (
+          $('#get-notes')
+            .text()
+            .toString().length > 0
+        ) {
+          $('#esqueleto').attr('hidden', true);
+        }
+      });
+    }
+  });
 }
 
 /**
  *
  */
 function carregarCategorias() {
-    var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
 
-    fetch(config[INDEX].baseApiRestUrl + '/categories', myInit)
-        .then(function(response) {
-            if (response.status !== 200) {
-                console.log('Looks like there was a problem. Status Code: ' + response.status);
-                return;
-            }
-            response.json().then(function(result) {
-                var rows = document.getElementById('category');
+  var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
 
-                rows.innerHTML = '';
+  fetch(config[INDEX].baseApiRestUrl + '/categories', myInit)
+    .then(function(response) {
+      if (response.status !== 200) {
+        console.log('Looks like there was a problem. Status Code: ' + response.status);
+        return;
+      }
+      response.json().then(function(result) {
+        var rows = document.getElementById('category');
 
-                result.map(row => {
-                    //Destructing
-                    let { category_id, category_name, category_icon } = row;
-                    //INÍCIO - BUSCA CATEGORIAS
+        rows.innerHTML = '';
 
-                    var item = document.createElement('li');
+        result.map(row => {
+          //Destructing
+          let { category_id, category_name, category_icon } = row;
+          //INÍCIO - BUSCA CATEGORIAS
 
-                    //Ao clicar em alguma categoria:::
-                    item.onclick = function() {
-                        $('#esqueleto').removeAttr('hidden');
+          var item = document.createElement('li');
 
-                        $('.list-group-item').removeClass('list-group-item-action list-group-item-success');
+          //Ao clicar em alguma categoria:::
+          item.onclick = function(ev) {
 
-                        $(this).addClass('list-group-item-action list-group-item-success', 'disabled');
+            $('#painel-termo-filtrado').removeAttr("hidden");
+            window.location.href= "#painel-termo-filtrado";
+            $('#termo-filtrado').html('TERMO FILTRADO: '+this.innerText.trim().toUpperCase());
 
-                        //Busca as 10 primeiras notas pelo ID de uma categoria
-                        getNotesByCategoryId(category_id, function(res) {
-                            $('#get-notes').html('');
+            $('#esqueleto').removeAttr('hidden');
 
-                            let content = '';
+            $('.list-group-item').removeClass(
+              'list-group-item-action list-group-item-success'
+            );
 
-                            res.map(nota => {
-                                content += notas(nota, []);
-                            });
+            $(this).addClass(
+              'list-group-item-action list-group-item-success',
+              'disabled'
+            );
 
-                            $('#get-notes').html(content);
+            //Busca as 10 primeiras notas pelo ID de uma categoria
+            getNotesByCategoryId(category_id, function(res) {
+              $('#get-notes').html('');
 
-                            funcoesNota();
+              let content = '';
 
-                            if (res.length > 0) {
-                                $('#esqueleto').attr('hidden', true);
-                            }
-                        });
+              res.map(nota => {
+                content += notas(nota, []);
+              });
 
-                        /*if (Object.keys(rows).length > 0) {
+              $('#get-notes').html(content);
+
+              funcoesNota();
+
+              if (res.length > 0) {
+                $('#esqueleto').attr('hidden', true);
+              }
+            });
+
+            /*if (Object.keys(rows).length > 0) {
               for (let data of rows) {
                 
                 // let rows = sqlite.run(
@@ -262,123 +315,131 @@ function carregarCategorias() {
                 //
               }
             }*/
+            return false;
+          };
 
-                        return false;
-                    };
+          const ICON_PADRAO =
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAAAAACpleexAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfjDBMUJR7SizDUAAAAJElEQVQ4y2M4QyRgGFU4qnBkKbxw8eLNixcHtxtHFY4qHAoKAWtc+2KAiEgvAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTEyLTIwVDA1OjM3OjMwKzA5OjAwhGs2fQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0xMi0yMFQwNTozNzozMCswOTowMPU2jsEAAAAASUVORK5CYII=';
 
-                    const ICON_PADRAO =
-                        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAAAAACpleexAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfjDBMUJR7SizDUAAAAJElEQVQ4y2M4QyRgGFU4qnBkKbxw8eLNixcHtxtHFY4qHAoKAWtc+2KAiEgvAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTEyLTIwVDA1OjM3OjMwKzA5OjAwhGs2fQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0xMi0yMFQwNTozNzozMCswOTowMPU2jsEAAAAASUVORK5CYII=';
-
-                    //Adiciona classes às categorias:
-                    $(item)
-                        .addClass('list-group-item justify-content-between')
-                        .css({ borderBottom: '1px dashed #ccc', padding: '0px !important' })
-                        .html(
-                            `<span class="categoria-nome">
+          //Adiciona classes às categorias:
+          $(item)
+            .addClass('list-group-item justify-content-between')
+            .css({ borderBottom: '1px dashed #ccc', padding: '0px !important' })
+            .html(
+              `<span class="categoria-nome">
               <img style="margin:0;position: relative;top:-1px; width:40px;height: 40px;"
-               src="${ICON_PADRAO}" data-src='${category_icon != null ? category_icon.trim() : ICON_PADRAO}' class="lazy" /> <!---->
+               src="${ICON_PADRAO}" data-src='${
+                category_icon != null ? category_icon.trim() : ICON_PADRAO
+              }' class="lazy" /> <!---->
               ${category_name.toUpperCase()}</span>
-   <span class='badge badge-primary badge-pill' style="float:right;position:relative;top:-10px;margin:0">${row.total}</span>`
-                        )
-                        .attr('data-category', JSON.stringify(row))
-                        .attr('title', category_name.toUpperCase());
+   <span class='badge badge-primary badge-pill' style="float:right;position:relative;top:-10px;margin:0">${
+     row.total
+   }</span>`
+            )
+            .attr('data-category', JSON.stringify(row))
+            .attr('title', category_name.toUpperCase());
 
-                    rows.appendChild(item);
+          rows.appendChild(item);
 
-                    setTimeout(function() {
-                        var lazyImages = [].slice.call(document.querySelectorAll('img.lazy'));
+          setTimeout(function() {
+            var lazyImages = [].slice.call(document.querySelectorAll('img.lazy'));
 
-                        if (
-                            'IntersectionObserver' in window &&
-                            'IntersectionObserverEntry' in window &&
-                            'intersectionRatio' in window.IntersectionObserverEntry.prototype
-                        ) {
-                            let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
-                                entries.forEach(function(entry) {
-                                    if (entry.isIntersecting) {
-                                        let lazyImage = entry.target;
+            if (
+              'IntersectionObserver' in window &&
+              'IntersectionObserverEntry' in window &&
+              'intersectionRatio' in window.IntersectionObserverEntry.prototype
+            ) {
+              let lazyImageObserver = new IntersectionObserver(function(
+                entries,
+                observer
+              ) {
+                entries.forEach(function(entry) {
+                  if (entry.isIntersecting) {
+                    let lazyImage = entry.target;
 
-                                        lazyImage.src = lazyImage.dataset.src;
+                    lazyImage.src = lazyImage.dataset.src;
 
-                                        //lazyImage.srcset = lazyImage.dataset.srcset;
+                    //lazyImage.srcset = lazyImage.dataset.srcset;
 
-                                        lazyImage.classList.remove('lazy');
+                    lazyImage.classList.remove('lazy');
 
-                                        lazyImageObserver.unobserve(lazyImage);
-                                    }
-                                });
-                            });
-
-                            lazyImages.forEach(function(lazyImage) {
-                                lazyImageObserver.observe(lazyImage);
-                            });
-                        }
-                    }, 500);
-                    //FIM - BUSCA CATEGORIAS
+                    lazyImageObserver.unobserve(lazyImage);
+                  }
                 });
-            });
-        })
-        .catch(function(err) {
-            console.log('Fetch Error :-S', err);
+              });
+
+              lazyImages.forEach(function(lazyImage) {
+                lazyImageObserver.observe(lazyImage);
+              });
+            }
+          }, 500);
+          //FIM - BUSCA CATEGORIAS
         });
+      });
+    })
+    .catch(function(err) {
+      console.log('Fetch Error :-S', err);
+    });
 }
 
 function mergeArrayWithDiff(arrayA, arrayB) {
-    var result = [...arrayA, ...arrayB].reduce((acc, item) => {
-        let found = acc.find(x => x.category_name === item.category_name);
-        if (found) {
-            found.count += item.count;
-        } else {
-            acc.push(Object.assign({}, item));
-        }
-        return acc;
-    }, []);
-    return result;
+  var result = [...arrayA, ...arrayB].reduce((acc, item) => {
+    let found = acc.find(x => x.category_name === item.category_name);
+    if (found) {
+      found.count += item.count;
+    } else {
+      acc.push(Object.assign({}, item));
+    }
+    return acc;
+  }, []);
+  return result;
 }
 
 function carregarTodasCategoria() {
-    setTimeout(() => {
-        var rows = document.getElementById('gd-get-categories');
+  setTimeout(() => {
+    var rows = document.getElementById('gd-get-categories');
 
-        //console.log(arrayA);
-        var arrayA = Category.getCategorieWithCountNotes();
-        //console.log(arrayB);
+    //console.log(arrayA);
+    var arrayA = Category.getCategorieWithCountNotes();
+    //console.log(arrayB);
 
-        var arrayB = Category.all();
+    var arrayB = Category.all();
 
-        arrayB = arrayB.map(el => {
-            el.count = 0;
-            return el;
-        });
+    arrayB = arrayB.map(el => {
+      el.count = 0;
+      return el;
+    });
 
-        var result = mergeArrayWithDiff(arrayA, arrayB);
+    var result = mergeArrayWithDiff(arrayA, arrayB);
 
-        result.map(category => {
-            var cat = Category.getCategorieWithCountNotes();
+    result.map(category => {
+      var cat = Category.getCategorieWithCountNotes();
 
-            var item = document.createElement('li');
+      var item = document.createElement('li');
 
-            $(item)
-                .addClass('mdc-list-item mdc-ripple-upgraded')
-                .css({ borderBottom: '1px dashed #ccc', padding: '0px !important' })
-                .html(
-                    `<span class="mdc-list-item__text">${category.category_name.toUpperCase()}[${category.count}]</span>
+      $(item)
+        .addClass('mdc-list-item mdc-ripple-upgraded')
+        .css({ borderBottom: '1px dashed #ccc', padding: '0px !important' })
+        .html(
+          `<span class="mdc-list-item__text">${category.category_name.toUpperCase()}[${
+            category.count
+          }]</span>
           <!--<span class="mdc-list-item__meta material-icons" aria-hidden="true" data-category-id='${
-              category.category_id
+            category.category_id
           }'>delete</span>-->
           <span class="mdc-list-item__meta material-icons remove-category"
            aria-hidden="true" data-category='${JSON.stringify(category)}'>delete</span>
         `
-                )
-                .attr('id', 'category__' + category.category_id)
-                .attr('data-category', JSON.stringify(category))
-                .attr('title', category.category_name.toUpperCase());
+        )
+        .attr('id', 'category__' + category.category_id)
+        .attr('data-category', JSON.stringify(category))
+        .attr('title', category.category_name.toUpperCase());
 
-            rows.appendChild(item);
-        });
+      rows.appendChild(item);
+    });
 
-        $('.remove-category').click(function() {
-            var { category_id, count } = JSON.parse($(this).attr('data-category'));
+    $('.remove-category').click(function() {
+      /*var { category_id, count } = JSON.parse($(this).attr('data-category'));
 
             let options = {
                 type: 'question',
@@ -400,314 +461,340 @@ function carregarTodasCategoria() {
                         carregarCategorias();
                     }
                 }
-            });
-        });
-    }, 1000);
+            });*/
+    });
+  }, 1000);
 }
 
 // Pode usar o jQuery normalmente agora.
 $(document).ready(function() {
-    //carregarTodasCategoria();
+  loadTodosSnippets();
+  //carregarTodasCategoria();
 
-    //Carregar as linguagens:
+  //Carregar as linguagens:
 
-    // Tag.all().map(({ tag_name }) => {
-    //   $("#datalist-languages").append(
-    //     `<option value='${tag_name.toUpperCase()}' />`
-    //   );
-    // });
+  // Tag.all().map(({ tag_name }) => {
+  //   $("#datalist-languages").append(
+  //     `<option value='${tag_name.toUpperCase()}' />`
+  //   );
+  // });
 
-    //Abre o modal de categorias:
-    $('#abrir-modal-criador-categoria').click(function() {
-        setTimeout(function() {
-            $('#category-name')
-                .focus()
-                .select();
-        }, 500);
-    });
+  //Abre o modal de categorias:
+  $('#abrir-modal-criador-categoria').click(function() {
+    setTimeout(function() {
+      $('#category-name')
+        .focus()
+        .select();
+    }, 500);
+  });
 
-    /**
+  /**
     Pesquisar Categorias:
     */
-    $('#categoria').keyup(function() {
-        let _value = $(this);
+  $('#categoria').keyup(function() {
+    let _value = $(this);
 
-        var keyword = removeSinaisDiacriticos(_value.val().toLowerCase());
+    var keyword = removeSinaisDiacriticos(_value.val().toLowerCase());
 
-        let categories = document.getElementById('category').childNodes;
+    let categories = document.getElementById('category').childNodes;
 
-        for (let k = 0; k < categories.length; k++) {
-            var textoArray = removeSinaisDiacriticos(categories[k].title.toLowerCase());
+    for (let k = 0; k < categories.length; k++) {
+      var textoArray = removeSinaisDiacriticos(categories[k].title.toLowerCase());
 
-            if (textoArray.includes(keyword)) {
-                $(categories[k])
-                    .removeAttr('hidden')
-                    .show();
-            } else {
-                $(categories[k])
-                    .removeClass('d-flex')
-                    .attr('hidden', true)
-                    .hide();
-            }
+      if (textoArray.includes(keyword)) {
+        $(categories[k])
+          .removeAttr('hidden')
+          .show();
+      } else {
+        $(categories[k])
+          .removeClass('d-flex')
+          .attr('hidden', true)
+          .hide();
+      }
+    }
+
+    $('.categoria-nome').unmark({
+      done: function() {
+        $('.categoria-nome').mark(keyword);
+      }
+    });
+  });
+
+  $('#input-pesquisar-tag').on('input', ev => {
+    var keyword = ev.target.value;
+    pesquisarPorTag(keyword);
+  });
+
+  $('#input-pesquisar-geral').on('input', function() {
+    var _this = $(this);
+
+    var textoPesquisado = removeSinaisDiacriticos(_this.val().toLowerCase());
+
+    var cardTitle = document.getElementsByClassName('card-description');
+
+    $('.note-title').each((i, el) => {
+      var textoElemento = removeSinaisDiacriticos(el.innerText.toLowerCase());
+
+      var description = removeSinaisDiacriticos(cardTitle[i].innerText.toLowerCase());
+
+      var nota_id = parseInt($(el).attr('data-note-id'));
+
+      if (
+        textoElemento.includes(textoPesquisado) ||
+        description.includes(textoPesquisado)
+      ) {
+        $('#note_card_' + nota_id)
+          .removeAttr('hidden')
+          .show();
+      } else {
+        $('#note_card_' + nota_id)
+          .removeClass('d-flex')
+          .attr('hidden', true)
+          .hide();
+      }
+    });
+
+    if (textoPesquisado.length > 0) {
+      // Read the keyword
+      var keyword = textoPesquisado;
+      $('.note-title, .card-description').unmark({
+        done: function() {
+          $('.note-title, .card-description').mark(keyword);
         }
+      });
+    } else {
+      $('.note-title, .card-description').unmark();
+    }
+  });
 
-        $('.categoria-nome').unmark({
-            done: function() {
-                $('.categoria-nome').mark(keyword);
-            }
-        });
+  /**
+   * Adiciona os modais:
+   * */
+
+  $('body').append(
+    modalCategory('Criar nova categoria', 'exampleModal', 'idButton1'),
+    modalCriarNota('Criar nova nota', 'modalCriarNota', 'buttonCriarNota'),
+    modalEditarNota('Editar Nota', 'modalEditarNota', 'btnAlterarNota')
+  );
+
+  //Select: categoria
+  $('#categories_id').change(function(ev) {
+
+    let linguagem = $(this)
+      .find('option:selected')
+      .text()
+      .toUpperCase();
+
+    var languages = [].slice.call(document.getElementById("languages"));
+    
+    var index = languages.findIndex(fruit => {
+      return fruit.label.toUpperCase() == linguagem;
+    });
+    //Seleciona o valor:
+    document.getElementById("languages").selectedIndex = index;
+
+  });
+  $('#abrir-dev-tools').click(function() {
+    console.log('#abrir-dev-tools foi clicado');
+  });
+
+  //Selects 2:
+
+  funcSelect2('#select-tags');
+  funcSelect2('#gd-select-tags');
+
+  //Modal: Evento ao abrir o modal:
+  $('#modalCriarNota').on('show.bs.modal', function(event) {
+    setTimeout(() => {
+      $('#note-title')
+        .focus()
+        .select();
+    }, 500);
+  });
+
+  /**
+   * Criar Categoria
+   */
+  $('#idButton1').click(function() {
+    let categoryName = $('#category-name')
+      .val()
+      .trim();
+    if (categoryName != '') {
+      var category = Category.create(categoryName.toUpperCase());
+
+      // if (lastId > 0) {
+      alert('Categoria criada com sucesso!');
+
+      var languages = document.getElementsByName('languages');
+
+      $(languages).append(
+        `<option value='${category.last_id}'>${categoryName.toUpperCase()}</option>`
+      );
+      //}
+    }
+  });
+
+  //EDITAR NOTA:
+  $('#form-editar-nota').submit(function(ev) {
+    ev.preventDefault();
+
+    let nota_id = document.getElementById('nota-id').value;
+    let title = this.elements['gd-title'].value;
+    let description = this.elements['gd-description'].value;
+    let tagsElement = document.getElementById('gd-select-tags');
+    let code = document.getElementById('gd-get-note');
+    let category = document.getElementById('gd-gategory');
+    let language = document.getElementById('gd-language');
+
+    // sqlite.connect(PATH_DB);
+
+    var obj = {
+      note_id: nota_id,
+      note_title: title,
+      note_description: description,
+      note_code: code.innerText,
+      note_category_id: category[category.selectedIndex].value,
+      note_type_language: language[language.selectedIndex].value
+    };
+    alert('Nota editaca com sucesso!');
+    return false;
+  });
+
+  //CRIAR NOTA:
+  $('#formSave').submit(function(ev) {
+    ev.preventDefault();
+
+    let _this = this;
+
+    let title = this.elements.title.value;
+
+    let description = this.elements.description.value;
+
+    let code = this.elements.code.value;
+
+    let category = this.elements.category[this.elements.category.selectedIndex];
+
+    let language = this.elements['formatacao-language'][
+      this.elements['formatacao-language'].selectedIndex
+    ];
+
+    //Trabalhar com Tags:
+
+    var arrInserTags = [];
+
+    let tags = $('#select-tags')
+      .select2('data')
+      .map(function(el) {
+        // let rows = sqlite.run(
+        //   `SELECT tag_id, COUNT(*) AS total FROM tags WHERE tag_name = ?`,
+        //   [el.text.toLowerCase()]
+        // );
+        // //Adicionar uma nova chave ao array
+        // let result = rows.map(elm => {
+        //   elm.text = el.text.toLowerCase();
+        //   return elm;
+        // });
+        // //Caso Já exista
+        // if (rows[0].total > 0) {
+        //   arrInserTags.push(result[0]);
+        // } else {
+        //   // Se não existir
+        //   var last_insert_id = sqlite.run('INSERT INTO tags (tag_name) VALUES (?)', [
+        //     el.text.toLowerCase()
+        //   ]);
+        //   arrInserTags.push({
+        //     tag_id: last_insert_id,
+        //     text: el.text.toLowerCase()
+        //   });
+        // }
+        // return el.text;
+      });
+
+    var obj = {
+      note_title: title,
+      note_description: description,
+      note_code: code,
+      note_category_id: category.value,
+      note_type_language: language.value
+    };
+
+    var formData = new FormData(document.getElementById('formSave'));
+
+    fetch(config[INDEX].baseApiRestUrl + '/notes', {
+      method: 'POST',
+      body: formData
+    }).then(response => {
+      console.log(response);
     });
 
-    $('#input-pesquisar-tag').on('input', ev => {
-        var keyword = ev.target.value;
-        pesquisarPorTag(keyword);
-    });
+    _this.reset(); //limpa o formulário
 
-    $('#input-pesquisar-geral').on('input', function() {
-        var _this = $(this);
+    alert('Nota criada com sucesso!'); //Cria uma nota
 
-        var textoPesquisado = removeSinaisDiacriticos(_this.val().toLowerCase());
+    carregarCategorias(); //Carrega as categoriasa
 
-        var cardTitle = document.getElementsByClassName('card-description');
-
-        $('.note-title').each((i, el) => {
-            var textoElemento = removeSinaisDiacriticos(el.innerText.toLowerCase());
-
-            var description = removeSinaisDiacriticos(cardTitle[i].innerText.toLowerCase());
-
-            var nota_id = parseInt($(el).attr('data-note-id'));
-
-            if (textoElemento.includes(textoPesquisado) || description.includes(textoPesquisado)) {
-                $('#note_card_' + nota_id)
-                    .removeAttr('hidden')
-                    .show();
-            } else {
-                $('#note_card_' + nota_id)
-                    .removeClass('d-flex')
-                    .attr('hidden', true)
-                    .hide();
-            }
-        });
-
-        if (textoPesquisado.length > 0) {
-            // Read the keyword
-            var keyword = textoPesquisado;
-            $('.note-title, .card-description').unmark({
-                done: function() {
-                    $('.note-title, .card-description').mark(keyword);
-                }
-            });
-        } else {
-            $('.note-title, .card-description').unmark();
-        }
-    });
-
-    /**
-     * Adiciona os modais:
-     * */
-
-    $('body').append(
-        modalCategory('Criar nova categoria', 'exampleModal', 'idButton1'),
-        modalCriarNota('Criar nova nota', 'modalCriarNota', 'buttonCriarNota'),
-        modalEditarNota('Editar Nota', 'modalEditarNota', 'btnAlterarNota')
-    );
-
-    $('#abrir-dev-tools').click(function() {
-        console.log('#abrir-dev-tools foi clicado');
-    });
-
-    //Selects 2:
-
-    funcSelect2('#select-tags');
-    funcSelect2('#gd-select-tags');
-
-    //Modal: Evento ao abrir o modal:
-    $('#modalCriarNota').on('show.bs.modal', function(event) {
-        setTimeout(() => {
-            $('#note-title')
-                .focus()
-                .select();
-        }, 500);
-    });
-
-    /**
-     * Criar Categoria
-     */
-    $('#idButton1').click(function() {
-        let categoryName = $('#category-name')
-            .val()
-            .trim();
-        if (categoryName != '') {
-            var category = Category.create(categoryName.toUpperCase());
-
-            // if (lastId > 0) {
-            alert('Categoria criada com sucesso!');
-
-            var languages = document.getElementsByName('languages');
-
-            $(languages).append(`<option value='${category.last_id}'>${categoryName.toUpperCase()}</option>`);
-            //}
-        }
-    });
-
-    //EDITAR NOTA:
-    $('#form-editar-nota').submit(function(ev) {
-        ev.preventDefault();
-
-        let nota_id = document.getElementById('nota-id').value;
-        let title = this.elements['gd-title'].value;
-        let description = this.elements['gd-description'].value;
-        let tagsElement = document.getElementById('gd-select-tags');
-        let code = document.getElementById('gd-get-note');
-        let category = document.getElementById('gd-gategory');
-        let language = document.getElementById('gd-language');
-
-        // sqlite.connect(PATH_DB);
-
-        var obj = {
-            note_id: nota_id,
-            note_title: title,
-            note_description: description,
-            note_code: code.innerText,
-            note_category_id: category[category.selectedIndex].value,
-            note_type_language: language[language.selectedIndex].value
-        };
-
-        console.log(Note.update(obj));
-        alert('Nota editaca com sucesso!');
-        return false;
-    });
-
-    //CRIAR NOTA:
-    $('#formSave').submit(function(ev) {
-        ev.preventDefault();
-
-        let _this = this;
-        let title = this.elements.title.value;
-        let description = this.elements.description.value;
-        let code = this.elements.code.value;
-
-        let category = this.elements.category[this.elements.category.selectedIndex];
-
-        let language = this.elements['formatacao-language'][this.elements['formatacao-language'].selectedIndex];
-
-        //Trabalhar com Tags:
-
-        var arrInserTags = [];
-
-        let tags = $('#select-tags')
-            .select2('data')
-            .map(function(el) {
-                // let rows = sqlite.run(
-                //   `SELECT tag_id, COUNT(*) AS total FROM tags WHERE tag_name = ?`,
-                //   [el.text.toLowerCase()]
-                // );
-                // //Adicionar uma nova chave ao array
-                // let result = rows.map(elm => {
-                //   elm.text = el.text.toLowerCase();
-                //   return elm;
-                // });
-                // //Caso Já exista
-                // if (rows[0].total > 0) {
-                //   arrInserTags.push(result[0]);
-                // } else {
-                //   // Se não existir
-                //   var last_insert_id = sqlite.run('INSERT INTO tags (tag_name) VALUES (?)', [
-                //     el.text.toLowerCase()
-                //   ]);
-                //   arrInserTags.push({
-                //     tag_id: last_insert_id,
-                //     text: el.text.toLowerCase()
-                //   });
-                // }
-                // return el.text;
-            });
-
-        var obj = {
-            note_title: title,
-            note_description: description,
-            note_code: code,
-            note_category_id: category.value,
-            note_type_language: language.value
-        };
-
-        var formData = new FormData(document.getElementById('formSave'));
-
-        fetch(config[INDEX].baseApiRestUrl + '/notes', {
-            method: 'POST',
-            body: formData
-        }).then(response => {
-            console.log(response);
-        });
-
-        _this.reset(); //limpa o formulário
-
-        alert('Nota criada com sucesso!'); //Cria uma nota
-
-        carregarCategorias(); //Carrega as categoriasa
-
-        //Insere as tags:
-        /*arrInserTags.map(el => {
+    //Insere as tags:
+    /*arrInserTags.map(el => {
       sqlite.connect(PATH_DB);
       var last_insert_id = sqlite.run(
         `INSERT INTO note_tag (nt_note_fk_id, nt_tag_fk_id) VALUES (?, ?);`,
         [obj.note_id, el.tag_id]
       );
     });*/
-        return false;
-    });
+    return false;
+  });
 
-    function getAllNotes() {
-        let rows = sqlite.run(
-            `SELECT * FROM notes AS t1 JOIN languages AS t2
+  function getAllNotes() {
+    let rows = sqlite.run(
+      `SELECT * FROM notes AS t1 JOIN languages AS t2
     ON t1.note_type_language = t2.lang_id ORDER BY t1.created_at DESC;`
-        );
+    );
 
-        sqlite.close();
+    sqlite.close();
 
-        return rows;
-    }
+    return rows;
+  }
 
-    // var options = {
-    //   content: 'Some text', // text of the snackbar
-    //   style: 'toast', // add a custom class to your snackbar
-    //   timeout: 1000 // time in milliseconds after the snackbar autohides, 0 is disabled
-    // };
+  // var options = {
+  //   content: 'Some text', // text of the snackbar
+  //   style: 'toast', // add a custom class to your snackbar
+  //   timeout: 1000 // time in milliseconds after the snackbar autohides, 0 is disabled
+  // };
 
-    // $.snackbar(options);
+  // $.snackbar(options);
 
-    let conteudo = ``;
+  let conteudo = ``;
 
-    //Carregar notas
-    // var notes = getAllNotes();
+  //Carregar notas
+  // var notes = getAllNotes();
 
-    // if (notes.length > 0) {
-    //   getAllNotes().map(data => {
-    //     sqlite.connect(PATH_DB);
+  // if (notes.length > 0) {
+  //   getAllNotes().map(data => {
+  //     sqlite.connect(PATH_DB);
 
-    //     let rows = sqlite.run(
-    //       `SELECT tag_id, tag_name FROM tags AS t1 JOIN note_tag AS t2 ON t1.tag_id = t2.nt_tag_fk_id WHERE t2.nt_note_fk_id = ?`,
-    //       [data.note_id]
-    //     );
+  //     let rows = sqlite.run(
+  //       `SELECT tag_id, tag_name FROM tags AS t1 JOIN note_tag AS t2 ON t1.tag_id = t2.nt_tag_fk_id WHERE t2.nt_note_fk_id = ?`,
+  //       [data.note_id]
+  //     );
 
-    //     conteudo += notas(data, rows);
+  //     conteudo += notas(data, rows);
 
-    //     sqlite.close();
-    //   });
+  //     sqlite.close();
+  //   });
 
-    //   $("#get-notes").html(conteudo);
+  //   $("#get-notes").html(conteudo);
 
-    $('#sem-notas').removeAttr('hidden');
+  // $('#sem-notas').removeAttr('hidden');
 
-    //$('#esqueleto').attr('hidden', true);
+  //$('#esqueleto').attr('hidden', true);
 
+  funcoesNota();
+  // }
+
+  carregarCategorias();
+
+  $('#tela-inicial').click(function() {
+    $('#get-notes').html(conteudo);
     funcoesNota();
-    // }
-
-    carregarCategorias();
-
-    $('#tela-inicial').click(function() {
-        $('#get-notes').html(conteudo);
-        funcoesNota();
-    });
+  });
 }); //Fim: $(document).ready
