@@ -135,6 +135,23 @@ var modalCategory = (titulo, idModal, idButton) => {
   </div>`;
 };
 
+function dynamicSort(property) {
+  var sortOrder = 1;
+
+  if (property[0] === '-') {
+    sortOrder = -1;
+    property = property.substr(1);
+  }
+
+  return function(a, b) {
+    if (sortOrder == -1) {
+      return b[property].localeCompare(a[property]);
+    } else {
+      return a[property].localeCompare(b[property]);
+    }
+  };
+}
+
 /**
  * Cria uma nova nota
  */
@@ -146,29 +163,12 @@ var modalCriarNota = (titulo, idModal, idButton) => {
       cache: 'default'
     }).then(async response => {
       let data = await response.json();
+      
+      data.sort(dynamicSort('category_name'));
 
-      function dynamicSort(property) {
-        var sortOrder = 1;
-    
-        if(property[0] === "-") {
-            sortOrder = -1;
-            property = property.substr(1);
-        }
-    
-        return function (a,b) {
-            if(sortOrder == -1){
-                return b[property].localeCompare(a[property]);
-            }else{
-                return a[property].localeCompare(b[property]);
-            }        
-        }
-    }
-
-
-console.log(data.sort(dynamicSort("category_name")));
       data.map(({ category_id, category_name }) => {
         $('#categories_id').append(
-          `<option value='${category_id}'>${category_name}</option>`
+          `<option value='${category_id}'>${category_name.toUpperCase()}</option>`
         );
       });
     });
@@ -179,6 +179,7 @@ console.log(data.sort(dynamicSort("category_name")));
       cache: 'default'
     }).then(async response => {
       let data = await response.json();
+      data.sort(dynamicSort('lang_name'));
       data.map(({ lang_id, lang_name }) => {
         $('#languages').append(
           `<option value='${lang_id}'>${lang_name.toUpperCase()}</option>`
