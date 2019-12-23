@@ -116,10 +116,12 @@ var modalCategory = (titulo, idModal, idButton) => {
           </button>
         </div>
         <div class="modal-body">
-          <form action="upload" enctype="multipart/form-data">
+          <form action="upload" id="form-category" enctype="multipart/form-data">
             <div class="form-group">
               <label for="category-name" class="col-form-label">Nome da Categoria:</label>
               <input type="text" class="form-control" autofocus id="category-name">
+              <label for="profile_pic" class="col-form-label">Arquivo:</label>
+              <input type="file" name="profile_pic" id="profile_pic" />
             </div>
           </form>
       <ul class="mdc-list" id="gd-get-categories" style="max-height: 400px;overflow: auto;">
@@ -127,7 +129,7 @@ var modalCategory = (titulo, idModal, idButton) => {
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-          <button type="submit" class="btn btn-primary" id="${idButton}">Criar Categoria</button>
+          <button type="submit" form="form-category" class="btn btn-primary" id="${idButton}">Criar Categoria</button>
         </div>
       </div>
     </div>

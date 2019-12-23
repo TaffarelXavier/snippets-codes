@@ -607,24 +607,30 @@ $(document).ready(function() {
   /**
    * Criar Categoria
    */
-  $('#idButton1').click(function() {
-    let categoryName = $('#category-name')
-      .val()
-      .trim();
-    if (categoryName != '') {
-      var category = Category.create(categoryName.toUpperCase());
+  // $('#idButton1').click(function() {
+  //   let categoryName = $('#category-name')
+  //     .val()
+  //     .trim();
+  //   if (categoryName != '') {
+  //    /* var category = Category.create(categoryName.toUpperCase());
 
-      // if (lastId > 0) {
-      alert('Categoria criada com sucesso!');
+  //     // if (lastId > 0) {
+  //     alert('Categoria criada com sucesso!');
 
-      var languages = document.getElementsByName('languages');
+  //     var languages = document.getElementsByName('languages');
 
-      $(languages).append(
-        `<option value='${category.last_id}'>${categoryName.toUpperCase()}</option>`
-      );
-      //}
-    }
-  });
+  //     $(languages).append(
+  //       `<option value='${category.last_id}'>${categoryName.toUpperCase()}</option>`
+  //     );
+  //     //}*/
+  //   }
+  // });
+
+$('#form-category').submit(function(ev){
+  //ev.preventDefault();
+
+  //return false;
+});
 
   //EDITAR NOTA:
   $('#form-editar-nota').submit(function(ev) {

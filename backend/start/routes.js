@@ -16,11 +16,28 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Database = use("Database");
 const Route = use("Route");
+const Helpers = use("Helpers");
 
+Route.post("upload", async ({ request }) => {
+  const profilePic = request.file("profile_pic", {
+    types: ["image"],
+    size: "2mb"
+  });
 
-Route.resource('notes', 'NoteController');
+  await profilePic.move(Helpers.tmpPath("uploads"), {
+    name: "custom-name.jpg",
+    overwrite: true
+  });
 
-Route.resource('languages', 'LanguageController');
+  if (!profilePic.moved()) {
+    return profilePic.error();
+  }
+  return "File moved";
+});
+
+Route.resource("notes", "NoteController");
+
+Route.resource("languages", "LanguageController");
 
 Route.get("/", "NoteController.index");
 
@@ -32,4 +49,7 @@ Route.get("get-all-categories", "CategoryController.getAll");
 Route.get("buscar-todas-categorias", "CategoryController.index");
 
 //Mostra notas por categoria id
-Route.get("notes-por-category-id/:category_id", "NoteController.getCategoriesWithTotal");
+Route.get(
+  "notes-por-category-id/:category_id",
+  "NoteController.getCategoriesWithTotal"
+);
