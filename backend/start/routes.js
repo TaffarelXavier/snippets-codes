@@ -17,14 +17,13 @@
 const Database = use("Database");
 const Route = use("Route");
 
-Route.get("/", async () => {
-  const notas = await Database.table("notes").select("*");
-  return { greeting: notas };
-});
 
 Route.resource('notes', 'NoteController');
 
 Route.resource('languages', 'LanguageController');
+
+Route.get("/", "NoteController.index");
+
 //Busca as categorias
 Route.get("categories", "CategoryController.getCategoriesComTotalDeNotas");
 

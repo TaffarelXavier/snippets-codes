@@ -19,7 +19,20 @@ class NoteController {
    * @param {View} ctx.view
    */
   async index({ request, response, view }) {
-    const notes = await Note.query().select("*").limit(10).fetch();
+    const notes = await Note.query()
+      .select(
+        "note_id",
+        "category_id",
+        "note_type_language",
+        "note_title",
+        "note_description",
+        "note_code",
+        "lang_name",
+        "lang_extension"
+      )
+      .innerJoin("languages", "languages.lang_id", "notes.note_type_language")
+      .limit(10)
+      .fetch();
     return notes;
   }
 
@@ -29,7 +42,16 @@ class NoteController {
     const { category_id } = params;
 
     const categories = await Note.query()
-      .select("*")
+      .select(
+        "note_id",
+        "category_id",
+        "note_type_language",
+        "note_title",
+        "note_description",
+        "note_code",
+        "lang_name",
+        "lang_extension"
+      )
       .where("category_id", parseInt(category_id))
       .innerJoin("languages", "notes.note_type_language", "languages.lang_id")
       .orderBy("notes.created_at", "DESC")
@@ -46,7 +68,6 @@ class NoteController {
    * @param {Response} ctx.response
    */
   async store({ request, response }) {
-    
     const body = request.post();
 
     const { title, description, category, code } = body;

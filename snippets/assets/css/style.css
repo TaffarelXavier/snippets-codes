@@ -25,7 +25,6 @@ p {
 input,
 button {
   text-decoration: none;
-  /* color: pink; */
   background-color: transparent;
   font-size: 30px;
   border: none;
@@ -33,8 +32,6 @@ button {
 }
 
 button {
-  /* color: #ef5350; */
-  /* float: right; */
   font-size: 25px;
 }
 
@@ -142,7 +139,5 @@ mark {
 #secao-infomativa-sistema h1,
 #secao-infomativa-sistema h4 {
     text-align: left;
-    /* font-size: 22px; */
-    /* font-weight: bold; */
-    line-height: 180%;
+    line-height: 130%;
 }

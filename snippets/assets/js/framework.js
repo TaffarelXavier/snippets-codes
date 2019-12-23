@@ -1,6 +1,4 @@
-﻿`use strict`;
-
-const config = [
+﻿const config = [
   {
     baseApiRestUrl: window.location.protocol + '//127.0.0.1:3000'
   },
@@ -12,7 +10,7 @@ const config = [
   }
 ];
 
-const INDEX = 2;
+const INDEX = 0;
 
 var escapeHtml = unsafe => {
   return unsafe
@@ -27,6 +25,7 @@ var escapeHtml = unsafe => {
  * Mostra as notas
  */
 var notas = (notas, tagsArr) => {
+  
   let {
     note_id,
     note_title,
@@ -117,9 +116,9 @@ var modalCategory = (titulo, idModal, idButton) => {
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form action="upload" enctype="multipart/form-data">
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Nome da Categoria:</label>
+              <label for="category-name" class="col-form-label">Nome da Categoria:</label>
               <input type="text" class="form-control" autofocus id="category-name">
             </div>
           </form>
@@ -128,7 +127,7 @@ var modalCategory = (titulo, idModal, idButton) => {
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-          <button type="button" class="btn btn-primary" id="${idButton}">Criar Categoria</button>
+          <button type="submit" class="btn btn-primary" id="${idButton}">Criar Categoria</button>
         </div>
       </div>
     </div>
@@ -202,17 +201,17 @@ var modalCriarNota = (titulo, idModal, idButton) => {
       <form id="formSave">
 
         <div class="form-group"> <!--TÍTULO-->
-          <label for="recipient-name" class="col-form-label"><strong>Título:</strong></label>
+          <label for="note-title" class="col-form-label"><strong>Título:</strong></label>
           <input type="text" name="title" placeholder="Título do snipper-code" id="note-title" class="form-control" required>
         </div>
 
         <div class="form-group"> <!--DESCRIÇÃO-->
-          <label for="recipient-name" class="col-form-label"><strong>Descrição:</strong></label>
-          <input type="text" name="description" placeholder="Descrição do snipper-code" class="form-control" required>
+          <label for="description" class="col-form-label"><strong>Descrição:</strong></label>
+          <input type="text" name="description" id="description" placeholder="Descrição do snipper-code" class="form-control" required>
         </div>
 
         <div class="form-group"> <!--TAGS-->
-          <label for="recipient-name" class="col-form-label"><strong>Tags:</strong></label>
+          <label for="select-tags" class="col-form-label"><strong>Tags:</strong></label>
           <select id="select-tags" multiple="multiple" name="tags" style="border:1px solid red !important;width:100%;" class="form-control">
           </select>
         </div>
@@ -221,14 +220,14 @@ var modalCriarNota = (titulo, idModal, idButton) => {
           <!--COLUNA 1-->
           <div class="col-sm-6 col-md-6">
             <div class="form-group">
-            <label for="message-text" class="col-form-label"><strong>Categoria:</strong></label>
+            <label for="categories_id" class="col-form-label"><strong>Categoria:</strong></label>
             <select class="custom-select mr-sm-2" name="category" id="categories_id">
             <option selected>Escolher...</option></select>
             </div>
           </div>
           <div class="col-sm-6 col-md-6">
             <div class="form-group">
-            <label for="message-text" class="col-form-label"><strong>Linguagem para Formatação:</strong></label>
+            <label for="languages" class="col-form-label"><strong>Linguagem para Formatação:</strong></label>
             <select class="custom-select mr-sm-2" name="formatacao-language" id="languages"></select>
             </div>
           </div>
@@ -236,7 +235,7 @@ var modalCriarNota = (titulo, idModal, idButton) => {
         <div class="row">
           <div class="col-sm-12 col-md-12">
             <div class="form-group">
-              <label for="message-text" class="col-form-label"><strong>Código:</strong></label>
+              <label for="code" class="col-form-label"><strong>Código:</strong></label>
               <textarea class="form-control" name="code" id="code" placeholder="Digite seu snipper-code aqui" rows='5'></textarea>
             </div>
           </div>
@@ -272,17 +271,17 @@ var modalEditarNota = (titulo, idModal) => {
         <input type="hidden" id="nota-id"/>
 
         <div class="form-group">
-          <label for="recipient-name" class="col-form-label"><strong>Título:</strong></label>
+          <label for="gd-title" class="col-form-label"><strong>Título:</strong></label>
           <input type="text" id="gd-title" class="form-control" required>
         </div>
 
         <div class="form-group">
-          <label for="recipient-name" class="col-form-label"><strong>Descrição:</strong></label>
+          <label for="gd-description" class="col-form-label"><strong>Descrição:</strong></label>
           <input type="text"  id="gd-description" class="form-control" required>
         </div>
 
         <div class="form-group"> <!--TAGS-->
-          <label for="recipient-name" class="col-form-label"><strong>Tags:</strong></label>
+          <label for="gd-select-tags" class="col-form-label"><strong>Tags:</strong></label>
           <select id="gd-select-tags" multiple="multiple" style="border:1px solid red !important;width:100%;" class="form-control">
           </select>
         </div>

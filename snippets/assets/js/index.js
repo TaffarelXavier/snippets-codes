@@ -89,7 +89,6 @@ function funcoesNota() {
       beautify.beautify(editor.session);
 
       //Copiar o código
-      //clipboard.writeText(editor.getValue());
 
       var options = {
         content: 'Código copiado com sucesso!', // text of the snackbar
@@ -152,8 +151,6 @@ function funcoesNota() {
     remote.dialog.showMessageBox(win, options, response => {
       if (response == 1) {
         $(`#note_card_${note_id}`).remove();
-        // delete a row based on id
-        console.log(Note.delete(note_id));
         carregarCategorias();
       }
     });
@@ -203,7 +200,7 @@ function getNotesByCategoryId(category_id, callback) {
     myInit
   ).then(function(response) {
     if (response.status !== 200) {
-      console.log('Looks like there was a problem. Status Code: ' + response.status);
+      console.warn('Looks like there was a problem. Status Code: ' + response.status);
       return;
     }
     response.json().then(function(result) {
@@ -230,7 +227,9 @@ function loadTodosSnippets() {
 
         $('#get-notes').html(content);
 
+        //Adiciona as funcionalidas às notas
         funcoesNota();
+
         if (
           $('#get-notes')
             .text()
@@ -253,7 +252,7 @@ function carregarCategorias() {
   fetch(config[INDEX].baseApiRestUrl + '/categories', myInit)
     .then(function(response) {
       if (response.status !== 200) {
-        console.log('Looks like there was a problem. Status Code: ' + response.status);
+        console.warn('Looks like there was a problem. Status Code: ' + response.status);
         return;
       }
       response.json().then(function(result) {
@@ -328,7 +327,7 @@ function carregarCategorias() {
             .html(
               `<span class="categoria-nome">
               <img style="margin:0;position: relative;top:-1px; width:40px;height: 40px;"
-               src="${ICON_PADRAO}" data-src='${
+               src="${ICON_PADRAO}" alt="${category_icon.trim()}" data-src='${
                 category_icon != null ? category_icon.trim() : ICON_PADRAO
               }' class="lazy" /> <!---->
               ${category_name.toUpperCase()}</span>
@@ -359,8 +358,6 @@ function carregarCategorias() {
 
                     lazyImage.src = lazyImage.dataset.src;
 
-                    //lazyImage.srcset = lazyImage.dataset.srcset;
-
                     lazyImage.classList.remove('lazy');
 
                     lazyImageObserver.unobserve(lazyImage);
@@ -378,7 +375,7 @@ function carregarCategorias() {
       });
     })
     .catch(function(err) {
-      console.log('Fetch Error :-S', err);
+      console.error('Fetch Error :-S', err);
     });
 }
 
@@ -399,9 +396,7 @@ function carregarTodasCategoria() {
   setTimeout(() => {
     var rows = document.getElementById('gd-get-categories');
 
-    //console.log(arrayA);
     var arrayA = Category.getCategorieWithCountNotes();
-    //console.log(arrayB);
 
     var arrayB = Category.all();
 
@@ -594,9 +589,6 @@ $(document).ready(function() {
     document.getElementById("languages").selectedIndex = index;
 
   });
-  $('#abrir-dev-tools').click(function() {
-    console.log('#abrir-dev-tools foi clicado');
-  });
 
   //Selects 2:
 
@@ -724,7 +716,7 @@ $(document).ready(function() {
       method: 'POST',
       body: formData
     }).then(response => {
-      console.log(response);
+      //console.log(response);
     });
 
     _this.reset(); //limpa o formulário
