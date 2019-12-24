@@ -19,17 +19,19 @@ class CategoryController {
    * @param {View} ctx.view
    */
   async index({ request, response, view }) {
-    const categories = await Category.query().select("category_id","category_name").fetch()
+    const categories = await Category.query()
+      .select("category_id", "category_name")
+      .fetch();
     return categories;
   }
   /**
-   * 
+   *
    */
   async getAll({ request, response, view }) {
     const categories = await Category.all();
     return categories;
   }
-  
+
   /*
    */
   async getCategoriesComTotalDeNotas({ request, response, view }) {
@@ -65,7 +67,15 @@ class CategoryController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request, response }) {}
+  async store({ request, response }) {
+    const category = new Category();
+
+    category.category_name = "category";
+
+    await category.save();
+
+    response.send(category);
+  }
 
   /**
    * Display a single category.

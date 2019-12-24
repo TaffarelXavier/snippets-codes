@@ -1,100 +1,135 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8" />
-        <meta
-            name="description"
-            content="O snippets code é um sistema web desenvolvido para ajudar programadores de todo o mundo a ter produtividade."
-        />
-        <meta rel="canonical" href="https://snippets.now.sh" />
-        <meta name="keywords" content="Snipet, Snippet, Snippets, Snippt, Code, código, trecho, trexo" />
-        <meta name="author" content="Taffarel Xavier" />
-        <meta name="robos" content="index" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Snippet CodesTX</title>
-        <link rel="stylesheet" href="assets/css/style.css" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" />
-        <link rel="stylesheet" href="assets/css/bootstrap-material-design.min.css" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-        <link rel="stylesheet" href="assets/css/material-components-web.min.css" />
-        <link rel="shortcut icon" href="./assets/imagens/favicon.png" type="image/png" />
-        <!-- <link rel="stylesheet" href="https://material-responsive-drawer.glitch.me/bundle.css"> -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />
-        <script src="assets/js/highlight.min.js"></script>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-50858402-2"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag('js', new Date());
-            gtag('config', 'UA-50858402-2');
-        </script>
-        <style>
-            body {
-                display: flex;
-                height: 100vh;
-                padding: 0px;
-                margin: 0;
-                overflow: hidden;
-                overflow-y: auto;
-            }
 
-            .mdc-drawer-app-content {
-                flex: auto;
-                overflow: auto;
-                position: relative;
-            }
+<head>
+    <meta charset="UTF-8" />
+    <meta name="description"
+        content="O snippets code é um sistema web desenvolvido para ajudar programadores de todo o mundo a ter produtividade." />
+    <meta rel="canonical" href="https://snippets.now.sh" />
+    <meta name="keywords" content="Snipet, Snippet, Snippets, Snippt, Code, código, trecho, trexo" />
+    <meta name="author" content="Taffarel Xavier" />
+    <meta name="robos" content="index" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Snippet CodesTX</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" />
+    <link rel="stylesheet" href="assets/css/bootstrap-material-design.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="assets/css/material-components-web.min.css" />
+    <link rel="shortcut icon" href="./assets/imagens/favicon.png" type="image/png" />
+    <!-- <link rel="stylesheet" href="https://material-responsive-drawer.glitch.me/bundle.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />
+    <script src="assets/js/highlight.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-50858402-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-50858402-2');
+    </script>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            padding: 0px;
+            margin: 0;
+            overflow: hidden;
+            overflow-y: auto;
+        }
 
-            .mdc-list {
-                padding: 0;
-                overflow: hidden;
-            }
+        .mdc-drawer-app-content {
+            flex: auto;
+            overflow: auto;
+            position: relative;
+        }
 
-            .main-content {
-                overflow: hidden;
-                overflow-y: auto;
-                height: 100%;
+        .mdc-list {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .main-content {
+            overflow: hidden;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .mdc-top-app-bar {
+            z-index: 7;
+        }
+
+        /*SKELETON*/
+        .mdc-drawer__content {
+            padding: 0px;
+        }
+
+        #termo-filtrado {
+            text-align: center;
+        }
+
+        /* xtra small devices (portrait phones, less than 576px) */
+        @media (max-width: 575.98px) {
+            #termo-filtrado {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Small devices (landscape phones, 576px and up) */
+        @media (min-width: 576px) and (max-width: 767.98px) {}
+
+        /* Medium devices (tablets, 768px and up) */
+        @media (min-width: 768px) and (max-width: 991.98px) {}
+
+        /* Large devices (desktops, 992px and up) */
+        @media (min-width: 992px) and (max-width: 1440px) {
+            #termo-filtrado {
+                font-size: 1.6rem;
             }
 
             .mdc-drawer {
-                width: auto;
+                width: 300px;
             }
 
-            .app-bar {
-                position: absolute;
+            .mdc-drawer-app-content {
+                margin-left: 315px !important;
+                margin-right: 0;
             }
+        }
 
-            .mdc-top-app-bar {
-                z-index: 7;
+        /* Extra large devices (large desktops, 1200px and up) */
+        @media (min-width: 1440px) {
+            .mdc-drawer {
+                width: 400px;
             }
-        </style>
-    </head>
+        }
+    </style>
+</head>
 
-    <body>
-        <!-- NAV BAR -->
-        <header class="mdc-top-app-bar app-bar" id="app-bar" style="background:#018786;">
-            <div class="mdc-top-app-bar__row">
-                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                    <a style="text-decoration: none;" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
-                    <img
-                        src="assets/imagens/logo.svg"
-                        alt="logo-do-site-snippets-code"
-                        style=" margin:0px !important;border:0px solid red;height: 40px;"
-                    />
-                    <span class="mdc-top-app-bar__title">SnippetCode</span>
-                </section>
-            </div>
-        </header>
-        <aside class="mdc-drawer mdc-drawer--dismissible">
-            <div class="mdc-drawer__header">
-                <h3 class="mdc-drawer__title">Mail</h3>
-                <h6 class="mdc-drawer__subtitle">email@material.io</h6>
-            </div>
-            <div class="mdc-drawer__content">
-                <nav class="mdc-list">
-                    <!-- <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+<body>
+    <!-- NAV BAR -->
+    <header class="mdc-top-app-bar app-bar" id="app-bar" style="background:#018786;">
+        <div class="mdc-top-app-bar__row">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <a style="text-decoration: none;"
+                    class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+                <img src="assets/imagens/logo.svg" alt="logo-do-site-snippets-code"
+                    style=" margin:0px !important;border:0px solid red;height: 40px;" />
+                <span class="mdc-top-app-bar__title">SnippetCode</span>
+            </section>
+        </div>
+    </header>
+    <!-- DRAWER -->
+    <aside class="mdc-drawer mdc-drawer--dismissible">
+        <div class="mdc-drawer__header">
+            <h3 class="mdc-drawer__title">Mail</h3>
+            <h6 class="mdc-drawer__subtitle">email@material.io</h6>
+        </div>
+        <div class="mdc-drawer__content">
+            <nav class="mdc-list">
+                <!-- <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
                     <span class="mdc-list-item__text">Inbox</span>
                 </a>
@@ -106,210 +141,232 @@
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
                     <span class="mdc-list-item__text">Drafts</span>
                 </a> -->
-                    <div class="row">
-                        <div class="col-ms-12 col-md-12">
-                            <div class="alert alert-success" style="border:1px dashed #ccc;margin-top:0px!important">
-                                <button
-                                    class="float-right"
-                                    title="Clique para adicionar uma nova categoria"
-                                    data-toggle="modal"
-                                    data-target="#exampleModal"
-                                    id="abrir-modal-criador-categoria"
-                                >
-                                    <i class="material-icons">add_circle_outline</i>
-                                </button>
-                                <label for="categoria"><strong>Suas Categorias:</strong></label>
+                <div class="row">
+                    <div class="col-ms-12 col-md-12">
+                        <div class="alert alert-success" style="border:1px dashed #ccc;margin-top:0px!important">
+                            <button class="float-right" title="Clique para adicionar uma nova categoria"
+                                data-toggle="modal" data-target="#exampleModal" id="abrir-modal-criador-categoria">
+                                <i class="material-icons">add_circle_outline</i>
+                            </button>
+                            <label for="categoria"><strong>Suas Categorias:</strong></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-ms-12 col-md-12">
+                        <div class="input-group mb-3">
+                            <input type="search" class="form-control" id="categoria" placeholder="Filtrar categoria"
+                                style="border:0 solid red;padding:15px" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sx-12">
+                        <ul class="list-group" id="category">
+                            <!-- <li class="list-group-item list-group-item-action"></li> -->
+                            <div class="flex-container">
+                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-ms-12 col-md-12">
-                            <div class="input-group mb-3">
-                                <input
-                                    type="search"
-                                    class="form-control"
-                                    id="categoria"
-                                    placeholder="Filtrar categoria"
-                                    style="border:0 solid red;padding:15px"
-                                />
+                            <div class="flex-container">
+                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
                             </div>
-                        </div>
+                            <div class="flex-container">
+                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                        </ul>
                     </div>
+                </div>
+        </div>
+        </nav>
+        </div>
+    </aside> <!-- FIM DRAWER -->
+    <div class="mdc-drawer-app-content">
+        <main class="main-content" id="main-content">
+            <div class="mdc-top-app-bar--fixed-adjust">
+                <div class="container" style="padding-bottom: 40vh;">
+                    <br />
                     <div class="row">
-                        <div class="col-md-12 col-sx-12">
-                            <ul class="list-group" id="category">
-                                <li class="list-group-item list-group-item-action"></li>
-                                <div class="comment br animate line-20"></div>
-                                <div class="comment br animate line-20"></div>
-                                <div class="comment br animate line-20"></div>
-                                <div class="comment br animate line-20"></div>
-                                <div class="comment br animate line-20"></div>
-                                <div class="comment br animate line-20"></div>
-                                <div class="comment br animate line-20"></div>
-                                <div class="comment br animate line-20"></div>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </aside>
-        <div class="mdc-drawer-app-content">
-            <main class="main-content" id="main-content">
-                <div class="mdc-top-app-bar--fixed-adjust">
-                    <div class="container" style="padding-bottom: 40vh;">
-                        <br />
-                        <div class="row">
-                            <div class="col-sm-12 col-md-12">
-                                <div class="row">
-                                    <!-- CONTEÚDO -->
-                                    <div class="col-sm-12 col-md-12">
-                                        <div class="row">
-                                            <div class="col-ms-12 col-md-12">
-                                                <section id="secao-infomativa-sistema" role="alert" class="alert">
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    <!-- <span data-toggle=snackbar data-content="This is my awesome snackbar!"></span> -->
-                                                    <h1 style="line-height: 40px;margin-bottom: 35px;">
-                                                        <strong>Snippets</strong> são pequenos <strong>trechos</strong> de códigos que
-                                                        ajudam na produtividade.
-                                                    </h1>
-                                                    <h4>
-                                                        No mundo do <b>desenvolvimento de sistemas</b>, esse termo é usado para designar
-                                                        pequenos trechos de códigos, usados com frequência, que ajudam no desenvolvimento de
-                                                        seu sistema. Se você estiver executando o mesmo código, repetidamente, considere
-                                                        sempre entrar nesta página à medida que precisar de um código rápido.
-                                                    </h4>
-                                                    <h4>
-                                                        Cara, sinceramente, é verdade que nem sempre armazenaremos tudo em nossa mente; eu,
-                                                        particularmente, às vezes, passo algum tempo de minha vida pesquisando alguma coisa,
-                                                        que, pelo incrível que pareça, eu já tinha feito antes durante o desenvolvimento de
-                                                        algum sistema.
-                                                    </h4>
-                                                </section>
-                                                <hr />
-                                                <div class="row" id="painel-criacao">
-                                                    <!-- PESQUISAR NOTAS -->
-                                                    <div class="col-ms-12 col-md-12">
-                                                        <div class="input-group mb-3">
-                                                            <div class="input-group-prepend" style="border:0 solid red">
-                                                                <button class="" style="border:0 solid #0f0;height:50%;margin-top:40%">
-                                                                    <i class="material-icons">search</i>
-                                                                </button>
-                                                            </div>
-                                                            <input
-                                                                type="search"
-                                                                class="form-control col-ms-2 col-md-2"
-                                                                placeholder="Pesq. por Tag"
-                                                                id="input-pesquisar-tag"
-                                                                list="datalist-languages"
-                                                            /><datalist id="datalist-languages"></datalist
-                                                            ><input
-                                                                type="search"
-                                                                class="form-control col-ms-10 col-md-10"
-                                                                placeholder="Pesquisar por nome e descrição"
-                                                                autofocus
-                                                                id="input-pesquisar-geral"
-                                                            />
-                                                            <button
-                                                                class="mdc-fab mdc-fab--extended"
-                                                                data-toggle="modal"
-                                                                data-target="#modalCriarNota"
-                                                            >
-                                                                <span class="material-icons mdc-fab__icon">add</span>
-                                                                <span class="mdc-fab__label">Criar novo Snippet</span>
+                        <div class="col-sm-9 col-md-9">
+                            <div class="row">
+                                <!-- CONTEÚDO -->
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="row">
+                                        <div class="col-ms-12 col-md-12">
+                                            <section id="secao-infomativa-sistema" role="alert" class="alert">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <!-- <span data-toggle=snackbar data-content="This is my awesome snackbar!"></span> -->
+                                                <h1 style="line-height: 40px;margin-bottom: 35px;">
+                                                    <strong>Snippets</strong> são pequenos <strong>trechos</strong> de
+                                                    códigos que
+                                                    ajudam na produtividade.
+                                                </h1>
+                                                <h4>
+                                                    No mundo do <b>desenvolvimento de sistemas</b>, esse termo é usado
+                                                    para designar
+                                                    pequenos trechos de códigos, usados com frequência, que ajudam no
+                                                    desenvolvimento de
+                                                    seu sistema. Se você estiver executando o mesmo código,
+                                                    repetidamente, considere
+                                                    sempre entrar nesta página à medida que precisar de um código
+                                                    rápido.
+                                                </h4>
+                                                <h4>
+                                                    Cara, sinceramente, é verdade que nem sempre armazenaremos tudo em
+                                                    nossa mente; eu,
+                                                    particularmente, às vezes, passo algum tempo de minha vida
+                                                    pesquisando alguma coisa,
+                                                    que, pelo incrível que pareça, eu já tinha feito antes durante o
+                                                    desenvolvimento de
+                                                    algum sistema.
+                                                </h4>
+                                            </section>
+                                            <hr />
+                                            <div class="row" id="painel-criacao">
+                                                <!-- PESQUISAR NOTAS -->
+                                                <div class="col-ms-12 col-md-12">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend" style="border:0 solid red">
+                                                            <button class=""
+                                                                style="border:0 solid #0f0;height:50%;margin-top:40%">
+                                                                <i class="material-icons">search</i>
                                                             </button>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row" id="painel-termo-filtrado" hidden>
-                                                    <div class="col-md-12">
-                                                        <h1 id="termo-filtrado">TERMO FILTRADO: HTML</h1>
-                                                    </div>
-                                                </div>
-                                                <hr />
-                                                <div id="esqueleto">
-                                                    <div class="card mb-12 col-sm-12 col-md-12">
-                                                        <div
-                                                            class="card-header"
-                                                            style="border-bottom:1px solid rgba(0,0,0,.1);padding-top:15px;padding-bottom:15px"
-                                                        >
-                                                            <div class="comment br animate" style="height:10px;width:50%"></div>
-                                                        </div>
-                                                        <div class="card-body text-secondary">
-                                                            <div>
-                                                                <div class="comment br animate" style="height:10px;width:90%"></div>
-                                                                <div class="comment br animate" style="height:10px;width:95%"></div>
-                                                                <div class="comment br animate" style="height:10px;width:100%"></div>
-                                                            </div>
-                                                            <div
-                                                                class="comment br animate line-30"
-                                                                style="width:5%;float:left;margin-right:3px"
-                                                            ></div>
-                                                            <div
-                                                                class="comment br animate line-30"
-                                                                style="width:5%;float:left;margin-right:3px"
-                                                            ></div>
-                                                            <div
-                                                                class="comment br animate line-30"
-                                                                style="width:5%;float:left;margin-right:5px"
-                                                            ></div>
-                                                            <div style="clear:both"></div>
-                                                            <div class="comment br animate" style="height:200px"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="dropdown-divider"></div>
-                                                    <div class="card mb-12 col-sm-12 col-md-12">
-                                                        <div
-                                                            class="card-header"
-                                                            style="border-bottom:1px solid rgba(0,0,0,.1);padding-top:15px;padding-bottom:15px"
-                                                        >
-                                                            <div class="comment br animate" style="height:10px;width:50%"></div>
-                                                        </div>
-                                                        <div class="card-body text-secondary">
-                                                            <div>
-                                                                <div class="comment br animate" style="height:10px;width:90%"></div>
-                                                                <div class="comment br animate" style="height:10px;width:95%"></div>
-                                                                <div class="comment br animate" style="height:10px;width:100%"></div>
-                                                            </div>
-                                                            <div
-                                                                class="comment br animate line-30"
-                                                                style="width:5%;float:left;margin-right:3px"
-                                                            ></div>
-                                                            <div
-                                                                class="comment br animate line-30"
-                                                                style="width:5%;float:left;margin-right:3px"
-                                                            ></div>
-                                                            <div
-                                                                class="comment br animate line-30"
-                                                                style="width:5%;float:left;margin-right:5px"
-                                                            ></div>
-                                                            <div style="clear:both"></div>
-                                                            <div class="comment br animate" style="height:200px"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="dropdown-divider"></div>
-                                                </div>
-                                                <div
-                                                    id="get-notes"
-                                                    style="border:0 solid red;overflow-y:auto!important;overflow-x:hidden;padding-left:10px;padding-right:10px;"
-                                                >
-                                                    <div
-                                                        hidden
-                                                        style="display:flex;height:400px;text-align:center;flex-direction:column;justify-content:center;align-content:center;align-items:center"
-                                                        id="sem-notas"
-                                                    >
-                                                        <h3>Hey!</h3>
-                                                        <h4>Você não tem nenhuma nota.</h4>
-                                                        <button
-                                                            class="mdc-fab mdc-fab--extended"
-                                                            data-toggle="modal"
-                                                            data-target="#modalCriarNota"
-                                                        >
+                                                        <input type="search" class="form-control col-ms-2 col-md-2"
+                                                            placeholder="Pesq. por Tag" id="input-pesquisar-tag"
+                                                            list="datalist-languages" /><datalist
+                                                            id="datalist-languages"></datalist><input type="search"
+                                                            class="form-control col-ms-10 col-md-10"
+                                                            placeholder="Pesquisar por nome e descrição" autofocus
+                                                            id="input-pesquisar-geral" />
+                                                        <button class="mdc-fab mdc-fab--extended" data-toggle="modal"
+                                                            data-target="#modalCriarNota">
                                                             <span class="material-icons mdc-fab__icon">add</span>
-                                                            <span class="mdc-fab__label">Criar nova nota :)</span>
+                                                            <span class="mdc-fab__label">CRIAR SNIPPET</span>
                                                         </button>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" id="painel-termo-filtrado" hidden>
+                                                <div class="col-md-12">
+                                                    <h1 id="termo-filtrado">TERMO FILTRADO: HTML</h1>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div id="esqueleto">
+                                                <div class="card mb-12 col-sm-12 col-md-12">
+                                                    <div class="card-header"
+                                                        style="border-bottom:1px solid rgba(0,0,0,.1);padding-top:15px;padding-bottom:15px">
+                                                        <div class="comment br animate" style="height:10px;width:50%">
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body text-secondary">
+                                                        <div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:90%"></div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:95%"></div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:100%"></div>
+                                                        </div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:3px"></div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:3px"></div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:5px"></div>
+                                                        <div style="clear:both"></div>
+                                                        <div class="comment br animate" style="height:200px"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="card mb-12 col-sm-12 col-md-12">
+                                                    <div class="card-header"
+                                                        style="border-bottom:1px solid rgba(0,0,0,.1);padding-top:15px;padding-bottom:15px">
+                                                        <div class="comment br animate" style="height:10px;width:50%">
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body text-secondary">
+                                                        <div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:90%"></div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:95%"></div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:100%"></div>
+                                                        </div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:3px"></div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:3px"></div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:5px"></div>
+                                                        <div style="clear:both"></div>
+                                                        <div class="comment br animate" style="height:200px"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                            </div>
+                                            <div id="get-notes"
+                                                style="border:0 solid red;overflow-y:auto!important;overflow-x:hidden;padding-left:10px;padding-right:10px;">
+                                                <div hidden
+                                                    style="display:flex;height:400px;text-align:center;flex-direction:column;justify-content:center;align-content:center;align-items:center"
+                                                    id="sem-notas">
+                                                    <h3>Hey!</h3>
+                                                    <h4>Você não tem nenhuma nota.</h4>
+                                                    <button class="mdc-fab mdc-fab--extended" data-toggle="modal"
+                                                        data-target="#modalCriarNota">
+                                                        <span class="material-icons mdc-fab__icon">add</span>
+                                                        <span class="mdc-fab__label">Criar nova nota :)</span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -317,93 +374,127 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-3 col-md-3">
+                            <!-- ALGUM TEXTO AQUI - PAINEL ESQUERDO--> 
+                        </div>
                     </div>
-                    <footer
-                        class="border-top pt-4 my-md-5 pt-md-5"
-                        style=" padding: 48px 50px 0;
-                background-color: #f1f3f4;color:#5f6368;"
-                    >
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-3 col-xd-12">
-                                    <img
-                                        src="assets/imagens/logo.svg"
-                                        alt="logo-do-site-snippets-code"
-                                        style=" margin:0px !important;border:0px solid red;width: 100px;"
-                                    />
-                                    <strong>Snippet</strong>
-                                    <small class="d-block mb-3 text-muted">&copy; 2020</small>
-                                </div>
-                                <div class="col-md-3 col-xd-12">
-                                    <h5>Características</h5>
-                                    <ul class="list-unstyled text-small">
-                                        <li><a class="text-muted" href="#">Cool stuff</a></li>
-                                        <li><a class="text-muted" href="#">Random feature</a></li>
-                                        <li><a class="text-muted" href="#">Team feature</a></li>
-                                        <li><a class="text-muted" href="#">Stuff for developers</a></li>
-                                        <li><a class="text-muted" href="#">Another one</a></li>
-                                        <li><a class="text-muted" href="#">Last time</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-3 col-xd-12">
-                                    <h5>Resources</h5>
-                                    <ul class="list-unstyled text-small">
-                                        <li><a class="text-muted" href="#">Resource</a></li>
-                                        <li><a class="text-muted" href="#">Resource name</a></li>
-                                        <li><a class="text-muted" href="#">Another resource</a></li>
-                                        <li><a class="text-muted" href="#">Final resource</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-3 col-xd-12">
-                                    <h5>Sobre</h5>
-                                    <ul class="list-unstyled text-small">
-                                        <li><a class="text-muted" href="#">Equipe</a></li>
-                                        <li><a class="text-muted" href="#">Localização</a></li>
-                                        <li><a class="text-muted" href="#">Privacidade</a></li>
-                                        <li><a class="text-muted" href="#">Termos de uso</a></li>
-                                    </ul>
-                                </div>
+                </div>
+                <footer class="border-top pt-4 my-md-5 pt-md-5" style=" padding: 48px 50px 0;
+                background-color: #f1f3f4;color:#5f6368;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3 col-xd-12">
+                                <img src="assets/imagens/logo.svg" alt="logo-do-site-snippets-code"
+                                    style=" margin:0px !important;border:0px solid red;width: 100px;" />
+                                <strong>Snippet</strong>
+                                <small class="d-block mb-3 text-muted">&copy; 2020</small>
+                            </div>
+                            <div class="col-md-3 col-xd-12">
+                                <h5>Características</h5>
+                                <ul class="list-unstyled text-small">
+                                    <li><a class="text-muted" href="#">Cool stuff</a></li>
+                                    <li><a class="text-muted" href="#">Random feature</a></li>
+                                    <li><a class="text-muted" href="#">Team feature</a></li>
+                                    <li><a class="text-muted" href="#">Stuff for developers</a></li>
+                                    <li><a class="text-muted" href="#">Another one</a></li>
+                                    <li><a class="text-muted" href="#">Last time</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3 col-xd-12">
+                                <h5>Resources</h5>
+                                <ul class="list-unstyled text-small">
+                                    <li><a class="text-muted" href="#">Resource</a></li>
+                                    <li><a class="text-muted" href="#">Resource name</a></li>
+                                    <li><a class="text-muted" href="#">Another resource</a></li>
+                                    <li><a class="text-muted" href="#">Final resource</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3 col-xd-12">
+                                <h5>Sobre</h5>
+                                <ul class="list-unstyled text-small">
+                                    <li><a class="text-muted" href="#">Equipe</a></li>
+                                    <li><a class="text-muted" href="#">Localização</a></li>
+                                    <li><a class="text-muted" href="#">Privacidade</a></li>
+                                    <li><a class="text-muted" href="#">Termos de uso</a></li>
+                                </ul>
                             </div>
                         </div>
-                    </footer>
-                </div>
-            </main>
-        </div>
+                    </div>
+                </footer>
+            </div>
+        </main>
+    </div>
+    <button class="mdc-fab mdc-fab--extended"
+    data-toggle="modal"
+    data-target="#modalCriarNota"
+    id="btn-mdc-create-snippet-add" hidden
+        style="position: fixed; bottom: 20px;right: 20px;">
+        <div class="mdc-fab__ripple"></div>
+        <span class="material-icons mdc-fab__icon">add</span>
+        <span class="mdc-fab__label">CRIAR SNIPPET</span>
+    </button>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/select2.config.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/snackbar.min.js"></script>
+    <script src="assets/js/bootstrap-material-design.min.js"></script>
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/ace.js"></script>
+    <script src="assets/js/ext-beautify.js"></script>
+    <script src="assets/js/select2.min.js"></script>
+    <!-- <script src="assets/js/jquery.mark.min.js"></script> -->
+    <script src="assets/js/framework.js"></script>
+    <script src="assets/js/index.js"></script>
 
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/js/select2.config.js"></script>
-        <script src="assets/js/popper.min.js"></script>
-        <script src="assets/js/snackbar.min.js"></script>
-        <script src="assets/js/bootstrap-material-design.min.js"></script>
-        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/ace.js"></script>
-        <script src="assets/js/ext-beautify.js"></script>
-        <script src="assets/js/select2.min.js"></script>
-        <script src="assets/js/jquery.mark.min.js"></script>
-        <!-- <script src="assets/js/framework.min.js"></script>
-        <script src="assets/js/index.js"></script> -->
+    <script>
+        // var body = document.getElementsByTagName('body')[0];
+        // var script1 = document.createElement('script'),
+        //     script2 = document.createElement('script');
 
-        <script>
-            var body = document.getElementsByTagName('body')[0];
-            var script1 = document.createElement('script'),
-                script2 = document.createElement('script');
+        // setTimeout(() => {
+        //     script1.src = 'assets/js/framework.js';
+        //     body.appendChild(script1);
+        //     script2.src = 'assets/js/index.js';
+        //     body.appendChild(script2);
+        // }, 500);
 
-            setTimeout(() => {
-                script1.src = 'assets/js/framework.js';
-                body.appendChild(script1);
-                script2.src = 'assets/js/index.js';
-                body.appendChild(script2);
-            }, 500);
-
-            const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
-            const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar'));
+        const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+        const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar'));
+        drawer.open = !drawer.open;
+        topAppBar.listen('MDCTopAppBar:nav', () => {
             drawer.open = !drawer.open;
-            topAppBar.listen('MDCTopAppBar:nav', () => {
-                drawer.open = !drawer.open;
-            });
-            document.body.addEventListener('MDCDrawer:opened', () => {
-                document.querySelector('#categoria').focus();
-            });
-        </script>
-    </body>
+        });
+        document.body.addEventListener('MDCDrawer:opened', () => {
+            document.querySelector('#categoria').focus();
+        });
+
+        var scrollableElement = document.getElementById('main-content');
+
+        scrollableElement.onscroll = (ev) => {
+            if(ev.target.scrollTop>=650){
+                $('#btn-mdc-create-snippet-add').removeAttr("hidden");
+            }
+            else{
+                $('#btn-mdc-create-snippet-add').attr("hidden", true);
+            }
+        }
+       /* scrollableElement.addEventListener('wheel', findScrollDirectionOtherBrowsers);
+ 
+         function findScrollDirectionOtherBrowsers(event) {
+             var delta;
+             if (event.wheelDelta) {
+                 delta = event.wheelDelta;
+             } else {
+                 delta = -1 * event.deltaY;
+             }
+             if (delta < 0) {
+                 $('#btn-mdc-create-snippet-add').removeAttr("hidden");
+             } else if (delta > 0) {
+                 $('#btn-mdc-create-snippet-add').attr("hidden", true);
+             }
+ 
+         }*/
+    </script>
+</body>
+
 </html>

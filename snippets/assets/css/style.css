@@ -141,3 +141,35 @@ mark {
     text-align: left;
     line-height: 130%;
 }
+.flex-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 0px auto;
+    padding: 1px;
+}
+
+.flex-container>div {
+    background-color: hsl(0,0%,89%);
+    margin: 1px;
+}
+
+.skeleton-icon {
+    flex-grow: 1;
+    width: 20px;
+    height: 40px;
+    /* border-radius: 100%; */
+}
+
+.skeleton-category-name {
+    flex-grow: 8;
+    height: 10px;
+    border-radius: 8px;
+}
+
+.skeleton-badge {
+    flex-grow: 2;
+    height: 10px;
+    border-radius: 8px;
+}

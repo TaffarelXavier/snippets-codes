@@ -246,7 +246,6 @@ function loadTodosSnippets() {
  *
  */
 function carregarCategorias() {
-
   var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
 
   fetch(config[INDEX].baseApiRestUrl + '/categories', myInit)
@@ -260,6 +259,9 @@ function carregarCategorias() {
 
         rows.innerHTML = '';
 
+        result.sort((a, b) => {
+          return b.total- a.total;
+        });
         result.map(row => {
           //Destructing
           let { category_id, category_name, category_icon } = row;
@@ -269,10 +271,11 @@ function carregarCategorias() {
 
           //Ao clicar em alguma categoria:::
           item.onclick = function(ev) {
-
-            $('#painel-termo-filtrado').removeAttr("hidden");
-            window.location.href= "#painel-termo-filtrado";
-            $('#termo-filtrado').html('TERMO FILTRADO: '+this.innerText.trim().toUpperCase());
+            $('#painel-termo-filtrado').removeAttr('hidden');
+            window.location.href = '#painel-termo-filtrado';
+            $('#termo-filtrado').html(
+              'TERMO FILTRADO: ' + this.innerText.trim().toUpperCase()
+            );
 
             $('#esqueleto').removeAttr('hidden');
 
@@ -574,20 +577,18 @@ $(document).ready(function() {
 
   //Select: categoria
   $('#categories_id').change(function(ev) {
-
     let linguagem = $(this)
       .find('option:selected')
       .text()
       .toUpperCase();
 
-    var languages = [].slice.call(document.getElementById("languages"));
-    
+    var languages = [].slice.call(document.getElementById('languages'));
+
     var index = languages.findIndex(fruit => {
       return fruit.label.toUpperCase() == linguagem;
     });
     //Seleciona o valor:
-    document.getElementById("languages").selectedIndex = index;
-
+    document.getElementById('languages').selectedIndex = index;
   });
 
   //Selects 2:
@@ -626,11 +627,10 @@ $(document).ready(function() {
   //   }
   // });
 
-$('#form-category').submit(function(ev){
-  //ev.preventDefault();
-
-  //return false;
-});
+  $('#form-category').submit(function(ev) {
+    //ev.preventDefault();
+    //return false;
+  });
 
   //EDITAR NOTA:
   $('#form-editar-nota').submit(function(ev) {

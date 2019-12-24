@@ -10,8 +10,22 @@
   }
 ];
 
-const INDEX = 0;
+const INDEX = 2;
 
+/**
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | @param property
+ |  
+ */
 var escapeHtml = unsafe => {
   return unsafe
     .replace(/&/g, '&amp;')
@@ -22,10 +36,53 @@ var escapeHtml = unsafe => {
 };
 
 /**
- * Mostra as notas
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | @param property
+ |  
+ */
+function dynamicSort(property) {
+  var sortOrder = 1;
+
+  if (property[0] === '-') {
+    sortOrder = -1;
+    property = property.substr(1);
+  }
+
+  return function(a, b) {
+    if (sortOrder == -1) {
+      return b[property].localeCompare(a[property]);
+    } else {
+      return a[property].localeCompare(b[property]);
+    }
+  };
+}
+
+/**
+ | ----------------------------------------
+ |              Mostra as notas
+ | ----------------------------------------
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | @param property
+ |  
  */
 var notas = (notas, tagsArr) => {
-  
   let {
     note_id,
     note_title,
@@ -100,8 +157,22 @@ var notas = (notas, tagsArr) => {
   return content;
 };
 
+
 /**
- *Criar categoria <!-- Modal Criar Categoria -->
+ | ----------------------------------------
+ | Criar categoria <!-- Modal Criar Categoria -->
+ | ----------------------------------------
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | @param property
+ |  
  */
 var modalCategory = (titulo, idModal, idButton) => {
   return `
@@ -116,7 +187,9 @@ var modalCategory = (titulo, idModal, idButton) => {
           </button>
         </div>
         <div class="modal-body">
-          <form action="upload" id="form-category" enctype="multipart/form-data">
+          <form action="${config[INDEX].baseApiRestUrl +
+            '/criar-categoria'}" method="POST"
+           id="form-category" enctype="multipart/form-data">
             <div class="form-group">
               <label for="category-name" class="col-form-label">Nome da Categoria:</label>
               <input type="text" class="form-control" autofocus id="category-name">
@@ -136,25 +209,21 @@ var modalCategory = (titulo, idModal, idButton) => {
   </div>`;
 };
 
-function dynamicSort(property) {
-  var sortOrder = 1;
-
-  if (property[0] === '-') {
-    sortOrder = -1;
-    property = property.substr(1);
-  }
-
-  return function(a, b) {
-    if (sortOrder == -1) {
-      return b[property].localeCompare(a[property]);
-    } else {
-      return a[property].localeCompare(b[property]);
-    }
-  };
-}
-
 /**
- * Cria uma nova nota
+ | ----------------------------------------
+ | Criar um novo snippet
+ | ----------------------------------------
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | @param property
+ |  
  */
 var modalCriarNota = (titulo, idModal, idButton) => {
   setTimeout(function() {
@@ -164,7 +233,7 @@ var modalCriarNota = (titulo, idModal, idButton) => {
       cache: 'default'
     }).then(async response => {
       let data = await response.json();
-      
+
       data.sort(dynamicSort('category_name'));
 
       data.map(({ category_id, category_name }) => {
@@ -246,7 +315,7 @@ var modalCriarNota = (titulo, idModal, idButton) => {
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      <button type="submit" form="formSave" class="mdc-fab mdc-fab--extended" id="salvarNota">Salvar nova nota</button>
+      <button type="submit" form="formSave" class="mdc-fab mdc-fab--extended" id="salvarNota">SALVAR SNIPPET</button>
     </div>
   </div>
 </div>
@@ -255,9 +324,22 @@ var modalCriarNota = (titulo, idModal, idButton) => {
 };
 
 /**
- * Modal Editar
+ | ----------------------------------------
+ | EDITAR  snippet
+ | ----------------------------------------
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | @param {*} titulo 
+ | @param {*} idModal 
+ |  
  */
-
 var modalEditarNota = (titulo, idModal) => {
   let content = `<div class="modal fade" id="${idModal}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog modal-lg" role="document"><!--modal-lg-->
