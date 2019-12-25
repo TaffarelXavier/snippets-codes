@@ -1,12 +1,12 @@
 ﻿const config = [
   {
-    baseApiRestUrl: window.location.protocol + '//127.0.0.1:3000'
+    baseApiRestUrl: window.location.protocol + '//127.0.0.1:3000' 	//---->0
   },
   {
-    baseApiRestUrl: 'http://192.168.129.171:3000'
+    baseApiRestUrl: 'http://192.168.129.171:3000'			//---->1
   },
   {
-    baseApiRestUrl: 'https://api.rsvtelecom.com.br'
+    baseApiRestUrl: 'https://api.rsvtelecom.com.br'			//---->2
   }
 ];
 
@@ -152,8 +152,8 @@ var notas = (notas, tagsArr) => {
   )}' style="width:100%;border-radius:8px;">${escapeHtml(note_code)}</div>
         </div>
     </div>
-  </div>
-  <br/><br/><div class="dropdown-divider"></div></div><br/><br/>`;
+    <br/><br/></div><br/><br/>
+  </div>`;
   return content;
 };
 
@@ -192,7 +192,11 @@ var modalCategory = (titulo, idModal, idButton) => {
            id="form-category" enctype="multipart/form-data">
             <div class="form-group">
               <label for="category-name" class="col-form-label">Nome da Categoria:</label>
-              <input type="text" class="form-control" autofocus id="category-name">
+              <input type="text" name="category__name" class="form-control" autofocus id="category-name">
+              <label>Ordem para Associação:</label>
+              <input name="category__order" id="category__order" value="1"/>
+              <label>Relacionar com esta categoria:</label>
+              <input name="category__fk__id" id="category__fk__id" value="1"/>
               <label for="profile_pic" class="col-form-label">Arquivo:</label>
               <input type="file" name="profile_pic" id="profile_pic" />
             </div>

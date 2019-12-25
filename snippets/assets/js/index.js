@@ -9,6 +9,28 @@ function selectOptionByValue(selectElement, value) {
   return false;
 }
 
+var mediaQuery = () => {
+  if (window.matchMedia('(max-width: 575.98px)').matches) {
+    return 'xs';
+  }
+  if (window.matchMedia('(min-width: 576px) and (max-width: 767.98px)').matches) {
+    return 'sm';
+  }
+  if (window.matchMedia('(min-width: 768px) and (max-width: 991.98px)').matches) {
+    return 'md';
+  }
+  if (window.matchMedia('(min-width: 992px) and (max-width: 1199.98px)').matches) {
+    return 'lg';
+  }
+  if (window.matchMedia('(min-width: 1200px)').matches) {
+    return 'xl';
+  }
+};
+
+window.onresize = function() {
+  console.log(mediaQuery());
+};
+
 /**
  *
  */
@@ -260,8 +282,9 @@ function carregarCategorias() {
         rows.innerHTML = '';
 
         result.sort((a, b) => {
-          return b.total- a.total;
+          return a.category_order - b.category_order;
         });
+
         result.map(row => {
           //Destructing
           let { category_id, category_name, category_icon } = row;
@@ -271,10 +294,32 @@ function carregarCategorias() {
 
           //Ao clicar em alguma categoria:::
           item.onclick = function(ev) {
+            
+            if (mediaQuery() == 'xs') {
+              const drawer = mdc.drawer.MDCDrawer.attachTo(
+                document.querySelector('.mdc-drawer')
+              );
+              const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(
+                document.querySelector('.mdc-top-app-bar')
+              );
+              drawer.open = !drawer.open;
+              topAppBar.listen('MDCTopAppBar:nav', () => {
+                drawer.open = !drawer.open;
+              });
+            }
+
             $('#painel-termo-filtrado').removeAttr('hidden');
-            window.location.href = '#painel-termo-filtrado';
+
+            let category = JSON.parse($(this).attr('data-category'));
+
+            window.location.href = '#termo-filtrado';
+
             $('#termo-filtrado').html(
-              'TERMO FILTRADO: ' + this.innerText.trim().toUpperCase()
+              `TERMO FILTRADO: <div 
+              style="background:url('${category.category_icon}') no-repeat;background-size: 100% 100%;
+              background-attachment: scroll;"
+               class="termo-filtrado-icone"></div>` +
+                category.category_name.trim().toUpperCase()
             );
 
             $('#esqueleto').removeAttr('hidden');

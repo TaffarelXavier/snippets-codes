@@ -5,7 +5,6 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Helpers = use("Helpers");
-const Drive = use("Drive");
 /**
  * Resourceful controller for interacting with images
  */

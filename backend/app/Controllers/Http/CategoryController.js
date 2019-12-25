@@ -40,6 +40,7 @@ class CategoryController {
         "categories.category_id",
         "categories.category_name",
         "categories.category_icon",
+        "categories.category_order",
         Database.raw("COUNT(*) AS total")
       )
       .innerJoin("notes", "categories.category_id", "notes.category_id ")
@@ -68,9 +69,18 @@ class CategoryController {
    * @param {Response} ctx.response
    */
   async store({ request, response }) {
+
+    const {
+      category__name,
+      category__order,
+      category__fk__id
+    } = request.post();
+
     const category = new Category();
 
-    category.category_name = "category";
+    category.category_name = category__name.toUpperCase();
+    category.category_order = parseInt(category__order);
+    category.category_fk_id = parseInt(category__fk__id);
 
     await category.save();
 

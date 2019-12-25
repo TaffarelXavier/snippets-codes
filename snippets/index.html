@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" />
     <link rel="stylesheet" href="assets/css/bootstrap-material-design.min.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" href="assets/css/material-components-web.min.css" />
     <link rel="shortcut icon" href="./assets/imagens/favicon.png" type="image/png" />
     <!-- <link rel="stylesheet" href="https://material-responsive-drawer.glitch.me/bundle.css"> -->
@@ -42,7 +41,7 @@
 
         .mdc-drawer-app-content {
             flex: auto;
-            overflow: auto;
+            /* overflow: auto; */
             position: relative;
         }
 
@@ -52,8 +51,8 @@
         }
 
         .main-content {
-            overflow: hidden;
-            overflow-y: auto;
+            /* overflow: hidden;
+            overflow-y: auto; */
             height: 100%;
         }
 
@@ -75,6 +74,9 @@
             #termo-filtrado {
                 font-size: 1.2rem;
             }
+
+            .mdc-drawer,
+            .mdc-drawer--dismissible {}
         }
 
         /* Small devices (landscape phones, 576px and up) */
@@ -90,19 +92,29 @@
             }
 
             .mdc-drawer {
-                width: 300px;
+                width: 340px;
             }
 
             .mdc-drawer-app-content {
-                margin-left: 315px !important;
+                margin-left: 340px !important;
                 margin-right: 0;
             }
         }
 
-        /* Extra large devices (large desktops, 1200px and up) */
-        @media (min-width: 1440px) {
+        @media (min-width: 1450px) {
+            #termo-filtrado {
+                font-size: 1.6rem;
+            }
+
             .mdc-drawer {
-                width: 400px;
+                width: 350px !important;
+                /* border:1px solid lime; */
+            }
+
+            .mdc-drawer-app-content {
+                margin-left: 350px !important;
+                margin-right: 0;
+                /* border:5px solid red; */
             }
         }
     </style>
@@ -110,19 +122,38 @@
 
 <body>
     <!-- NAV BAR -->
-    <header class="mdc-top-app-bar app-bar" id="app-bar" style="background:#018786;">
+    <header class="mdc-top-app-bar mdc-top-app-bar--fixed" id="app-bar" style="background:#018786;">
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                <a style="text-decoration: none;"
-                    class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
-                <img src="assets/imagens/logo.svg" alt="logo-do-site-snippets-code"
-                    style=" margin:0px !important;border:0px solid red;height: 40px;" />
+                <button class="demo-menu mdc-icon-button  material-icons mdc-top-app-bar__navigation-icon">menu</button>
+                <img src="assets/imagens/logo.svg" id="logo-do-site-snippets-code" alt="logo-do-site-snippets-code"
+                    style=" margin:0px !important;border:0px solid red;height: 40px;max-width:150px;" />
                 <span class="mdc-top-app-bar__title">SnippetCode</span>
+            </section>
+
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+                <!-- <input type="search" class="form-control col-ms-2 col-md-2" placeholder="Pesq. por Tag"
+                    id="input-pesquisar-tag" list="datalist-languages" /><datalist id="datalist-languages"></datalist> -->
+                    <div class="mdc-text-field mdc-text-field--fullwidth">
+                        <input class="mdc-text-field__input" style="color:#fff;"
+                               type="search" id="input-pesquisar-geral"
+                               placeholder="Pesquisar Snippets por nome ou descrição"
+                               aria-label="Pesquisar por nome ou descrição">
+                      </div>
+                <button class="mdc-fab mdc-fab--extended" id="btn-pesquisar">
+                    <span class="material-icons">search</span>
+                </button>
+            </section>
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+                <button class="mdc-fab mdc-fab--extended" data-toggle="modal" data-target="#modalCriarNota">
+                    <span class="material-icons mdc-fab__icon">add</span>
+                    <span class="mdc-fab__label">CRIAR SNIPPET</span>
+                </button>
             </section>
         </div>
     </header>
     <!-- DRAWER -->
-    <aside class="mdc-drawer mdc-drawer--dismissible">
+    <aside class="mdc-drawer mdc-drawer--dismissible" style="position: fixed;">
         <div class="mdc-drawer__header">
             <h3 class="mdc-drawer__title">Mail</h3>
             <h6 class="mdc-drawer__subtitle">email@material.io</h6>
@@ -229,7 +260,8 @@
     <div class="mdc-drawer-app-content">
         <main class="main-content" id="main-content">
             <div class="mdc-top-app-bar--fixed-adjust">
-                <div class="container" style="padding-bottom: 40vh;">
+
+                <div class="container" style="/* padding-bottom: 40vh; */">
                     <br />
                     <div class="row">
                         <div class="col-sm-9 col-md-9">
@@ -243,7 +275,6 @@
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
-                                                <!-- <span data-toggle=snackbar data-content="This is my awesome snackbar!"></span> -->
                                                 <h1 style="line-height: 40px;margin-bottom: 35px;">
                                                     <strong>Snippets</strong> são pequenos <strong>trechos</strong> de
                                                     códigos que
@@ -252,7 +283,8 @@
                                                 <h4>
                                                     No mundo do <b>desenvolvimento de sistemas</b>, esse termo é usado
                                                     para designar
-                                                    pequenos trechos de códigos, usados com frequência, que ajudam no
+                                                    pequenos <strong>trechos de códigos</strong>, usados com frequência,
+                                                    que ajudam no
                                                     desenvolvimento de
                                                     seu sistema. Se você estiver executando o mesmo código,
                                                     repetidamente, considere
@@ -268,31 +300,21 @@
                                                     desenvolvimento de
                                                     algum sistema.
                                                 </h4>
+                                                <h4>
+                                                    Portanto, quero lhe fazer um pergunta para finalizar:
+                                                    Você lembra da API de conversão de datas, IO, e outras mais, ao
+                                                    ponto de realizar uma prova, em um notepad++,
+                                                    tendo que realizar métodos que realizem alguma funcionalidade que
+                                                    exija conhecimento da API, SEM ACESSO À PESQUISA?<br />
+                                                    Sim?, =( Você não precisará deste site.<br />
+                                                    <strong>Não?, ótimo! Você poderá recorrer sempre a este site para
+                                                        qualquer pesquisa na área de programação.</strong>
+                                                </h4>
                                             </section>
-                                            <hr />
                                             <div class="row" id="painel-criacao">
                                                 <!-- PESQUISAR NOTAS -->
                                                 <div class="col-ms-12 col-md-12">
-                                                    <div class="input-group mb-3">
-                                                        <div class="input-group-prepend" style="border:0 solid red">
-                                                            <button class=""
-                                                                style="border:0 solid #0f0;height:50%;margin-top:40%">
-                                                                <i class="material-icons">search</i>
-                                                            </button>
-                                                        </div>
-                                                        <input type="search" class="form-control col-ms-2 col-md-2"
-                                                            placeholder="Pesq. por Tag" id="input-pesquisar-tag"
-                                                            list="datalist-languages" /><datalist
-                                                            id="datalist-languages"></datalist><input type="search"
-                                                            class="form-control col-ms-10 col-md-10"
-                                                            placeholder="Pesquisar por nome e descrição" autofocus
-                                                            id="input-pesquisar-geral" />
-                                                        <button class="mdc-fab mdc-fab--extended" data-toggle="modal"
-                                                            data-target="#modalCriarNota">
-                                                            <span class="material-icons mdc-fab__icon">add</span>
-                                                            <span class="mdc-fab__label">CRIAR SNIPPET</span>
-                                                        </button>
-                                                    </div>
+
                                                 </div>
                                             </div>
                                             <div class="row" id="painel-termo-filtrado" hidden>
@@ -375,7 +397,7 @@
                             </div>
                         </div>
                         <div class="col-sm-3 col-md-3">
-                            <!-- ALGUM TEXTO AQUI - PAINEL ESQUERDO--> 
+                            <!-- ALGUM TEXTO AQUI - PAINEL ESQUERDO-->
                         </div>
                     </div>
                 </div>
@@ -392,23 +414,19 @@
                             <div class="col-md-3 col-xd-12">
                                 <h5>Características</h5>
                                 <ul class="list-unstyled text-small">
-                                    <li><a class="text-muted" href="#">Cool stuff</a></li>
-                                    <li><a class="text-muted" href="#">Random feature</a></li>
-                                    <li><a class="text-muted" href="#">Team feature</a></li>
-                                    <li><a class="text-muted" href="#">Stuff for developers</a></li>
-                                    <li><a class="text-muted" href="#">Another one</a></li>
-                                    <li><a class="text-muted" href="#">Last time</a></li>
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
                                 </ul>
                             </div>
-                            <div class="col-md-3 col-xd-12">
+                            <!-- <div class="col-md-3 col-xd-12">
                                 <h5>Resources</h5>
                                 <ul class="list-unstyled text-small">
-                                    <li><a class="text-muted" href="#">Resource</a></li>
-                                    <li><a class="text-muted" href="#">Resource name</a></li>
-                                    <li><a class="text-muted" href="#">Another resource</a></li>
-                                    <li><a class="text-muted" href="#">Final resource</a></li>
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
                                 </ul>
-                            </div>
+                            </div> -->
                             <div class="col-md-3 col-xd-12">
                                 <h5>Sobre</h5>
                                 <ul class="list-unstyled text-small">
@@ -424,14 +442,15 @@
             </div>
         </main>
     </div>
-    <button class="mdc-fab mdc-fab--extended"
-    data-toggle="modal"
-    data-target="#modalCriarNota"
-    id="btn-mdc-create-snippet-add" hidden
-        style="position: fixed; bottom: 20px;right: 20px;">
+    <button class="mdc-fab mdc-fab--extended" data-toggle="modal" data-target="#modalCriarNota"
+        id="btn-mdc-create-snippet-add" hidden style="position: fixed; bottom: 20px;right: 70px;">
         <div class="mdc-fab__ripple"></div>
         <span class="material-icons mdc-fab__icon">add</span>
         <span class="mdc-fab__label">CRIAR SNIPPET</span>
+    </button>
+    <button type="button" class="btn btn-primary btn-group-lg bmd-btn-fab" hidden id="btn-mdc-to-top"
+        style="position: fixed; bottom: 15px;right: 10px;">
+        <i class="material-icons">arrow_upward</i>
     </button>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/select2.config.js"></script>
@@ -442,21 +461,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/ace.js"></script>
     <script src="assets/js/ext-beautify.js"></script>
     <script src="assets/js/select2.min.js"></script>
-    <!-- <script src="assets/js/jquery.mark.min.js"></script> -->
+    <!-- jquery.mark.min.js: SERVE PARA MARCAR, À MEDIDA QUE FAZEMOS ALGUMA PESQUISA -->
+    <script src="assets/js/jquery.mark.min.js"></script>
     <script src="assets/js/framework.js"></script>
     <script src="assets/js/index.js"></script>
 
     <script>
-        // var body = document.getElementsByTagName('body')[0];
-        // var script1 = document.createElement('script'),
-        //     script2 = document.createElement('script');
-
-        // setTimeout(() => {
-        //     script1.src = 'assets/js/framework.js';
-        //     body.appendChild(script1);
-        //     script2.src = 'assets/js/index.js';
-        //     body.appendChild(script2);
-        // }, 500);
 
         const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
         const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar'));
@@ -464,36 +474,24 @@
         topAppBar.listen('MDCTopAppBar:nav', () => {
             drawer.open = !drawer.open;
         });
+
         document.body.addEventListener('MDCDrawer:opened', () => {
             document.querySelector('#categoria').focus();
         });
 
-        var scrollableElement = document.getElementById('main-content');
+        var scrollableElement = document.getElementsByClassName('mdc-drawer-app-content')[0];
 
-        scrollableElement.onscroll = (ev) => {
-            if(ev.target.scrollTop>=650){
-                $('#btn-mdc-create-snippet-add').removeAttr("hidden");
+        document.onscroll = (ev) => {
+            var doc = document.documentElement;
+            var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+            if (top >= 650) {
+                $('#btn-mdc-create-snippet-add, #btn-mdc-to-top').removeAttr("hidden");
             }
-            else{
-                $('#btn-mdc-create-snippet-add').attr("hidden", true);
+            else {
+                $('#btn-mdc-create-snippet-add, #btn-mdc-to-top').attr("hidden", true);
             }
         }
-       /* scrollableElement.addEventListener('wheel', findScrollDirectionOtherBrowsers);
- 
-         function findScrollDirectionOtherBrowsers(event) {
-             var delta;
-             if (event.wheelDelta) {
-                 delta = event.wheelDelta;
-             } else {
-                 delta = -1 * event.deltaY;
-             }
-             if (delta < 0) {
-                 $('#btn-mdc-create-snippet-add').removeAttr("hidden");
-             } else if (delta > 0) {
-                 $('#btn-mdc-create-snippet-add').attr("hidden", true);
-             }
- 
-         }*/
+
     </script>
 </body>
 
