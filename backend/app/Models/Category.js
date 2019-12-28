@@ -7,7 +7,13 @@ class Category extends Model {
   static get primaryKey() {
     return "category_id";
   }
+
   notes() {
+    // return this.hasMany("App/Models/Note").innerJoin(
+    //   "languages",
+    //   "languages.lang_id",
+    //   "notes.note_type_language"
+    // );
     return this.hasMany("App/Models/Note");
   }
 }

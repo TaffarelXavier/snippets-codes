@@ -51,7 +51,7 @@ input:hover {
 
 .card {
   border: 0 solid red;
-  border-radius: 5px;
+  border-radius: 7px !important;
 }
 
 .list-group-item {
@@ -160,8 +160,8 @@ mark {
 
 .skeleton-icon {
   flex-grow: 1;
-  padding: 10px;
-  height: 50px;
+  height: 30px;
+  width:30px;
   /* border-radius: 100%; */
 }
 
@@ -182,7 +182,7 @@ mark {
   height: 40px;
   display: inline-block;
   position: relative;
-  top: 5px;
+  top: 10px;
 }
 
 /* Dispositivos extra small (telefones em modo retrato, com menos de 576px) */

@@ -1,57 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
-    <title>ACE in Action</title>
-    <style type="text/css" media="screen">
-        #editor {
-            position: relative;
-            width: 100%;
-            height: 400px;
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism.min.css" />
+    <style>
+        textarea {
+            width: 50%;
         }
     </style>
 </head>
+
 <body>
-
-    <div id="editor">
-        function foo(items) {
-        var x = "All this is syntax highlighted";
-        return x;
-        }
-    </div>
-    <a href="../">Voltar</a>
-    <button id="formatar">Formatar</button>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/ace.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/ext-beautify.js"></script>
-
-    <script>
-        //var beautify = ace.require("ace/ext/beautify"); // get reference to extension
-
-        var editor = ace.edit("editor");
-
-        document.getElementById('editor').style.fontSize = '16px';
-
-        editor.setTheme("ace/theme/dracula");
-
-        editor.session.setMode("ace/mode/javascript");
-
-        editor.session.setTabSize(4);
-
-        editor.setOptions({
-            autoScrollEditorIntoView: true,
-            copyWithEmptySelection: true,
-        });
+    <textarea id="markdown" autofocus rows="10">const Prism = require('prismjs');
+        const loadLanguages = require('prismjs/components/');
+        loadLanguages(['haml']);
         
-        setTimeout(() => {
-            var beautify = ace.require("ace/ext/beautify"); // get reference to extension
-            beautify.beautify(editor.session);  
-        }, 500);
-       
-        //beautify.beautify(editor.session);
-        document.getElementById("formatar").onclick = function () {
-            var beautify = ace.require("ace/ext/beautify"); // get reference to extension
-            beautify.beautify(editor.session);
-        }
+        // The code snippet you want to highlight, as a string
+        const code = `= ['hi', 'there', 'reader!'].join " "`;
+        
+        // Returns a highlighted HTML string
+        const html = Prism.highlight(code, Prism.languages.haml, 'haml');</textarea>
+    <pre class="language-markdown">
+      <code class="language-markdown" id="data"> The C# code will be highlighted __after__ the rest of this document.
+
+# Taffarel 
+
+```csharp
+public class Foo : IBar<int> {
+    public string Baz { get; set; } = "foo";
+}
+```
+
+The CSS code will be highlighted with this document because CSS has already been loaded.
+
+```css
+a:hover {
+    color: green !important;
+}
+```</code></pre>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/autoloader/prism-autoloader.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script>
+        window.Prism = window.Prism || {};
+        window.Prism.manual = true;
+        $(document).ready(function () {
+            $('#markdown').on('input', function () {
+                let code = $(this);
+
+                // Returns a highlighted HTML string
+                const html = Prism.highlight(code.val(), Prism.languages.javascript, 'javascript');
+                $('#data').html(html);
+            })
+        })
     </script>
 </body>
 

@@ -117,6 +117,15 @@
                 /* border:5px solid red; */
             }
         }
+
+        body {
+            counter-reset: section;
+        }
+
+        .contador::before {
+            counter-increment: section;
+            content: counter(section);
+        }
     </style>
 </head>
 
@@ -126,20 +135,20 @@
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                 <button class="demo-menu mdc-icon-button  material-icons mdc-top-app-bar__navigation-icon">menu</button>
-                <img src="assets/imagens/logo.svg" id="logo-do-site-snippets-code" alt="logo-do-site-snippets-code"
-                    style=" margin:0px !important;border:0px solid red;height: 40px;max-width:150px;" />
-                <span class="mdc-top-app-bar__title">SnippetCode</span>
+                <a href=""><img src="assets/imagens/bitmap.png" class="lazy" data-src="assets/imagens/logo.svg"
+                        id="logo-do-site-snippets-code" alt="logo-do-site-snippets-code"
+                        style=" margin:0px !important;border:0px solid red;height: 40px;width:150px;" />
+                </a><span class="mdc-top-app-bar__title">SnippetCode</span>
             </section>
 
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
                 <!-- <input type="search" class="form-control col-ms-2 col-md-2" placeholder="Pesq. por Tag"
                     id="input-pesquisar-tag" list="datalist-languages" /><datalist id="datalist-languages"></datalist> -->
-                    <div class="mdc-text-field mdc-text-field--fullwidth">
-                        <input class="mdc-text-field__input" style="color:#fff;"
-                               type="search" id="input-pesquisar-geral"
-                               placeholder="Pesquisar Snippets por nome ou descrição"
-                               aria-label="Pesquisar por nome ou descrição">
-                      </div>
+                <div class="mdc-text-field mdc-text-field--fullwidth">
+                    <input class="mdc-text-field__input" style="color:#fff;" type="search" id="input-pesquisar-geral"
+                        placeholder="Pesquisar Snippets por nome ou descrição"
+                        aria-label="Pesquisar por nome ou descrição">
+                </div>
                 <button class="mdc-fab mdc-fab--extended" id="btn-pesquisar">
                     <span class="material-icons">search</span>
                 </button>
@@ -155,23 +164,11 @@
     <!-- DRAWER -->
     <aside class="mdc-drawer mdc-drawer--dismissible" style="position: fixed;">
         <div class="mdc-drawer__header">
-            <h3 class="mdc-drawer__title">Mail</h3>
-            <h6 class="mdc-drawer__subtitle">email@material.io</h6>
+            <h3 class="mdc-drawer__title">Snippet Code</h3>
+            <h6 class="mdc-drawer__subtitle">taffarel_deus@hotmail.com</h6>
         </div>
         <div class="mdc-drawer__content">
             <nav class="mdc-list">
-                <!-- <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-                    <span class="mdc-list-item__text">Inbox</span>
-                </a>
-                <a class="mdc-list-item" href="#">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-                    <span class="mdc-list-item__text">Outgoing</span>
-                </a>
-                <a class="mdc-list-item" href="#">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-                    <span class="mdc-list-item__text">Drafts</span>
-                </a> -->
                 <div class="row">
                     <div class="col-ms-12 col-md-12">
                         <div class="alert alert-success" style="border:1px dashed #ccc;margin-top:0px!important">
@@ -186,7 +183,7 @@
                 <div class="row">
                     <div class="col-ms-12 col-md-12">
                         <div class="input-group mb-3">
-                            <input type="search" class="form-control" id="categoria" placeholder="Filtrar categoria"
+                            <input type="text" class="form-control" id="categoria" placeholder="Filtrar categoria"
                                 style="border:0 solid red;padding:15px" />
                         </div>
                     </div>
@@ -196,57 +193,57 @@
                         <ul class="list-group" id="category">
                             <!-- <li class="list-group-item list-group-item-action"></li> -->
                             <div class="flex-container">
-                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
                             <div class="flex-container">
-                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
                             <div class="flex-container">
-                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
                             <div class="flex-container">
-                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
                             <div class="flex-container">
-                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
                             <div class="flex-container">
-                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
                             <div class="flex-container">
-                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
                             <div class="flex-container">
-                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
                             <div class="flex-container">
-                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
                             <div class="flex-container">
-                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
                             <div class="flex-container">
-                                <div class="skeleton-icon rounded-circle animate"></div>
+                                <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
@@ -275,7 +272,7 @@
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
-                                                <h1 style="line-height: 40px;margin-bottom: 35px;">
+                                                <h1 style="line-height: 40px;margin-bottom: 35px;font-size:3rem;">
                                                     <strong>Snippets</strong> são pequenos <strong>trechos</strong> de
                                                     códigos que
                                                     ajudam na produtividade.
@@ -305,18 +302,20 @@
                                                     Você lembra da API de conversão de datas, IO, e outras mais, ao
                                                     ponto de realizar uma prova, em um notepad++,
                                                     tendo que realizar métodos que realizem alguma funcionalidade que
-                                                    exija conhecimento da API, SEM ACESSO À PESQUISA?<br />
-                                                    Sim?, =( Você não precisará deste site.<br />
-                                                    <strong>Não?, ótimo! Você poderá recorrer sempre a este site para
+                                                    exija conhecimento da API, <strong>SEM ACESSO À
+                                                        PESQUISA?</strong><br />
+                                                    Sim?<span style='font-size:1.3rem;'>&#128533;</span> =( Você não
+                                                    precisará deste site.<br />
+                                                    <strong>Não? Ótimo! Você poderá recorrer sempre a este site para
                                                         qualquer pesquisa na área de programação.</strong>
                                                 </h4>
                                             </section>
-                                            <div class="row" id="painel-criacao">
-                                                <!-- PESQUISAR NOTAS -->
+                                            <!-- PESQUISAR NOTAS -->
+                                            <!-- <div class="row" id="painel-criacao">
                                                 <div class="col-ms-12 col-md-12">
 
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="row" id="painel-termo-filtrado" hidden>
                                                 <div class="col-md-12">
                                                     <h1 id="termo-filtrado">TERMO FILTRADO: HTML</h1>
@@ -391,6 +390,11 @@
                                                     </button>
                                                 </div>
                                             </div>
+                                            <div style="text-align: center;">
+                                                <button id="carregar-mais" class="mdc-fab mdc-fab--extended">
+                                                    <span class="material-icons mdc-fab__icon">refresh</span>
+                                                    <span class="mdc-button__ripple"></span>Carregar mais...</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -406,7 +410,8 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-3 col-xd-12">
-                                <img src="assets/imagens/logo.svg" alt="logo-do-site-snippets-code"
+                                <img src="assets/imagens/bitmap.png" class="lazy" data-src="assets/imagens/logo.svg"
+                                    id="logo-do-site-snippets-code" alt="logo-do-site-snippets-code"
                                     style=" margin:0px !important;border:0px solid red;width: 100px;" />
                                 <strong>Snippet</strong>
                                 <small class="d-block mb-3 text-muted">&copy; 2020</small>
@@ -448,8 +453,8 @@
         <span class="material-icons mdc-fab__icon">add</span>
         <span class="mdc-fab__label">CRIAR SNIPPET</span>
     </button>
-    <button type="button" class="btn btn-primary btn-group-lg bmd-btn-fab" hidden id="btn-mdc-to-top"
-        style="position: fixed; bottom: 15px;right: 10px;">
+    <button type="button" onclick="goToTop()" class="btn btn-primary btn-group-lg bmd-btn-fab" hidden
+        id="btn-mdc-to-top" style="position: fixed; bottom: 15px;right: 10px;">
         <i class="material-icons">arrow_upward</i>
     </button>
     <script src="assets/js/jquery.min.js"></script>
@@ -467,10 +472,17 @@
     <script src="assets/js/index.js"></script>
 
     <script>
-
         const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
         const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar'));
         drawer.open = !drawer.open;
+
+        $('#categoria').keydown(function (ev) {
+            if (ev.keyCode == 27) {
+                this.value = "";
+                return false;
+            }
+        })
+
         topAppBar.listen('MDCTopAppBar:nav', () => {
             drawer.open = !drawer.open;
         });
@@ -490,6 +502,93 @@
             else {
                 $('#btn-mdc-create-snippet-add, #btn-mdc-to-top').attr("hidden", true);
             }
+        }
+
+        function goToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+        /**
+         *  BARRA DE ROLAGEM INFINITA
+         * */
+        var endless = {
+            page: 1, // "Página atual",
+            hasMore: true, // Não está no fim, contém mais conteúdo
+            proceed: true, // Carrega a próxima página?
+            load: function () {
+                if (endless.proceed && endless.hasMore) {
+                    // Prvent user from loading too much contents suddenly
+                    // Block the loading until this one is done
+                    endless.proceed = false;
+
+                    // Load the next page
+                    var nextPg = endless.page + 1;
+
+                    // AJAX request
+                    var xhr = new XMLHttpRequest();
+
+                    xhr.open('GET', "http://127.0.0.1:3000/notes?pagina=" + nextPg, true);
+
+                    xhr.onload = function () {
+                        // No more contents to load
+
+                        if (this.response == "END") {
+                            //loading.innerHTML = "END";
+                            endless.hasMore = false;
+                        }
+                        // Contents loaded
+                        else {
+                            // Append into container + hide loading message
+                            let notes = JSON.parse(this.response);
+
+                            let content = '';
+
+                            notes.map(nota => {
+                                content += notas(nota, []);
+                            });
+
+                            $('#get-notes').append(content);
+
+                            funcoesNota();
+                            //loading.style.display = "none";
+                            // Set the current page, unblock loading
+                            endless.page = nextPg;
+                            endless.proceed = true;
+                        }
+                    };
+                    xhr.send();
+                }
+            },
+
+            listen: function () {
+                if ((document.getElementById('get-notes').offsetHeight
+                    - parseInt(window.scrollY)) <= 100) {
+                    endless.load();
+                }
+            }
+        };
+        //Para o scroll infinito
+        window.onload = function () {
+            // Attach scroll listener
+            //window.addEventListener("scroll", endless.listen);
+
+            // Initial load contents
+            //endless.load();
+        };
+
+        document.getElementById('carregar-mais').onclick = () => {
+            this.
+                $('#carregar-mais')
+                .attr('disabled', true)
+                .find('.mdc-fab__label')
+                .html('Carregando, aguarde...')
+            endless.load();
+            this.
+                $('#carregar-mais')
+                .attr('disabled', false)
+                .find('.mdc-fab__label')
+                .html('Carregar mais...')
         }
 
     </script>

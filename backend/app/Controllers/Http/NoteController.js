@@ -18,42 +18,58 @@ class NoteController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response, view }) {
+  async index({ request, params, response, view }) {
+
+   const {pagina} = request.get();
+
     const notes = await Note.query()
       .select(
         "note_id",
-        "category_id",
         "note_type_language",
         "note_title",
         "note_description",
         "note_code",
         "lang_name",
-        "lang_extension"
+        "lang_extension",
+        "categories.category_id",
+        "categories.category_name",
+        "categories.category_icon",
+        "categories.category_order",
+        "categories.category_placeholder_icon"
       )
       .innerJoin("languages", "languages.lang_id", "notes.note_type_language")
-      .limit(10)
-      .fetch();
+      .innerJoin("categories", "notes.category_id", "categories.category_id")
+      .forPage(pagina, 10).fetch()
+
     return notes;
   }
 
   /*
    */
-  async getCategoriesWithTotal({ params }) {
-    const { category_id } = params;
+  async getCategoriesComTotal({ params }) {
+
+    const { category_id, pagina} = params;
 
     const categories = await Note.query()
       .select(
         "note_id",
-        "category_id",
+        "notes.category_id",
         "note_type_language",
         "note_title",
         "note_description",
         "note_code",
         "lang_name",
-        "lang_extension"
+        "lang_extension",
+        "categories.category_id",
+        "categories.category_name",
+        "categories.category_icon",
+        "categories.category_order",
+        "categories.category_placeholder_icon"
       )
-      .where("category_id", parseInt(category_id))
+      .where("notes.category_id", parseInt(category_id))
       .innerJoin("languages", "notes.note_type_language", "languages.lang_id")
+      .innerJoin("categories", "notes.category_id", "categories.category_id")
+      .forPage(parseInt(pagina), 10)
       .orderBy("notes.created_at", "DESC")
       .fetch();
     return categories;
@@ -83,36 +99,6 @@ class NoteController {
     note.save();
   }
 
-  /**
-   * Render a form to update an existing note.
-   * GET notes/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit({ params, request, response, view }) {}
-
-  /**
-   * Update note details.
-   * PUT or PATCH notes/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update({ params, request, response }) {}
-
-  /**
-   * Delete a note with id.
-   * DELETE notes/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy({ params, request, response }) {}
 }
 
 module.exports = NoteController;

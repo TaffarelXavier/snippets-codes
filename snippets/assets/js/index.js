@@ -27,10 +27,6 @@ var mediaQuery = () => {
   }
 };
 
-window.onresize = function() {
-  console.log(mediaQuery());
-};
-
 /**
  *
  */
@@ -218,7 +214,11 @@ function getNotesByCategoryId(category_id, callback) {
   var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
 
   fetch(
-    config[INDEX].baseApiRestUrl + '/notes-por-category-id/' + parseInt(category_id),
+    config[INDEX].baseApiRestUrl +
+      '/notes-por-category-id/' +
+      parseInt(category_id) +
+      '/' +
+      1,
     myInit
   ).then(function(response) {
     if (response.status !== 200) {
@@ -264,8 +264,129 @@ function loadTodosSnippets() {
   });
 }
 
+document.addEventListener('DOMContentLoaded', function(event) {
+  var categoryName = window.location.hash.replace('#', '');
+  if (categoryName.length > 0) {
+    var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
+    fetch(
+      config[INDEX].baseApiRestUrl + '/get-all-categories?category_name=' + categoryName,
+      myInit
+    ).then(function(response) {
+      if (response.status !== 200) {
+        console.warn('Looks like there was a problem. Status Code: ' + response.status);
+        return;
+      }
+      response.json().then(function(result) {
+        let rs = result[0];
+
+        var el = document.getElementById(rs.category_id + '_' + rs.category_name);
+
+        carregarNotasPorCategoria(el, rs);
+
+        let content = '';
+
+        rs.notes.map(nota => {
+          content += notas(nota, []);
+        });
+
+        $('#get-notes').html(content);
+
+        funcoesNota();
+
+        cabecalho('#_' + rs.category_name.toLowerCase(), rs.category_name, rs.category_icon);
+        if (rs.notes.length > 0) {
+          $('#esqueleto').attr('hidden', true);
+          setTimeout(function(){
+            $('.list-group-item').removeClass(
+              'list-group-item-action list-group-item-success'
+            );
+            $('#' + rs.category_name.toUpperCase()).addClass(
+              'list-group-item-action list-group-item-success',
+              'disabled'
+            );
+          },2000)
+        }
+      });
+    });
+  } else {
+    loadTodosSnippets();
+  }
+});
+
+function cabecalho(elemt, category_name, category_icon) {
+  $('#painel-termo-filtrado').removeAttr('hidden');
+
+  $('#termo-filtrado').html(
+    `TERMO FILTRADO: <div 
+    style="background:url('${config[INDEX].baseApiRestUrl}/images/${category_icon}') no-repeat;background-size: 95% 95%;
+    background-attachment: scroll;background-position: 0px 3px;border:0px solid red;"
+     class="termo-filtrado-icone"></div><strong>` +
+      category_name.trim().toUpperCase() +
+      '</strong>'
+  );
+  //Vai para o topo:
+  var obj = $('#termo-filtrado').offset();
+  $('html, body')
+    .delay(1000)
+    .animate({ scrollTop: obj.top - 70 }, 200);
+
+  $('#esqueleto').removeAttr('hidden');
+
+  $('.list-group-item').removeClass('list-group-item-action list-group-item-success');
+
+  $(elemt).addClass('list-group-item-action list-group-item-success', 'disabled');
+}
+
+function carregarNotasPorCategoria(el, { category_id, category_name, category_icon }) {
+  //Define
+
+  if (mediaQuery() == 'xs') {
+    const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+    const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(
+      document.querySelector('.mdc-top-app-bar')
+    );
+    drawer.open = !drawer.open;
+    topAppBar.listen('MDCTopAppBar:nav', () => {
+      drawer.open = !drawer.open;
+    });
+  }
+  //Carrega o cabeçalho:
+  cabecalho(el, category_name, category_icon);
+
+  //Busca as 10 primeiras notas pelo ID de uma categoria
+  getNotesByCategoryId(category_id, function(res) {
+    $('#get-notes').html('');
+
+    let content = '';
+
+    res.map(nota => {
+      content += notas(nota, []);
+    });
+
+    $('#get-notes').html(content);
+
+    funcoesNota();
+
+    if (res.length > 0) {
+      $('#esqueleto').attr('hidden', true);
+    }
+  });
+
+  /*if (Object.keys(rows).length > 0) {
+    for (let data of rows) {
+      
+      // let rows = sqlite.run(
+      //   `SELECT tag_id, tag_name from tags AS t1 JOIN note_tag AS t2 ON t1.tag_id = t2.nt_tag_fk_id WHERE t2.nt_note_fk_id = ?`,
+      //   [data.note_id]
+      // );
+      //
+    }
+  }*/
+  return false;
+}
+
 /**
- *
+ * Carregas as categorias na barra à esquerda.
  */
 function carregarCategorias() {
   var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
@@ -287,96 +408,41 @@ function carregarCategorias() {
 
         result.map(row => {
           //Destructing
-          let { category_id, category_name, category_icon } = row;
+          let {
+            category_name,
+            category_id,
+            category_icon,
+            category_placeholder_icon
+          } = row;
           //INÍCIO - BUSCA CATEGORIAS
 
           var item = document.createElement('li');
 
-          //Ao clicar em alguma categoria:::
-          item.onclick = function(ev) {
-            
-            if (mediaQuery() == 'xs') {
-              const drawer = mdc.drawer.MDCDrawer.attachTo(
-                document.querySelector('.mdc-drawer')
-              );
-              const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(
-                document.querySelector('.mdc-top-app-bar')
-              );
-              drawer.open = !drawer.open;
-              topAppBar.listen('MDCTopAppBar:nav', () => {
-                drawer.open = !drawer.open;
-              });
-            }
-
-            $('#painel-termo-filtrado').removeAttr('hidden');
-
-            let category = JSON.parse($(this).attr('data-category'));
-
-            window.location.href = '#termo-filtrado';
-
-            $('#termo-filtrado').html(
-              `TERMO FILTRADO: <div 
-              style="background:url('${category.category_icon}') no-repeat;background-size: 100% 100%;
-              background-attachment: scroll;"
-               class="termo-filtrado-icone"></div>` +
-                category.category_name.trim().toUpperCase()
-            );
-
-            $('#esqueleto').removeAttr('hidden');
-
-            $('.list-group-item').removeClass(
-              'list-group-item-action list-group-item-success'
-            );
-
-            $(this).addClass(
-              'list-group-item-action list-group-item-success',
-              'disabled'
-            );
-
-            //Busca as 10 primeiras notas pelo ID de uma categoria
-            getNotesByCategoryId(category_id, function(res) {
-              $('#get-notes').html('');
-
-              let content = '';
-
-              res.map(nota => {
-                content += notas(nota, []);
-              });
-
-              $('#get-notes').html(content);
-
-              funcoesNota();
-
-              if (res.length > 0) {
-                $('#esqueleto').attr('hidden', true);
-              }
-            });
-
-            /*if (Object.keys(rows).length > 0) {
-              for (let data of rows) {
-                
-                // let rows = sqlite.run(
-                //   `SELECT tag_id, tag_name from tags AS t1 JOIN note_tag AS t2 ON t1.tag_id = t2.nt_tag_fk_id WHERE t2.nt_note_fk_id = ?`,
-                //   [data.note_id]
-                // );
-                //
-              }
-            }*/
-            return false;
+          item.id = category_name;
+          //Ao clicar em alguma categoria:
+          item.onclick = function() {
+            var el = this;
+            window.location.hash = category_name.toLowerCase();
+            carregarNotasPorCategoria(el, row);
           };
 
           const ICON_PADRAO =
             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAAAAACpleexAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfjDBMUJR7SizDUAAAAJElEQVQ4y2M4QyRgGFU4qnBkKbxw8eLNixcHtxtHFY4qHAoKAWtc+2KAiEgvAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTEyLTIwVDA1OjM3OjMwKzA5OjAwhGs2fQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0xMi0yMFQwNTozNzozMCswOTowMPU2jsEAAAAASUVORK5CYII=';
 
+          const dataFile = category_icon.trim().split('.');
           //Adiciona classes às categorias:
           $(item)
             .addClass('list-group-item justify-content-between')
             .css({ borderBottom: '1px dashed #ccc', padding: '0px !important' })
             .html(
               `<span class="categoria-nome">
-              <img style="margin:0;position: relative;top:-1px; width:40px;height: 40px;"
-               src="${ICON_PADRAO}" alt="${category_icon.trim()}" data-src='${
-                category_icon != null ? category_icon.trim() : ICON_PADRAO
+              <img style="margin:0;position: relative;top:-1px; width:40px;height: 40px;background:#eee;"
+               src="${
+                 config[INDEX].baseApiRestUrl
+               }/images/${category_placeholder_icon.trim()}" alt="${category_icon.trim()}" data-src='${
+                category_icon != null
+                  ? `${config[INDEX].baseApiRestUrl}/images/` + category_icon.trim()
+                  : ICON_PADRAO
               }' class="lazy" /> <!---->
               ${category_name.toUpperCase()}</span>
    <span class='badge badge-primary badge-pill' style="float:right;position:relative;top:-10px;margin:0">${
@@ -408,6 +474,8 @@ function carregarCategorias() {
 
                     lazyImage.classList.remove('lazy');
 
+                    $(lazyImage).css({ background: 'transparent' });
+
                     lazyImageObserver.unobserve(lazyImage);
                   }
                 });
@@ -417,7 +485,7 @@ function carregarCategorias() {
                 lazyImageObserver.observe(lazyImage);
               });
             }
-          }, 500);
+          }, 100);
           //FIM - BUSCA CATEGORIAS
         });
       });
@@ -511,17 +579,6 @@ function carregarTodasCategoria() {
 
 // Pode usar o jQuery normalmente agora.
 $(document).ready(function() {
-  loadTodosSnippets();
-  //carregarTodasCategoria();
-
-  //Carregar as linguagens:
-
-  // Tag.all().map(({ tag_name }) => {
-  //   $("#datalist-languages").append(
-  //     `<option value='${tag_name.toUpperCase()}' />`
-  //   );
-  // });
-
   //Abre o modal de categorias:
   $('#abrir-modal-criador-categoria').click(function() {
     setTimeout(function() {
@@ -616,30 +673,35 @@ $(document).ready(function() {
 
   $('body').append(
     modalCategory('Criar nova categoria', 'exampleModal', 'idButton1'),
-    modalCriarNota('Criar nova nota', 'modalCriarNota', 'buttonCriarNota'),
-    modalEditarNota('Editar Nota', 'modalEditarNota', 'btnAlterarNota')
+    modalCriarNota('Criar novo Snippet', 'modalCriarNota', 'buttonCriarNota'),
+    modalEditarNota('Editar Snippet', 'modalEditarNota', 'btnAlterarNota')
   );
-
-  //Select: categoria
-  $('#categories_id').change(function(ev) {
-    let linguagem = $(this)
-      .find('option:selected')
-      .text()
-      .toUpperCase();
-
-    var languages = [].slice.call(document.getElementById('languages'));
-
-    var index = languages.findIndex(fruit => {
-      return fruit.label.toUpperCase() == linguagem;
-    });
-    //Seleciona o valor:
-    document.getElementById('languages').selectedIndex = index;
-  });
 
   //Selects 2:
 
   funcSelect2('#select-tags');
   funcSelect2('#gd-select-tags');
+
+  var _selectCategoria = $('#categories_id');
+  var _selectFormatacao = $('#languages');
+
+  _selectCategoria
+    .select2({
+      theme: 'classic',
+      width: 'resolve',
+      placeholder: 'Seleleciona uma categoria'
+    })
+    .on('select2:select', function(e) {
+      var data = e.params.data;
+      let val = _selectFormatacao.find("option:contains('" + data.text + "')").val();
+      _selectFormatacao.val(val).trigger('change.select2');
+    });
+
+  _selectFormatacao.select2({
+    theme: 'classic',
+    width: 'resolve',
+    placeholder: 'Seleleciona uma opção de saída de formatação'
+  });
 
   //Modal: Evento ao abrir o modal:
   $('#modalCriarNota').on('show.bs.modal', function(event) {
@@ -650,34 +712,7 @@ $(document).ready(function() {
     }, 500);
   });
 
-  /**
-   * Criar Categoria
-   */
-  // $('#idButton1').click(function() {
-  //   let categoryName = $('#category-name')
-  //     .val()
-  //     .trim();
-  //   if (categoryName != '') {
-  //    /* var category = Category.create(categoryName.toUpperCase());
-
-  //     // if (lastId > 0) {
-  //     alert('Categoria criada com sucesso!');
-
-  //     var languages = document.getElementsByName('languages');
-
-  //     $(languages).append(
-  //       `<option value='${category.last_id}'>${categoryName.toUpperCase()}</option>`
-  //     );
-  //     //}*/
-  //   }
-  // });
-
-  $('#form-category').submit(function(ev) {
-    //ev.preventDefault();
-    //return false;
-  });
-
-  //EDITAR NOTA:
+  //FORMULÁRIO: EDITAR NOTA:
   $('#form-editar-nota').submit(function(ev) {
     ev.preventDefault();
 
@@ -703,7 +738,7 @@ $(document).ready(function() {
     return false;
   });
 
-  //CRIAR NOTA:
+  //FORMULÁRIO: CRIAR NOTA:
   $('#formSave').submit(function(ev) {
     ev.preventDefault();
 
@@ -786,58 +821,5 @@ $(document).ready(function() {
     });*/
     return false;
   });
-
-  function getAllNotes() {
-    let rows = sqlite.run(
-      `SELECT * FROM notes AS t1 JOIN languages AS t2
-    ON t1.note_type_language = t2.lang_id ORDER BY t1.created_at DESC;`
-    );
-
-    sqlite.close();
-
-    return rows;
-  }
-
-  // var options = {
-  //   content: 'Some text', // text of the snackbar
-  //   style: 'toast', // add a custom class to your snackbar
-  //   timeout: 1000 // time in milliseconds after the snackbar autohides, 0 is disabled
-  // };
-
-  // $.snackbar(options);
-
-  let conteudo = ``;
-
-  //Carregar notas
-  // var notes = getAllNotes();
-
-  // if (notes.length > 0) {
-  //   getAllNotes().map(data => {
-  //     sqlite.connect(PATH_DB);
-
-  //     let rows = sqlite.run(
-  //       `SELECT tag_id, tag_name FROM tags AS t1 JOIN note_tag AS t2 ON t1.tag_id = t2.nt_tag_fk_id WHERE t2.nt_note_fk_id = ?`,
-  //       [data.note_id]
-  //     );
-
-  //     conteudo += notas(data, rows);
-
-  //     sqlite.close();
-  //   });
-
-  //   $("#get-notes").html(conteudo);
-
-  // $('#sem-notas').removeAttr('hidden');
-
-  //$('#esqueleto').attr('hidden', true);
-
-  funcoesNota();
-  // }
-
   carregarCategorias();
-
-  $('#tela-inicial').click(function() {
-    $('#get-notes').html(conteudo);
-    funcoesNota();
-  });
 }); //Fim: $(document).ready

@@ -1,6 +1,6 @@
 ﻿const config = [
   {
-    baseApiRestUrl: window.location.protocol + '//127.0.0.1:3000' 	//---->0
+    baseApiRestUrl: 'http://127.0.0.1:3000' 	//---->0
   },
   {
     baseApiRestUrl: 'http://192.168.129.171:3000'			//---->1
@@ -10,7 +10,7 @@
   }
 ];
 
-const INDEX = 2;
+const INDEX = 0;
 
 /**
  | 
@@ -117,13 +117,13 @@ var notas = (notas, tagsArr) => {
     <div class="card-header" style="border-bottom:1px solid rgba(0,0,0,0.1);padding-top:15px;padding-bottom:15px;">
       <a class="card-title" style="font-size:20px;"><strong><b class="note-title" data-note-id="${note_id}">${note_title}</b></strong></a>
     </div>
-    <div class="card-body text-secondary" style="margin:0px !important">
+    <div class="card-body text-secondary" style="margin:0px !important;padding-top:0;padding-bottom:0;border:0px dashed black;outline:0px solid blue;">
     <div>${tags}</div>
     <input value='${JSON.stringify(tagsArr)}' type="hidden" id="tags_${note_id}"/>
-      <p class="card-description" style="padding-top:5px;padding-bottom:5px;">${note_description}</p>
+      <p class="card-description" style="padding-top:5px;border:0px solid red;outline:0px solid lime;">${escapeHtml(note_description)}</p>
     </div>
     <!--ACE EDITOR-->
-    <div class="row" style="margin:0px !important;">
+    <div class="row" style="margin:0px !important;border:0px solid red;outline:0px solid lime;">
           <div class="col-sm-12 col-md-12" style='padding:0px 25px 35px 25px;'>
           <div class="row">
           <div class="col-sm-12 col-md-12">
@@ -152,7 +152,7 @@ var notas = (notas, tagsArr) => {
   )}' style="width:100%;border-radius:8px;">${escapeHtml(note_code)}</div>
         </div>
     </div>
-    <br/><br/></div><br/><br/>
+  </div><br/><br/>
   </div>`;
   return content;
 };
@@ -188,7 +188,7 @@ var modalCategory = (titulo, idModal, idButton) => {
         </div>
         <div class="modal-body">
           <form action="${config[INDEX].baseApiRestUrl +
-            '/criar-categoria'}" method="POST"
+            '/category'}" method="POST"
            id="form-category" enctype="multipart/form-data">
             <div class="form-group">
               <label for="category-name" class="col-form-label">Nome da Categoria:</label>
@@ -198,7 +198,7 @@ var modalCategory = (titulo, idModal, idButton) => {
               <label>Relacionar com esta categoria:</label>
               <input name="category__fk__id" id="category__fk__id" value="1"/>
               <label for="profile_pic" class="col-form-label">Arquivo:</label>
-              <input type="file" name="profile_pic" id="profile_pic" />
+              <input type="file" name="image_name" id="profile_pic" />
             </div>
           </form>
       <ul class="mdc-list" id="gd-get-categories" style="max-height: 400px;overflow: auto;">
@@ -230,6 +230,7 @@ var modalCategory = (titulo, idModal, idButton) => {
  |  
  */
 var modalCriarNota = (titulo, idModal, idButton) => {
+
   setTimeout(function() {
     fetch(config[INDEX].baseApiRestUrl + '/get-all-categories', {
       method: 'GET',
@@ -282,7 +283,7 @@ var modalCriarNota = (titulo, idModal, idButton) => {
 
         <div class="form-group"> <!--DESCRIÇÃO-->
           <label for="description" class="col-form-label"><strong>Descrição:</strong></label>
-          <input type="text" name="description" id="description" placeholder="Descrição do snipper-code" class="form-control" required>
+          <textarea rows="4" name="description" id="description" placeholder="Descrição do snipper-code" class="form-control" required ></textarea>
         </div>
 
         <div class="form-group"> <!--TAGS-->
@@ -295,15 +296,14 @@ var modalCriarNota = (titulo, idModal, idButton) => {
           <!--COLUNA 1-->
           <div class="col-sm-6 col-md-6">
             <div class="form-group">
-            <label for="categories_id" class="col-form-label"><strong>Categoria:</strong></label>
-            <select class="custom-select mr-sm-2" name="category" id="categories_id">
-            <option selected>Escolher...</option></select>
+            <label for="categories_id" class="col-form-label"><strong>Categoria:</strong></label><br>
+            <select  style="width:100%;" name="category" id="categories_id"></select>
             </div>
           </div>
           <div class="col-sm-6 col-md-6">
             <div class="form-group">
-            <label for="languages" class="col-form-label"><strong>Linguagem para Formatação:</strong></label>
-            <select class="custom-select mr-sm-2" name="formatacao-language" id="languages"></select>
+            <label for="languages" class="col-form-label"><strong>Linguagem para Formatação:</strong></label><br>
+            <select style="width:100%;" name="formatacao-language" id="languages"></select>
             </div>
           </div>
         </div>

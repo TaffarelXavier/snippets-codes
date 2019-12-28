@@ -5,6 +5,9 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 const Category = use("App/Models/Category");
 const Database = use("Database");
+const Helpers = use("Helpers");
+const sharp = require("sharp");
+
 /**
  * Resourceful controller for interacting with categories
  */
@@ -20,16 +23,32 @@ class CategoryController {
    */
   async index({ request, response, view }) {
     const categories = await Category.query()
-      .select("category_id", "category_name")
+      .select("*")
       .fetch();
     return categories;
   }
   /**
    *
    */
-  async getAll({ request, response, view }) {
-    const categories = await Category.all();
-    return categories;
+  async getAll({ request }) {
+    try {
+      const { category_name } = request.get();
+
+      if (category_name != null || category_name != undefined) {
+        const categories = await Category.findBy(
+          "category_name",
+          category_name.toUpperCase()
+        );
+
+        await categories.load("notes.languages");
+
+        return categories;
+      }
+      const categories = await Category.all();
+      return categories;
+    } catch (error) {
+      return "" + error;
+    }
   }
 
   /*
@@ -41,24 +60,27 @@ class CategoryController {
         "categories.category_name",
         "categories.category_icon",
         "categories.category_order",
+        "categories.category_placeholder_icon",
         Database.raw("COUNT(*) AS total")
       )
-      .innerJoin("notes", "categories.category_id", "notes.category_id ")
+      .innerJoin("notes", "categories.category_id", "notes.category_id")
       .groupBy("notes.category_id")
       .fetch();
     return categories;
   }
 
-  /**
-   * Render a form to be used for creating a new category.
-   * GET categories/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create({ request, response, view }) {}
+  async convertToJpeg() {
+    sharp(Helpers.tmpPath("uploads") + "/engenharia_software.jpg")
+      .resize(1)
+      .jpeg()
+      .toFile(
+        Helpers.tmpPath("uploads") + "/___aoutput.jpeg",
+        async (err, info) => {
+          if (err) return err;
+          return await info;
+        }
+      );
+  }
 
   /**
    * Create/save a new category.
@@ -69,65 +91,83 @@ class CategoryController {
    * @param {Response} ctx.response
    */
   async store({ request, response }) {
+    try {
+      //Pega os campos vindo da requisição:
+      const {
+        category__name,
+        category__order,
+        category__fk__id
+      } = request.post();
 
-    const {
-      category__name,
-      category__order,
-      category__fk__id
-    } = request.post();
+      if (
+        category__name == null ||
+        category__name == undefined ||
+        category__name.trim() == ""
+      ) {
+        return { erro: true, message: "O nome da categoria está em branco" };
+      }
+      //O nome padrão para imagem, caso nenhuma imagem seja enviada na requisição:
+      let nomeDoArquivo,
+        placeHolder_Icon = (nomeDoArquivo = "default_icon.jpeg");
 
-    const category = new Category();
+      const profilePic = request.file("image_name", {
+        types: ["image"],
+        size: "5mb"
+      });
 
-    category.category_name = category__name.toUpperCase();
-    category.category_order = parseInt(category__order);
-    category.category_fk_id = parseInt(category__fk__id);
+      if (profilePic != null) {
+        //Caso a variável image_name exista, mas não seja uma imagem válida.
+        const { clientName, subtype } = profilePic;
 
-    await category.save();
+        //Pega o timestamp da data atual
+        let timestamp = new Date().getTime();
 
-    response.send(category);
+        nomeDoArquivo = `${timestamp}_${
+          clientName.toLowerCase().split(".")[0]
+        }.${subtype}`;
+
+        await profilePic.move(Helpers.tmpPath("uploads"), {
+          name: nomeDoArquivo,
+          overwrite: true
+        });
+
+        if (!profilePic.moved()) {
+          return profilePic.error();
+        }
+
+        placeHolder_Icon = `${timestamp}__${
+          clientName.toLowerCase().split(".")[0]
+        }.${subtype}`;
+
+        //Converte para png
+        if (subtype == "svg") {
+          placeHolder_Icon = `${timestamp}__${
+            clientName.toLowerCase().split(".")[0]
+          }.png`;
+        }
+
+        sharp(Helpers.tmpPath(`uploads/${nomeDoArquivo}`))
+          .resize(1) /*DIMINUI PARA 1KB*/
+          .toFile(Helpers.tmpPath(`uploads/${placeHolder_Icon}`), function(
+            err
+          ) {
+            return err;
+          });
+      }
+
+      const category = await Category.create({
+        category_name: category__name.toUpperCase(),
+        category_order: parseInt(category__order) || 0,
+        category_fk_id: parseInt(category__fk__id) || 0,
+        category_icon: nomeDoArquivo,
+        category_placeholder_icon: placeHolder_Icon
+      });
+
+      response.send(category);
+    } catch (error) {
+      return "" + error;
+    }
   }
-
-  /**
-   * Display a single category.
-   * GET categories/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show({ params, request, response, view }) {}
-
-  /**
-   * Render a form to update an existing category.
-   * GET categories/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit({ params, request, response, view }) {}
-
-  /**
-   * Update category details.
-   * PUT or PATCH categories/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update({ params, request, response }) {}
-
-  /**
-   * Delete a category with id.
-   * DELETE categories/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy({ params, request, response }) {}
 }
 
 module.exports = CategoryController;

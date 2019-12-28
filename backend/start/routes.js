@@ -17,20 +17,28 @@
 const Database = use("Database");
 const Route = use("Route");
 
-//Upload
-Route.post("criar-categoria", "CategoryController.store");
-
 //Mostra uma imagem
 Route.get("images/:path", "ImageController.show");
+
+Route.post("images/store", "ImageController.store");
+
+//Mostra notas por categoria id
+Route.get(
+  "notes-por-category-id/:category_id/:pagina",
+  "NoteController.getCategoriesComTotal"
+);
 
 //Resource das notas todas as linguagens
 Route.resource("notes", "NoteController");
 
+//Retorna todas as notas
+Route.get("/", "NoteController.index");
+
 //Retorna todas as linguagens
 Route.resource("languages", "LanguageController");
 
-//Retorna todas as notas
-Route.get("/", "NoteController.index");
+//Upload
+Route.resource("category", "CategoryController");
 
 //Busca as categorias
 Route.get("categories", "CategoryController.getCategoriesComTotalDeNotas");
@@ -40,8 +48,4 @@ Route.get("get-all-categories", "CategoryController.getAll");
 
 Route.get("buscar-todas-categorias", "CategoryController.index");
 
-//Mostra notas por categoria id
-Route.get(
-  "notes-por-category-id/:category_id",
-  "NoteController.getCategoriesWithTotal"
-);
+
