@@ -1,1 +1,0 @@
-npx servor & pause
