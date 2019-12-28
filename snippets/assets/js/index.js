@@ -146,12 +146,6 @@ function funcoesNota() {
     });
   });
 
-  $('.open-code').click(function() {
-    var _this = $(this);
-
-    let { note_id } = JSON.parse(_this.attr('data-nota'));
-  });
-
   //Exluir nota:
   $('.excluir-nota').click(function() {
     let note_id = parseInt($(this).attr('data-nota-id'));
@@ -208,17 +202,13 @@ function pesquisarPorTag(keyword) {
 }
 
 /**
- * Função para Buscar notas por categoria_id
+ * Função para Buscar notas por categoria_id ou category_name
  * */
-function getNotesByCategoryId(category_id, callback) {
+function getNotesByCategoryId(categoryId_Name, pagina, callback) {
   var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
-
+  pagina = pagina || 1;
   fetch(
-    config[INDEX].baseApiRestUrl +
-      '/notes-por-category-id/' +
-      parseInt(category_id) +
-      '/' +
-      1,
+    config[INDEX].baseApiRestUrl + '/notes-por-category-id/' + categoryId_Name + '/' + pagina,
     myInit
   ).then(function(response) {
     if (response.status !== 200) {
@@ -266,10 +256,13 @@ function loadTodosSnippets() {
 
 document.addEventListener('DOMContentLoaded', function(event) {
   var categoryName = window.location.hash.replace('#', '');
+
   if (categoryName.length > 0) {
     var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
     fetch(
-      config[INDEX].baseApiRestUrl + '/get-all-categories?category_name=' + categoryName,
+      config[INDEX].baseApiRestUrl +
+        '/get-all-categories?category_name=' +
+        categoryName.toUpperCase(),
       myInit
     ).then(function(response) {
       if (response.status !== 200) {
@@ -279,9 +272,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       response.json().then(function(result) {
         let rs = result[0];
 
-        var el = document.getElementById(rs.category_id + '_' + rs.category_name);
-
-        carregarNotasPorCategoria(el, rs);
+        carregarNotasPorCategoria(null, rs);
 
         let content = '';
 
@@ -293,10 +284,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
         funcoesNota();
 
-        cabecalho('#_' + rs.category_name.toLowerCase(), rs.category_name, rs.category_icon);
+        cabecalho(
+          '#_' + rs.category_name.toLowerCase(),
+          rs.category_name,
+          rs.category_icon
+        );
         if (rs.notes.length > 0) {
           $('#esqueleto').attr('hidden', true);
-          setTimeout(function(){
+          setTimeout(function() {
             $('.list-group-item').removeClass(
               'list-group-item-action list-group-item-success'
             );
@@ -304,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
               'list-group-item-action list-group-item-success',
               'disabled'
             );
-          },2000)
+          }, 2000);
         }
       });
     });
@@ -354,7 +349,7 @@ function carregarNotasPorCategoria(el, { category_id, category_name, category_ic
   cabecalho(el, category_name, category_icon);
 
   //Busca as 10 primeiras notas pelo ID de uma categoria
-  getNotesByCategoryId(category_id, function(res) {
+  getNotesByCategoryId(category_id, 1, function(res) {
     $('#get-notes').html('');
 
     let content = '';

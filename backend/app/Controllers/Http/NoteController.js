@@ -39,7 +39,7 @@ class NoteController {
       )
       .innerJoin("languages", "languages.lang_id", "notes.note_type_language")
       .innerJoin("categories", "notes.category_id", "categories.category_id")
-      .forPage(pagina, 10).fetch()
+      .forPage(pagina, 5).fetch()
 
     return notes;
   }
@@ -67,9 +67,10 @@ class NoteController {
         "categories.category_placeholder_icon"
       )
       .where("notes.category_id", parseInt(category_id))
+      .orWhere("categories.category_name", category_id)
       .innerJoin("languages", "notes.note_type_language", "languages.lang_id")
       .innerJoin("categories", "notes.category_id", "categories.category_id")
-      .forPage(parseInt(pagina), 10)
+      .forPage(parseInt(pagina), 5)
       .orderBy("notes.created_at", "DESC")
       .fetch();
     return categories;

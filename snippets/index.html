@@ -528,7 +528,14 @@
                     // AJAX request
                     var xhr = new XMLHttpRequest();
 
-                    xhr.open('GET', "http://127.0.0.1:3000/notes?pagina=" + nextPg, true);
+                    var categoryName = window.location.hash.replace('#', '');
+
+                    if (categoryName.length > 0) {
+                        xhr.open('GET', `http://127.0.0.1:3000/notes-por-category-id/${categoryName.toUpperCase()}/${nextPg}`, true);
+                    }
+                    else {
+                        xhr.open('GET', "http://127.0.0.1:3000/notes?pagina=" + nextPg, true);
+                    }
 
                     xhr.onload = function () {
                         // No more contents to load
@@ -560,7 +567,7 @@
                     xhr.send();
                 }
             },
-
+            //Scroll Infinity
             listen: function () {
                 if ((document.getElementById('get-notes').offsetHeight
                     - parseInt(window.scrollY)) <= 100) {
@@ -568,27 +575,39 @@
                 }
             }
         };
-        //Para o scroll infinito
-        window.onload = function () {
-            // Attach scroll listener
-            //window.addEventListener("scroll", endless.listen);
 
-            // Initial load contents
-            //endless.load();
-        };
+        window.addEventListener(
+            'hashchange', (ev) => {
+                //Define para a página número 1:
+                endless.page = 1;
+            }, false);
 
         document.getElementById('carregar-mais').onclick = () => {
-            this.
-                $('#carregar-mais')
-                .attr('disabled', true)
-                .find('.mdc-fab__label')
-                .html('Carregando, aguarde...')
+            //var categoryName = window.location.hash.replace('#', '');
+            //var nextPg = endless.page + 1;
+
+            // this.
+            //     $('#carregar-mais')
+            //     .attr('disabled', true)
+            //     .find('.mdc-fab__label')
+            //     .html('Carregando, aguarde...')
+
+            // if (categoryName.length > 0) {
+            //     console.log(nextPg);
+            //     getNotesByCategoryId(categoryName.toUpperCase(), nextPg, (res) => {
+            //         console.log(res);
+            //     })
+            // }
+            // else{
+
+            // }
+            // this.
+            //     $('#carregar-mais')
+            //     .attr('disabled', false)
+            //     .find('.mdc-fab__label')
+            //     .html('Carregar mais...');
+
             endless.load();
-            this.
-                $('#carregar-mais')
-                .attr('disabled', false)
-                .find('.mdc-fab__label')
-                .html('Carregar mais...')
         }
 
     </script>

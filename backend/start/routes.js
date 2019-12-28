@@ -28,7 +28,7 @@ Route.get(
   "NoteController.getCategoriesComTotal"
 );
 
-//Resource das notas todas as linguagens
+//Resource das notas:
 Route.resource("notes", "NoteController");
 
 //Retorna todas as notas
@@ -47,5 +47,3 @@ Route.get("categories", "CategoryController.getCategoriesComTotalDeNotas");
 Route.get("get-all-categories", "CategoryController.getAll");
 
 Route.get("buscar-todas-categorias", "CategoryController.index");
-
-

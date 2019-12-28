@@ -34,14 +34,12 @@ class CategoryController {
     try {
       const { category_name } = request.get();
 
-      if (category_name != null || category_name != undefined) {
-        const categories = await Category.findBy(
-          "category_name",
-          category_name.toUpperCase()
-        );
-
-        await categories.load("notes.languages");
-
+      if (Boolean(category_name)) {
+        const categories = await Category.query()
+        .with("notes")
+        .whereRaw("category_name = ?", category_name.toUpperCase())
+        .limit(1)
+        .fetch();
         return categories;
       }
       const categories = await Category.all();

@@ -9,12 +9,11 @@ class Category extends Model {
   }
 
   notes() {
-    // return this.hasMany("App/Models/Note").innerJoin(
-    //   "languages",
-    //   "languages.lang_id",
-    //   "notes.note_type_language"
-    // );
-    return this.hasMany("App/Models/Note");
+    return this.hasMany("App/Models/Note").innerJoin(
+      "languages",
+      "languages.lang_id",
+      "notes.note_type_language"
+    );
   }
 }
 

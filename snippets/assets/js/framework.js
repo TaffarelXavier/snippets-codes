@@ -237,6 +237,7 @@ var modalCriarNota = (titulo, idModal, idButton) => {
       mode: 'cors',
       cache: 'default'
     }).then(async response => {
+   
       let data = await response.json();
 
       data.sort(dynamicSort('category_name'));
