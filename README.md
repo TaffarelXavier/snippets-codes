@@ -14,7 +14,7 @@ Um gerenciador de snippet de código simples para desenvolvedores🚀
 
 ## Visão geral
 
-O objetivo deste projeto é tornar-nos mais eficientes, oferecendo uma ferramenta bem legal: uma espécie de bloco de notas para o nosso código 😃📝
+O objetivo deste projeto é tornar-nos mais eficientes e produtivos, oferecendo uma ferramenta bem legal: uma espécie de bloco de notas para o nosso código. Que massa! 😃📝
 
 ## Tela Inicial
 
