@@ -1,6 +1,8 @@
 <div align="center">
 <br>
+<br>
 <img width="200" src="snippets/assets/imagens/logo.svg" alt="snippets-code">
+<br>
 <br>
 </div>
 
