@@ -1,7 +1,6 @@
 <div align="center">
 <br>
-<img width="400" src="/src/renderer/assets/img/code-notes-logo-black-full.png" alt="snippets-code">
-<br>
+<img width="200" src="snippets/assets/imagens/logo.svg" alt="snippets-code">
 <br>
 </div>
 
@@ -17,11 +16,12 @@ Um gerenciador de snippet de código simples para desenvolvedores🚀
 
 O objetivo deste projeto é tornar-nos mais eficientes, oferecendo uma ferramenta bem legal: uma espécie de bloco de notas para o nosso código 😃📝
 
-## Demo
+## Tela Inicial
 
 <div align="center">
 
-[![Code Notes](https://img.youtube.com/vi/lfWRwwmX9Q8/0.jpg)](https://www.youtube.com/watch?v=lfWRwwmX9Q8 "Code Notes")
+![Snippet Codes](https://github.com/TaffarelXavier/snippets-codes/blob/master/snippets/assets/imagens/pagina-principal.png?raw=true)
+(Snippet Codes)
 
 </div>
 
