@@ -47,4 +47,4 @@ adonis serve --dev
 # Execute o servidor frontend dentro da pasta ...etc/snippets-codes/snippets
 serve
 ```
-# Ou abra o arquivo index.html diretamente no navegador.
+> ### Ou abra o arquivo index.html diretamente no navegador.
