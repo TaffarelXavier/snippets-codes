@@ -1,12 +1,12 @@
 ﻿const config = [
   {
-    baseApiRestUrl: 'http://127.0.0.1:3000' 	//---->0
+    baseApiRestUrl: 'http://127.0.0.1:3000' //---->0
   },
   {
-    baseApiRestUrl: 'http://192.168.129.171:3000'			//---->1
+    baseApiRestUrl: 'http://192.168.129.171:3000' //---->1
   },
   {
-    baseApiRestUrl: 'https://api.rsvtelecom.com.br'			//---->2
+    baseApiRestUrl: 'https://api.rsvtelecom.com.br' //---->2
   }
 ];
 
@@ -110,107 +110,52 @@ var notas = (notas, tagsArr) => {
     category_id: note_category_id,
     type_language: note_type_language
   };
+  note_code = note_code || null;
 
   let content = `<div id="note_card_${note_id}" class="notas">
-  
-  <div class="card mb-10">
-    <div class="card-header" style="border-bottom:1px solid rgba(0,0,0,0.1);padding-top:15px;padding-bottom:15px;">
-      <a class="card-title" style="font-size:20px;"><strong><b class="note-title" data-note-id="${note_id}">${note_title}</b></strong></a>
-    </div>
-    <div class="card-body text-secondary" style="margin:0px !important;padding-top:0;padding-bottom:0;border:0px dashed black;outline:0px solid blue;">
-    <div>${tags}</div>
-    <input value='${JSON.stringify(tagsArr)}' type="hidden" id="tags_${note_id}"/>
-      <p class="card-description" style="padding-top:5px;border:0px solid red;outline:0px solid lime;">${escapeHtml(note_description)}</p>
-    </div>
-    <!--ACE EDITOR-->
-    <div class="row" style="margin:0px !important;border:0px solid red;outline:0px solid lime;">
-          <div class="col-sm-12 col-md-12" style='padding:0px 25px 35px 25px;'>
-          <div class="row">
-          <div class="col-sm-12 col-md-12">
-              <i class="material-icons copiar" data-id="${note_id}"
-              title="Copiar código"
-              id="copiar_${note_id}" title="Clique para copiar">file_copy</i>
-              <i class="material-icons excluir-nota"
-              title="Excluir nota"
-              data-nota-id="${note_id}">
-                delete
-              </i>
-              <i class="material-icons editar-nota" 
-              title="Editar Nota"
-              data-nota='${JSON.stringify(edicao)}'>
-                edit
-              </i>
-              <i class="material-icons open-code" 
-              title="Editar Nota"
-              data-nota='${JSON.stringify(edicao)}'>
-                refresh
-              </i>
-            </div>
-        </div>
-            <div class="editor" id="note_${note_id}" data-note='${JSON.stringify(
-    edicao
-  )}' style="width:100%;border-radius:8px;">${escapeHtml(note_code)}</div>
-        </div>
-    </div>
-  </div><br/><br/>
-  </div>`;
-  return content;
-};
-
-
-/**
- | ----------------------------------------
- | Criar categoria <!-- Modal Criar Categoria -->
- | ----------------------------------------
- | 
- | 
- | 
- | 
- | 
- | 
- | 
- | 
- | 
- | @param property
- |  
- */
-var modalCategory = (titulo, idModal, idButton) => {
-  return `
-  <div class="modal fade" id="${idModal}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">${titulo}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form action="${config[INDEX].baseApiRestUrl +
-            '/category'}" method="POST"
-           id="form-category" enctype="multipart/form-data">
-            <div class="form-group">
-              <label for="category-name" class="col-form-label">Nome da Categoria:</label>
-              <input type="text" name="category__name" class="form-control" autofocus id="category-name">
-              <label>Ordem para Associação:</label>
-              <input name="category__order" id="category__order" value="1"/>
-              <label>Relacionar com esta categoria:</label>
-              <input name="category__fk__id" id="category__fk__id" value="1"/>
-              <label for="profile_pic" class="col-form-label">Arquivo:</label>
-              <input type="file" name="image_name" id="profile_pic" />
-            </div>
-          </form>
-      <ul class="mdc-list" id="gd-get-categories" style="max-height: 400px;overflow: auto;">
-        </ul>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-          <button type="submit" form="form-category" class="btn btn-primary" id="${idButton}">Criar Categoria</button>
-        </div>
+    <div class="card mb-10">
+      <div class="card-header" style="border-bottom:1px solid rgba(0,0,0,0.1);padding-top:15px;padding-bottom:15px;">
+        <a class="card-title" style="font-size:20px;"><strong><b class="note-title" data-note-id="${note_id}">${note_title}</b></strong></a>
       </div>
-    </div>
-  </div>`;
+      <div class="card-body text-secondary" style="margin:0px !important;padding-top:0;padding-bottom:0;border:0px dashed black;outline:0px solid blue;">
+      <div>${tags}</div>
+      <input value='${JSON.stringify(tagsArr)}' type="hidden" id="tags_${note_id}"/>
+        <p class="card-description" style="padding-top:5px;border:0px solid red;outline:0px solid lime;">${note_description}</p>
+      </div>`;
+
+  if (note_code != null) {
+    content += `
+        <div class="row" style="margin:0px !important;border:0px solid red;outline:0px solid lime;">
+       <!--ACE EDITOR-->
+              <div class="col-sm-12 col-md-12" style='padding:0px 25px 35px 25px;'> 
+              <details open><summary style='cursor:pointer;'>Visualizar código...</summary>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <i class="material-icons copiar" data-id="${note_id}"
+                        title="Copiar código"
+                        id="copiar_${note_id}" title="Clique para copiar">file_copy</i>
+                        <i class="material-icons excluir-nota"
+                        title="Excluir nota"
+                        data-nota-id="${note_id}">
+                          delete
+                        </i>
+                        <i class="material-icons editar-nota" 
+                        title="Editar Nota"
+                        data-nota='${JSON.stringify(edicao)}'>
+                          edit
+                        </i>
+                    </div>
+                </div>
+                <div class="editor" id="note_${note_id}" data-note='${JSON.stringify(
+      edicao
+    )}' style="width:100%;border-radius:8px;">${escapeHtml(note_code)}</div>
+    </details>  </div>
+            </div><!--FIM EDITOR-->`;
+  }
+
+  content += `</div><br/><br/>
+  </div> <!--FIM CARD-->`;
+  return content;
 };
 
 /**
@@ -230,14 +175,12 @@ var modalCategory = (titulo, idModal, idButton) => {
  |  
  */
 var modalCriarNota = (titulo, idModal, idButton) => {
-
   setTimeout(function() {
     fetch(config[INDEX].baseApiRestUrl + '/get-all-categories', {
       method: 'GET',
       mode: 'cors',
       cache: 'default'
     }).then(async response => {
-   
       let data = await response.json();
 
       data.sort(dynamicSort('category_name'));
@@ -286,7 +229,10 @@ var modalCriarNota = (titulo, idModal, idButton) => {
           <label for="description" class="col-form-label"><strong>Descrição:</strong></label>
           <textarea rows="4" name="description" id="description" placeholder="Descrição do snipper-code" class="form-control" required ></textarea>
         </div>
-
+        <div class="form-group"> <!--DESCRIÇÃO-->
+          <div id="visualizacao-markdown">
+          </div>
+        </div>
         <div class="form-group"> <!--TAGS-->
           <label for="select-tags" class="col-form-label"><strong>Tags:</strong></label>
           <select id="select-tags" multiple="multiple" name="tags" style="border:1px solid red !important;width:100%;" class="form-control">
@@ -326,6 +272,60 @@ var modalCriarNota = (titulo, idModal, idButton) => {
 </div>
 </div>`;
   return content;
+};
+
+/**
+ | ----------------------------------------
+ | Criar categoria <!-- Modal Criar Categoria -->
+ | ----------------------------------------
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | 
+ | @param property
+ |  
+ */
+var modalCategory = (titulo, idModal, idButton) => {
+  return `
+  <div class="modal fade" id="${idModal}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">${titulo}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="${config[INDEX].baseApiRestUrl + '/category'}" method="POST"
+           id="form-category" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="category-name" class="col-form-label">Nome da Categoria:</label>
+              <input type="text" name="category__name" class="form-control" autofocus id="category-name">
+              <label>Ordem para Associação:</label>
+              <input name="category__order" id="category__order" value="1"/>
+              <label>Relacionar com esta categoria:</label>
+              <input name="category__fk__id" id="category__fk__id" value="1"/>
+              <label for="profile_pic" class="col-form-label">Arquivo:</label>
+              <input type="file" name="image_name" id="profile_pic" />
+            </div>
+          </form>
+      <ul class="mdc-list" id="gd-get-categories" style="max-height: 400px;overflow: auto;">
+        </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <button type="submit" form="form-category" class="btn btn-primary" id="${idButton}">Criar Categoria</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
 };
 
 /**

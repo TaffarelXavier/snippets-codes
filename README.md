@@ -6,6 +6,25 @@
 <br>
 </div>
 
+
+       The C# code will be highlighted __after__ the rest of this document.
+
+# Taffarel 
+
+```csharp
+public class Foo : IBar {
+    public string Baz { get; set; } = "foo";
+}
+```
+
+The CSS code will be highlighted with this document because CSS has already been loaded.
+
+```css
+a:hover {
+    color: green !important;
+}
+```
+
 <p align="center" color="#6a737d">
 Um gerenciador de snippet de código simples para desenvolvedores🚀
 </p>

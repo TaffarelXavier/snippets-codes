@@ -12,11 +12,13 @@
 */
 const providers = [
   '@adonisjs/framework/providers/AppProvider',
+  '@adonisjs/framework/providers/ViewProvider',
   '@adonisjs/auth/providers/AuthProvider',
   '@adonisjs/bodyparser/providers/BodyParserProvider',
   '@adonisjs/cors/providers/CorsProvider',
   '@adonisjs/lucid/providers/LucidProvider',
-  '@adonisjs/drive/providers/DriveProvider'
+  '@adonisjs/drive/providers/DriveProvider',
+  '@adonisjs/session/providers/SessionProvider'
 ]
 
 /*

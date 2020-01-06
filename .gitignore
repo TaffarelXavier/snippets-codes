@@ -2,4 +2,5 @@ backend/node_modules
 snippets/iniciar_serve.bat
 backend/iniciar.bat
 backend/push.bat
-backend/database/adonis.sqlite
+# backend/database/adonis.sqlite
+iniciar.bat

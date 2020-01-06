@@ -19,8 +19,7 @@ class NoteController {
    * @param {View} ctx.view
    */
   async index({ request, params, response, view }) {
-
-   const {pagina} = request.get();
+    const { pagina } = request.get();
 
     const notes = await Note.query()
       .select(
@@ -39,7 +38,8 @@ class NoteController {
       )
       .innerJoin("languages", "languages.lang_id", "notes.note_type_language")
       .innerJoin("categories", "notes.category_id", "categories.category_id")
-      .forPage(pagina, 5).fetch()
+      .forPage(pagina, 5)
+      .fetch();
 
     return notes;
   }
@@ -47,8 +47,7 @@ class NoteController {
   /*
    */
   async getCategoriesComTotal({ params }) {
-
-    const { category_id, pagina} = params;
+    const { category_id, pagina } = params;
 
     const categories = await Note.query()
       .select(
@@ -100,6 +99,36 @@ class NoteController {
     note.save();
   }
 
+  async show({ request, response, params }) {
+
+    const { id } = params;
+    const { page } = request.get();
+
+    const notes = await Note.query()
+      .select(
+        "note_id",
+        "note_type_language",
+        "note_title",
+        "note_description",
+        "note_code",
+        "lang_name",
+        "lang_extension",
+        "categories.category_id",
+        "categories.category_name",
+        "categories.category_icon",
+        "categories.category_order",
+        "categories.category_placeholder_icon"
+      )
+      .innerJoin("languages", "languages.lang_id", "notes.note_type_language")
+      .innerJoin("categories", "notes.category_id", "categories.category_id")
+      .where("notes.note_title", "LIKE", "%" + decodeURIComponent(id) + "%")
+      .orWhere("notes.note_description", "LIKE", "%" + decodeURIComponent(id) + "%")
+      .orWhere("languages.lang_name", "LIKE", "%" + decodeURIComponent(id) + "%")
+      .forPage(page, 20)
+      .fetch();
+
+    return notes;
+  }
 }
 
 module.exports = NoteController;

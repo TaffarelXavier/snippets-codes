@@ -101,12 +101,13 @@ function funcoesNota() {
 
       var editor = ace.edit(document.getElementById(`note_${note_id}`));
 
-      //beautify.beautify(editor.session);
-
       var beautify = ace.require('ace/ext/beautify'); // get reference to extension
-      beautify.beautify(editor.session);
 
+      beautify.beautify(editor.session);
       //Copiar o código
+      editor.selectAll();
+      editor.focus();
+      document.execCommand('copy');
 
       var options = {
         content: 'Código copiado com sucesso!', // text of the snackbar
@@ -173,6 +174,16 @@ function funcoesNota() {
     $('#input-pesquisar-tag').val(keyword);
     pesquisarPorTag(keyword);
   });
+
+  $('.open-code').click(function() {
+    var { note_id, note_title, note_description } = JSON.parse($(this).attr('data-nota'));
+    var win = window.open('', '_blank');
+    win.document.write(
+      '<html><head><title>Print it!</title><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/dracula.min.css"></head><body>'
+    );
+    win.document.write($('#note_' + note_id).html());
+    win.document.write('</body></html>');
+  });
 }
 
 /**
@@ -208,7 +219,11 @@ function getNotesByCategoryId(categoryId_Name, pagina, callback) {
   var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
   pagina = pagina || 1;
   fetch(
-    config[INDEX].baseApiRestUrl + '/notes-por-category-id/' + categoryId_Name + '/' + pagina,
+    config[INDEX].baseApiRestUrl +
+      '/notes-por-category-id/' +
+      categoryId_Name +
+      '/' +
+      pagina,
     myInit
   ).then(function(response) {
     if (response.status !== 200) {
@@ -423,8 +438,6 @@ function carregarCategorias() {
 
           const ICON_PADRAO =
             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAAAAACpleexAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfjDBMUJR7SizDUAAAAJElEQVQ4y2M4QyRgGFU4qnBkKbxw8eLNixcHtxtHFY4qHAoKAWtc+2KAiEgvAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTEyLTIwVDA1OjM3OjMwKzA5OjAwhGs2fQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0xMi0yMFQwNTozNzozMCswOTowMPU2jsEAAAAASUVORK5CYII=';
-
-          const dataFile = category_icon.trim().split('.');
           //Adiciona classes às categorias:
           $(item)
             .addClass('list-group-item justify-content-between')
@@ -519,8 +532,6 @@ function carregarTodasCategoria() {
     var result = mergeArrayWithDiff(arrayA, arrayB);
 
     result.map(category => {
-      var cat = Category.getCategorieWithCountNotes();
-
       var item = document.createElement('li');
 
       $(item)
@@ -542,32 +553,6 @@ function carregarTodasCategoria() {
         .attr('title', category.category_name.toUpperCase());
 
       rows.appendChild(item);
-    });
-
-    $('.remove-category').click(function() {
-      /*var { category_id, count } = JSON.parse($(this).attr('data-category'));
-
-            let options = {
-                type: 'question',
-                buttons: ['Não', 'Sim'],
-                title: 'Deseja realmente excluir esta categoria?',
-                message: 'Esta operação não poderá ser revertida.',
-                detail: 'Algum detalhe aqui',
-                defaultId: 0,
-                cancelId: -1
-            };
-
-            remote.dialog.showMessageBox(win, options, response => {
-                if (response == 1) {
-                    if (count > 0) {
-                        alert('Operação não permitida, porque há notas relacionadas a esta categoria.');
-                    } else {
-                        Category.delete(category_id);
-                        $(`#category__${category_id}`).remove();
-                        carregarCategorias();
-                    }
-                }
-            });*/
     });
   }, 1000);
 }
@@ -620,47 +605,86 @@ $(document).ready(function() {
     pesquisarPorTag(keyword);
   });
 
-  $('#input-pesquisar-geral').on('input', function() {
-    var _this = $(this);
+  $('#input-pesquisar-geral')
+    .on('input', function() {
+      var _this = $(this);
 
-    var textoPesquisado = removeSinaisDiacriticos(_this.val().toLowerCase());
+      var textoPesquisado = removeSinaisDiacriticos(_this.val().toLowerCase());
 
-    var cardTitle = document.getElementsByClassName('card-description');
+      var cardDescription = document.getElementsByClassName('notas');
 
-    $('.note-title').each((i, el) => {
-      var textoElemento = removeSinaisDiacriticos(el.innerText.toLowerCase());
+      $('.note-title').each((i, el) => {
+        var textoElemento = removeSinaisDiacriticos(el.innerText.toLowerCase());
 
-      var description = removeSinaisDiacriticos(cardTitle[i].innerText.toLowerCase());
+        //console.log($(cardDescription[i]).find('.card-body').text().trim().toLowerCase());
 
-      var nota_id = parseInt($(el).attr('data-note-id'));
+        var description = removeSinaisDiacriticos(
+          cardDescription[i].innerText.toLowerCase()
+        );
 
-      if (
-        textoElemento.includes(textoPesquisado) ||
-        description.includes(textoPesquisado)
-      ) {
-        $('#note_card_' + nota_id)
-          .removeAttr('hidden')
-          .show();
-      } else {
-        $('#note_card_' + nota_id)
-          .removeClass('d-flex')
-          .attr('hidden', true)
-          .hide();
-      }
-    });
+        var nota_id = parseInt($(el).attr('data-note-id'));
 
-    if (textoPesquisado.length > 0) {
-      // Read the keyword
-      var keyword = textoPesquisado;
-      $('.note-title, .card-description').unmark({
-        done: function() {
-          $('.note-title, .card-description').mark(keyword);
+        if (
+          textoElemento.includes(textoPesquisado) ||
+          description.includes(textoPesquisado)
+        ) {
+          $('#note_card_' + nota_id)
+            .removeAttr('hidden')
+            .show();
+        } else {
+          $('#note_card_' + nota_id)
+            .removeClass('d-flex')
+            .attr('hidden', true)
+            .hide();
         }
       });
-    } else {
-      $('.note-title, .card-description').unmark();
-    }
-  });
+
+      if (textoPesquisado.length > 0) {
+        // Read the keyword
+        var keyword = textoPesquisado;
+        $('.note-title, .text-secondary').unmark({
+          done: function() {
+            $('.note-title, .text-secondary').mark(keyword);
+          }
+        });
+      } else {
+        $('.note-title, .text-secondary').unmark();
+      }
+    })
+    .keyup(function(ev) {
+      if (ev.keyCode == 13) {
+        var _this = $(this);
+        var textoPesquisado = _this.val();
+        var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
+        fetch(
+          config[INDEX].baseApiRestUrl + '/notes/' + textoPesquisado + '?page=1',
+          myInit
+        ).then(function(response) {
+          if (response.status !== 200) {
+            console.warn(
+              'Looks like there was a problem. Status Code: ' + response.status
+            );
+            return;
+          }
+          response.json().then(function(result) {
+            if (result.length > 0) {
+            
+              let content = '';
+              
+              $('#get-notes').html("");
+
+              result.map(nota => {
+                content += notas(nota, []);
+              });
+
+              $('#get-notes').append(content);
+
+              funcoesNota();
+            }
+          });
+        });
+      }
+    });
 
   /**
    * Adiciona os modais:
@@ -671,6 +695,23 @@ $(document).ready(function() {
     modalCriarNota('Criar novo Snippet', 'modalCriarNota', 'buttonCriarNota'),
     modalEditarNota('Editar Snippet', 'modalEditarNota', 'btnAlterarNota')
   );
+
+  (function() {
+    var body = document.getElementsByTagName('body')[0]; //Adiciona à tag head
+    var script = document.createElement('script');
+    script.src = 'https://unpkg.com/showdown/dist/showdown.min.js';
+    body.appendChild(script);
+  })();
+
+  $('#description').keyup(function(ev) {
+    var descricao = $(this).val();
+
+    var converter = new showdown.Converter();
+
+    let _html = converter.makeHtml(descricao);
+
+    $('#visualizacao-markdown').html(_html);
+  });
 
   //Selects 2:
 
@@ -739,17 +780,8 @@ $(document).ready(function() {
 
     let _this = this;
 
-    let title = this.elements.title.value;
-
-    let description = this.elements.description.value;
-
-    let code = this.elements.code.value;
-
-    let category = this.elements.category[this.elements.category.selectedIndex];
-
-    let language = this.elements['formatacao-language'][
-      this.elements['formatacao-language'].selectedIndex
-    ];
+    // let description = this.elements.description.value;
+    let description = $('#visualizacao-markdown').html();
 
     //Trabalhar com Tags:
 
@@ -783,21 +815,28 @@ $(document).ready(function() {
         // return el.text;
       });
 
-    var obj = {
-      note_title: title,
-      note_description: description,
-      note_code: code,
-      note_category_id: category.value,
-      note_type_language: language.value
-    };
+    // var obj = {
+    //   note_title: title,
+    //   note_description: description,
+    //   note_code: code,
+    //   note_category_id: category.value,
+    //   note_type_language: language.value
+    // };
 
-    var formData = new FormData(document.getElementById('formSave'));
+    var formData = new FormData();
+    var form = document.getElementById('formSave');
+
+    formData.append('title', form.title.value);
+    formData.append('description', description);
+    formData.append('code', form.code.value);
+    formData.append('category', form.category.value);
+    formData.append('formatacao-language', form['formatacao-language'].value);
 
     fetch(config[INDEX].baseApiRestUrl + '/notes', {
       method: 'POST',
       body: formData
     }).then(response => {
-      //console.log(response);
+      console.log(response);
     });
 
     _this.reset(); //limpa o formulário
@@ -817,4 +856,21 @@ $(document).ready(function() {
     return false;
   });
   carregarCategorias();
+
+  var isDetailOpen = true;
+
+  $('#collapse-snippets').click(function() {
+    if (!isDetailOpen) {
+      $(this)
+        .html('visibility_off')
+        .attr('title', 'Desdobrar tudo...');
+      isDetailOpen = true;
+    } else {
+      $(this)
+        .html('visibility')
+        .attr('title', 'Expandir tudo...');
+      isDetailOpen = false;
+    }
+    $('details').attr('open', isDetailOpen);
+  });
 }); //Fim: $(document).ready

@@ -11,11 +11,11 @@
     <meta name="robos" content="index" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Snippet CodesTX</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" />
     <link rel="stylesheet" href="assets/css/bootstrap-material-design.min.css" />
     <link rel="stylesheet" href="assets/css/material-components-web.min.css" />
-    <link rel="shortcut icon" href="./assets/imagens/favicon.png" type="image/png" />
+    <link rel="shortcut icon" href="assets/imagens/favicon.png" type="image/png" />
     <!-- <link rel="stylesheet" href="https://material-responsive-drawer.glitch.me/bundle.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />
     <script src="assets/js/highlight.min.js"></script>
@@ -37,11 +37,11 @@
             margin: 0;
             overflow: hidden;
             overflow-y: auto;
+            counter-reset: section;
         }
 
         .mdc-drawer-app-content {
             flex: auto;
-            /* overflow: auto; */
             position: relative;
         }
 
@@ -51,8 +51,6 @@
         }
 
         .main-content {
-            /* overflow: hidden;
-            overflow-y: auto; */
             height: 100%;
         }
 
@@ -74,9 +72,6 @@
             #termo-filtrado {
                 font-size: 1.2rem;
             }
-
-            .mdc-drawer,
-            .mdc-drawer--dismissible {}
         }
 
         /* Small devices (landscape phones, 576px and up) */
@@ -118,13 +113,13 @@
             }
         }
 
-        body {
-            counter-reset: section;
-        }
-
         .contador::before {
             counter-increment: section;
             content: counter(section);
+        }
+
+        #visualizacao-markdown {
+            font-size: 80%;
         }
     </style>
 </head>
@@ -192,57 +187,57 @@
                     <div class="col-md-12 col-sx-12">
                         <ul class="list-group" id="category">
                             <!-- <li class="list-group-item list-group-item-action"></li> -->
-                            <div class="flex-container">
+                            <div class="skeleton">
                                 <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
-                            <div class="flex-container">
+                            <div class="skeleton">
                                 <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
-                            <div class="flex-container">
+                            <div class="skeleton">
                                 <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
-                            <div class="flex-container">
+                            <div class="skeleton">
                                 <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
-                            <div class="flex-container">
+                            <div class="skeleton">
                                 <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
-                            <div class="flex-container">
+                            <div class="skeleton">
                                 <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
-                            <div class="flex-container">
+                            <div class="skeleton">
                                 <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
-                            <div class="flex-container">
+                            <div class="skeleton">
                                 <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
-                            <div class="flex-container">
+                            <div class="skeleton">
                                 <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
-                            <div class="flex-container">
+                            <div class="skeleton">
                                 <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
                             </div>
-                            <div class="flex-container">
+                            <div class="skeleton">
                                 <div class="skeleton-icon  animate"></div>
                                 <div class="skeleton-category-name animate"></div>
                                 <div class="skeleton-badge animate"></div>
@@ -319,6 +314,8 @@
                                             <div class="row" id="painel-termo-filtrado" hidden>
                                                 <div class="col-md-12">
                                                     <h1 id="termo-filtrado">TERMO FILTRADO: HTML</h1>
+                                                    <span class="material-icons mdc-fab__icon" title="Expandir"
+                                                        id="collapse-snippets">visibility_off</span>
                                                 </div>
                                             </div>
                                             <hr />
@@ -468,8 +465,8 @@
     <script src="assets/js/select2.min.js"></script>
     <!-- jquery.mark.min.js: SERVE PARA MARCAR, À MEDIDA QUE FAZEMOS ALGUMA PESQUISA -->
     <script src="assets/js/jquery.mark.min.js"></script>
-    <script src="assets/js/framework.js"></script>
-    <script src="assets/js/index.js"></script>
+    <script src="assets/js/framework.min.js"></script>
+    <script src="assets/js/index.min.js"></script>
 
     <script>
         const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
@@ -583,31 +580,22 @@
             }, false);
 
         document.getElementById('carregar-mais').onclick = () => {
-            //var categoryName = window.location.hash.replace('#', '');
-            //var nextPg = endless.page + 1;
 
-            // this.
-            //     $('#carregar-mais')
-            //     .attr('disabled', true)
-            //     .find('.mdc-fab__label')
-            //     .html('Carregando, aguarde...')
-
-            // if (categoryName.length > 0) {
-            //     console.log(nextPg);
-            //     getNotesByCategoryId(categoryName.toUpperCase(), nextPg, (res) => {
-            //         console.log(res);
-            //     })
-            // }
-            // else{
-
-            // }
-            // this.
-            //     $('#carregar-mais')
-            //     .attr('disabled', false)
-            //     .find('.mdc-fab__label')
-            //     .html('Carregar mais...');
-
+            this.
+                $('#carregar-mais')
+                .attr('disabled', true)
+                .html('<span class="material-icons mdc-fab__icon">refresh</span> Carregando, aguarde...')
             endless.load();
+
+            window.setTimeout(() => {
+                this.
+                    $('#carregar-mais')
+                    .attr('disabled', false)
+                    .html('<span class="material-icons mdc-fab__icon">refresh</span> Carregar mais...');
+
+            }, 500)
+
+
         }
 
     </script>
