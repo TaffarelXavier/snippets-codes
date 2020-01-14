@@ -152,6 +152,32 @@ var notas = (notas, tagsArr) => {
     </details>  </div>
             </div><!--FIM EDITOR-->`;
   }
+  else{
+    content += `
+    <div class="row" 
+    style="margin:0px !important;border:0px solid red;
+    outline:0px solid lime;border-top:1px solid #ccc;padding-top:30px;">
+   <!--ACE EDITOR-->
+          <div class="col-sm-12 col-md-12" style='padding:0px 25px 35px 25px;'> 
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <i class="material-icons copiar" data-id="${note_id}"
+                    title="Copiar código"
+                    id="copiar_${note_id}" title="Clique para copiar">file_copy</i>
+                    <i class="material-icons excluir-nota"
+                    title="Excluir nota"
+                    data-nota-id="${note_id}">
+                      delete
+                    </i>
+                    <i class="material-icons editar-nota" 
+                    title="Editar Nota"
+                    data-nota='${JSON.stringify(edicao)}'>
+                      edit
+                    </i>
+                </div>
+            </div></div>
+        </div><!--FIM EDITOR-->`;
+  }
 
   content += `</div><br/><br/>
   </div> <!--FIM CARD-->`;

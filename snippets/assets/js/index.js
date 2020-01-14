@@ -1,6 +1,6 @@
 function selectOptionByValue(selectElement, value) {
-  var options = selectElement.options;
-  for (var i = 0, optionsLength = options.length; i < optionsLength; i++) {
+  let options = selectElement.options;
+  for (let i = 0, optionsLength = options.length; i < optionsLength; i++) {
     if (options[i].value == value) {
       selectElement.selectedIndex = i;
       return true;
@@ -9,7 +9,7 @@ function selectOptionByValue(selectElement, value) {
   return false;
 }
 
-var mediaQuery = () => {
+let mediaQuery = () => {
   if (window.matchMedia('(max-width: 575.98px)').matches) {
     return 'xs';
   }
@@ -32,8 +32,8 @@ var mediaQuery = () => {
  */
 function funcoesNota() {
   //Editar Nota
-  $('.editar-nota').click(function() {
-    var {
+  $('.editar-nota').click(function () {
+    let {
       note_id,
       note_title,
       note_description,
@@ -43,11 +43,11 @@ function funcoesNota() {
       type_language
     } = JSON.parse($(this).attr('data-nota'));
 
-    var categoriaElement = document.getElementById('gd-gategory'),
+    let categoriaElement = document.getElementById('gd-gategory'),
       linguagemFormatacaoElement = document.getElementById('gd-language'),
       tagsElement = document.getElementById('gd-select-tags');
 
-    var tags = document.getElementById(`tags_${note_id}`).value;
+    let tags = document.getElementById(`tags_${note_id}`).value;
 
     try {
       if (JSON.parse(tags).length > 0) {
@@ -81,7 +81,7 @@ function funcoesNota() {
 
     $('#gd-tags').val(note_tags);
 
-    var editor = ace.edit(document.getElementById(`note_${note_id}`));
+    let editor = ace.edit(document.getElementById(`note_${note_id}`));
 
     $('#gd-get-note')
       .html(escapeHtml(editor.getValue()))
@@ -89,19 +89,19 @@ function funcoesNota() {
 
     $('#nota-id').val(note_id);
 
-    $('pre code').each(function(i, e) {
+    $('pre code').each(function (i, e) {
       hljs.highlightBlock(e);
     });
   });
 
   //Para copiar uma nota:
-  $('.copiar').each(function(index, element) {
-    $(this).click(function(ev) {
+  $('.copiar').each(function (index, element) {
+    $(this).click(function (ev) {
       let note_id = $(this).attr('data-id');
 
-      var editor = ace.edit(document.getElementById(`note_${note_id}`));
+      let editor = ace.edit(document.getElementById(`note_${note_id}`));
 
-      var beautify = ace.require('ace/ext/beautify'); // get reference to extension
+      let beautify = ace.require('ace/ext/beautify'); // get reference to extension
 
       beautify.beautify(editor.session);
       //Copiar o código
@@ -109,7 +109,7 @@ function funcoesNota() {
       editor.focus();
       document.execCommand('copy');
 
-      var options = {
+      let options = {
         content: 'Código copiado com sucesso!', // text of the snackbar
         style: 'toast', // add a custom class to your snackbar
         timeout: 2000 // time in milliseconds after the snackbar autohides, 0 is disabled
@@ -120,12 +120,12 @@ function funcoesNota() {
   });
 
   //Ace Editor
-  $('.editor').each(function(i, el) {
-    var _this = $(this);
+  $('.editor').each(function (i, el) {
+    let _this = $(this);
 
     let { lang_name } = JSON.parse(_this.attr('data-note'));
 
-    var editor = ace.edit(el, {
+    let editor = ace.edit(el, {
       mode: 'ace/mode/' + lang_name,
       maxLines: 800,
       wrap: true,
@@ -148,7 +148,7 @@ function funcoesNota() {
   });
 
   //Exluir nota:
-  $('.excluir-nota').click(function() {
+  $('.excluir-nota').click(function () {
     let note_id = parseInt($(this).attr('data-nota-id'));
 
     let options = {
@@ -169,15 +169,15 @@ function funcoesNota() {
     });
   });
 
-  $('.tag').click(function(ev) {
+  $('.tag').click(function (ev) {
     let keyword = ev.target.innerText;
     $('#input-pesquisar-tag').val(keyword);
     pesquisarPorTag(keyword);
   });
 
-  $('.open-code').click(function() {
-    var { note_id, note_title, note_description } = JSON.parse($(this).attr('data-nota'));
-    var win = window.open('', '_blank');
+  $('.open-code').click(function () {
+    let { note_id, note_title, note_description } = JSON.parse($(this).attr('data-nota'));
+    let win = window.open('', '_blank');
     win.document.write(
       '<html><head><title>Print it!</title><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/dracula.min.css"></head><body>'
     );
@@ -192,14 +192,14 @@ function funcoesNota() {
  */
 function pesquisarPorTag(keyword) {
   if (keyword.length > 0) {
-    var tags = $('.tag');
+    let tags = $('.tag');
     $('.notas')
       .removeClass('d-flex')
       .attr('hidden', true)
       .hide();
-    for (var k = 0; k < tags.size(); k++) {
+    for (let k = 0; k < tags.size(); k++) {
       if (tags[k].innerText.toUpperCase() == keyword.toUpperCase()) {
-        var note_id = tags[k].getAttribute('data-note-id');
+        let note_id = tags[k].getAttribute('data-note-id');
         $('#note_card_' + note_id)
           .removeAttr('hidden')
           .show();
@@ -216,28 +216,28 @@ function pesquisarPorTag(keyword) {
  * Função para Buscar notas por categoria_id ou category_name
  * */
 function getNotesByCategoryId(categoryId_Name, pagina, callback) {
-  var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
+  let myInit = { method: 'GET', mode: 'cors', cache: 'default' };
   pagina = pagina || 1;
   fetch(
     config[INDEX].baseApiRestUrl +
-      '/notes-por-category-id/' +
-      categoryId_Name +
-      '/' +
-      pagina,
+    '/notes-por-category-id/' +
+    categoryId_Name +
+    '/' +
+    pagina,
     myInit
-  ).then(function(response) {
+  ).then(function (response) {
     if (response.status !== 200) {
       console.warn('Looks like there was a problem. Status Code: ' + response.status);
       return;
     }
-    response.json().then(function(result) {
+    response.json().then(function (result) {
       callback(result);
     });
   });
 }
 
 /**
- * Carrega todos os Snippets
+ * Carrega todos os Snippets no inicio do carregamento da página
  */
 function loadTodosSnippets() {
   fetch(config[INDEX].baseApiRestUrl + '/notes', {
@@ -269,22 +269,22 @@ function loadTodosSnippets() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', function(event) {
-  var categoryName = window.location.hash.replace('#', '');
+document.addEventListener('DOMContentLoaded', function (event) {
+  let categoryName = window.location.hash.replace('#', '');
 
   if (categoryName.length > 0) {
-    var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
+    let myInit = { method: 'GET', mode: 'cors', cache: 'default' };
     fetch(
       config[INDEX].baseApiRestUrl +
-        '/get-all-categories?category_name=' +
-        categoryName.toUpperCase(),
+      '/get-all-categories?category_name=' +
+      categoryName.toUpperCase(),
       myInit
-    ).then(function(response) {
+    ).then(function (response) {
       if (response.status !== 200) {
         console.warn('Looks like there was a problem. Status Code: ' + response.status);
         return;
       }
-      response.json().then(function(result) {
+      response.json().then(function (result) {
         let rs = result[0];
 
         carregarNotasPorCategoria(null, rs);
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
         );
         if (rs.notes.length > 0) {
           $('#esqueleto').attr('hidden', true);
-          setTimeout(function() {
+          setTimeout(function () {
             $('.list-group-item').removeClass(
               'list-group-item-action list-group-item-success'
             );
@@ -331,11 +331,11 @@ function cabecalho(elemt, category_name, category_icon) {
     style="background:url('${config[INDEX].baseApiRestUrl}/images/${category_icon}') no-repeat;background-size: 95% 95%;
     background-attachment: scroll;background-position: 0px 3px;border:0px solid red;"
      class="termo-filtrado-icone"></div><strong>` +
-      category_name.trim().toUpperCase() +
-      '</strong>'
+    category_name.trim().toUpperCase() +
+    '</strong>'
   );
   //Vai para o topo:
-  var obj = $('#termo-filtrado').offset();
+  let obj = $('#termo-filtrado').offset();
   $('html, body')
     .delay(1000)
     .animate({ scrollTop: obj.top - 70 }, 200);
@@ -347,7 +347,7 @@ function cabecalho(elemt, category_name, category_icon) {
   $(elemt).addClass('list-group-item-action list-group-item-success', 'disabled');
 }
 
-function carregarNotasPorCategoria(el, { category_id, category_name, category_icon }) {
+function carregarNotasPorCategoria(el, { total, category_id, category_name, category_icon }) {
   //Define
 
   if (mediaQuery() == 'xs') {
@@ -364,7 +364,7 @@ function carregarNotasPorCategoria(el, { category_id, category_name, category_ic
   cabecalho(el, category_name, category_icon);
 
   //Busca as 10 primeiras notas pelo ID de uma categoria
-  getNotesByCategoryId(category_id, 1, function(res) {
+  getNotesByCategoryId(category_id, 1, function (res) {
     $('#get-notes').html('');
 
     let content = '';
@@ -377,9 +377,18 @@ function carregarNotasPorCategoria(el, { category_id, category_name, category_ic
 
     funcoesNota();
 
-    if (res.length > 0) {
+    if (res.length == 1) {
       $('#esqueleto').attr('hidden', true);
+      $("#div-carregar__mais").attr('hidden', true);
+    } else {
+      $('#esqueleto').attr('hidden', true);
+      $("#div-carregar__mais").removeAttr('hidde')
     }
+
+    console.log(total)
+    console.log(document.getElementsByClassName('notas'));
+
+
   });
 
   /*if (Object.keys(rows).length > 0) {
@@ -399,16 +408,16 @@ function carregarNotasPorCategoria(el, { category_id, category_name, category_ic
  * Carregas as categorias na barra à esquerda.
  */
 function carregarCategorias() {
-  var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
+  let myInit = { method: 'GET', mode: 'cors', cache: 'default' };
 
   fetch(config[INDEX].baseApiRestUrl + '/categories', myInit)
-    .then(function(response) {
+    .then(function (response) {
       if (response.status !== 200) {
         console.warn('Looks like there was a problem. Status Code: ' + response.status);
         return;
       }
-      response.json().then(function(result) {
-        var rows = document.getElementById('category');
+      response.json().then(function (result) {
+        let rows = document.getElementById('category');
 
         rows.innerHTML = '';
 
@@ -426,12 +435,14 @@ function carregarCategorias() {
           } = row;
           //INÍCIO - BUSCA CATEGORIAS
 
-          var item = document.createElement('li');
+          let item = document.createElement('li');
 
           item.id = category_name;
           //Ao clicar em alguma categoria:
-          item.onclick = function() {
-            var el = this;
+          item.onclick = function () {
+            let el = this;
+            let {total}  = JSON.parse(el.dataset.category);
+            row.total = total;
             window.location.hash = category_name.toLowerCase();
             carregarNotasPorCategoria(el, row);
           };
@@ -446,35 +457,35 @@ function carregarCategorias() {
               `<span class="categoria-nome">
               <img style="margin:0;position: relative;top:-1px; width:40px;height: 40px;background:#eee;"
                src="${
-                 config[INDEX].baseApiRestUrl
-               }/images/${category_placeholder_icon.trim()}" alt="${category_icon.trim()}" data-src='${
-                category_icon != null
-                  ? `${config[INDEX].baseApiRestUrl}/images/` + category_icon.trim()
-                  : ICON_PADRAO
+              config[INDEX].baseApiRestUrl
+              }/images/${category_placeholder_icon.trim()}" alt="${category_icon.trim()}" data-src='${
+              category_icon != null
+                ? `${config[INDEX].baseApiRestUrl}/images/` + category_icon.trim()
+                : ICON_PADRAO
               }' class="lazy" /> <!---->
               ${category_name.toUpperCase()}</span>
    <span class='badge badge-primary badge-pill' style="float:right;position:relative;top:-10px;margin:0">${
-     row.total
-   }</span>`
+              row.total
+              }</span>`
             )
             .attr('data-category', JSON.stringify(row))
             .attr('title', category_name.toUpperCase());
 
           rows.appendChild(item);
 
-          setTimeout(function() {
-            var lazyImages = [].slice.call(document.querySelectorAll('img.lazy'));
+          setTimeout(function () {
+            let lazyImages = [].slice.call(document.querySelectorAll('img.lazy'));
 
             if (
               'IntersectionObserver' in window &&
               'IntersectionObserverEntry' in window &&
               'intersectionRatio' in window.IntersectionObserverEntry.prototype
             ) {
-              let lazyImageObserver = new IntersectionObserver(function(
+              let lazyImageObserver = new IntersectionObserver(function (
                 entries,
                 observer
               ) {
-                entries.forEach(function(entry) {
+                entries.forEach(function (entry) {
                   if (entry.isIntersecting) {
                     let lazyImage = entry.target;
 
@@ -489,7 +500,7 @@ function carregarCategorias() {
                 });
               });
 
-              lazyImages.forEach(function(lazyImage) {
+              lazyImages.forEach(function (lazyImage) {
                 lazyImageObserver.observe(lazyImage);
               });
             }
@@ -498,13 +509,13 @@ function carregarCategorias() {
         });
       });
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.error('Fetch Error :-S', err);
     });
 }
 
 function mergeArrayWithDiff(arrayA, arrayB) {
-  var result = [...arrayA, ...arrayB].reduce((acc, item) => {
+  let result = [...arrayA, ...arrayB].reduce((acc, item) => {
     let found = acc.find(x => x.category_name === item.category_name);
     if (found) {
       found.count += item.count;
@@ -518,31 +529,31 @@ function mergeArrayWithDiff(arrayA, arrayB) {
 
 function carregarTodasCategoria() {
   setTimeout(() => {
-    var rows = document.getElementById('gd-get-categories');
+    let rows = document.getElementById('gd-get-categories');
 
-    var arrayA = Category.getCategorieWithCountNotes();
+    let arrayA = Category.getCategorieWithCountNotes();
 
-    var arrayB = Category.all();
+    let arrayB = Category.all();
 
     arrayB = arrayB.map(el => {
       el.count = 0;
       return el;
     });
 
-    var result = mergeArrayWithDiff(arrayA, arrayB);
+    let result = mergeArrayWithDiff(arrayA, arrayB);
 
     result.map(category => {
-      var item = document.createElement('li');
+      let item = document.createElement('li');
 
       $(item)
         .addClass('mdc-list-item mdc-ripple-upgraded')
         .css({ borderBottom: '1px dashed #ccc', padding: '0px !important' })
         .html(
           `<span class="mdc-list-item__text">${category.category_name.toUpperCase()}[${
-            category.count
+          category.count
           }]</span>
           <!--<span class="mdc-list-item__meta material-icons" aria-hidden="true" data-category-id='${
-            category.category_id
+          category.category_id
           }'>delete</span>-->
           <span class="mdc-list-item__meta material-icons remove-category"
            aria-hidden="true" data-category='${JSON.stringify(category)}'>delete</span>
@@ -558,10 +569,11 @@ function carregarTodasCategoria() {
 }
 
 // Pode usar o jQuery normalmente agora.
-$(document).ready(function() {
+$(document).ready(function () {
   //Abre o modal de categorias:
-  $('#abrir-modal-criador-categoria').click(function() {
-    setTimeout(function() {
+
+  $('#abrir-modal-criador-categoria').click(function () {
+    setTimeout(function () {
       $('#category-name')
         .focus()
         .select();
@@ -571,15 +583,15 @@ $(document).ready(function() {
   /**
     Pesquisar Categorias:
     */
-  $('#categoria').keyup(function() {
+  $('#categoria').keyup(function () {
     let _value = $(this);
 
-    var keyword = removeSinaisDiacriticos(_value.val().toLowerCase());
+    let keyword = removeSinaisDiacriticos(_value.val().toLowerCase());
 
     let categories = document.getElementById('category').childNodes;
 
     for (let k = 0; k < categories.length; k++) {
-      var textoArray = removeSinaisDiacriticos(categories[k].title.toLowerCase());
+      let textoArray = removeSinaisDiacriticos(categories[k].title.toLowerCase());
 
       if (textoArray.includes(keyword)) {
         $(categories[k])
@@ -594,35 +606,33 @@ $(document).ready(function() {
     }
 
     $('.categoria-nome').unmark({
-      done: function() {
+      done: function () {
         $('.categoria-nome').mark(keyword);
       }
     });
   });
 
   $('#input-pesquisar-tag').on('input', ev => {
-    var keyword = ev.target.value;
+    let keyword = ev.target.value;
     pesquisarPorTag(keyword);
   });
 
   $('#input-pesquisar-geral')
-    .on('input', function() {
-      var _this = $(this);
+    .on('input', function () {
+      let _this = $(this);
 
-      var textoPesquisado = removeSinaisDiacriticos(_this.val().toLowerCase());
+      let textoPesquisado = removeSinaisDiacriticos(_this.val().toLowerCase());
 
-      var cardDescription = document.getElementsByClassName('notas');
+      let cardDescription = document.getElementsByClassName('notas');
 
       $('.note-title').each((i, el) => {
-        var textoElemento = removeSinaisDiacriticos(el.innerText.toLowerCase());
+        let textoElemento = removeSinaisDiacriticos(el.innerText.toLowerCase());
 
-        //console.log($(cardDescription[i]).find('.card-body').text().trim().toLowerCase());
-
-        var description = removeSinaisDiacriticos(
+        let description = removeSinaisDiacriticos(
           cardDescription[i].innerText.toLowerCase()
         );
 
-        var nota_id = parseInt($(el).attr('data-note-id'));
+        let nota_id = parseInt($(el).attr('data-note-id'));
 
         if (
           textoElemento.includes(textoPesquisado) ||
@@ -641,9 +651,9 @@ $(document).ready(function() {
 
       if (textoPesquisado.length > 0) {
         // Read the keyword
-        var keyword = textoPesquisado;
+        let keyword = textoPesquisado;
         $('.note-title, .text-secondary').unmark({
-          done: function() {
+          done: function () {
             $('.note-title, .text-secondary').mark(keyword);
           }
         });
@@ -651,26 +661,26 @@ $(document).ready(function() {
         $('.note-title, .text-secondary').unmark();
       }
     })
-    .keyup(function(ev) {
+    .keyup(function (ev) {
       if (ev.keyCode == 13) {
-        var _this = $(this);
-        var textoPesquisado = _this.val();
-        var myInit = { method: 'GET', mode: 'cors', cache: 'default' };
+        let _this = $(this);
+        let textoPesquisado = _this.val();
+        let myInit = { method: 'GET', mode: 'cors', cache: 'default' };
         fetch(
           config[INDEX].baseApiRestUrl + '/notes/' + textoPesquisado + '?page=1',
           myInit
-        ).then(function(response) {
+        ).then(function (response) {
           if (response.status !== 200) {
             console.warn(
               'Looks like there was a problem. Status Code: ' + response.status
             );
             return;
           }
-          response.json().then(function(result) {
+          response.json().then(function (result) {
             if (result.length > 0) {
-            
+
               let content = '';
-              
+
               $('#get-notes').html("");
 
               result.map(nota => {
@@ -696,17 +706,17 @@ $(document).ready(function() {
     modalEditarNota('Editar Snippet', 'modalEditarNota', 'btnAlterarNota')
   );
 
-  (function() {
-    var body = document.getElementsByTagName('body')[0]; //Adiciona à tag head
-    var script = document.createElement('script');
+  (function () {
+    let body = document.getElementsByTagName('body')[0]; //Adiciona à tag head
+    let script = document.createElement('script');
     script.src = 'https://unpkg.com/showdown/dist/showdown.min.js';
     body.appendChild(script);
   })();
 
-  $('#description').keyup(function(ev) {
-    var descricao = $(this).val();
+  $('#description').keyup(function (ev) {
+    let descricao = $(this).val();
 
-    var converter = new showdown.Converter();
+    let converter = new showdown.Converter();
 
     let _html = converter.makeHtml(descricao);
 
@@ -718,8 +728,8 @@ $(document).ready(function() {
   funcSelect2('#select-tags');
   funcSelect2('#gd-select-tags');
 
-  var _selectCategoria = $('#categories_id');
-  var _selectFormatacao = $('#languages');
+  let _selectCategoria = $('#categories_id');
+  let _selectFormatacao = $('#languages');
 
   _selectCategoria
     .select2({
@@ -727,8 +737,8 @@ $(document).ready(function() {
       width: 'resolve',
       placeholder: 'Seleleciona uma categoria'
     })
-    .on('select2:select', function(e) {
-      var data = e.params.data;
+    .on('select2:select', function (e) {
+      let data = e.params.data;
       let val = _selectFormatacao.find("option:contains('" + data.text + "')").val();
       _selectFormatacao.val(val).trigger('change.select2');
     });
@@ -740,7 +750,7 @@ $(document).ready(function() {
   });
 
   //Modal: Evento ao abrir o modal:
-  $('#modalCriarNota').on('show.bs.modal', function(event) {
+  $('#modalCriarNota').on('show.bs.modal', function (event) {
     setTimeout(() => {
       $('#note-title')
         .focus()
@@ -749,7 +759,7 @@ $(document).ready(function() {
   });
 
   //FORMULÁRIO: EDITAR NOTA:
-  $('#form-editar-nota').submit(function(ev) {
+  $('#form-editar-nota').submit(function (ev) {
     ev.preventDefault();
 
     let nota_id = document.getElementById('nota-id').value;
@@ -762,7 +772,7 @@ $(document).ready(function() {
 
     // sqlite.connect(PATH_DB);
 
-    var obj = {
+    let obj = {
       note_id: nota_id,
       note_title: title,
       note_description: description,
@@ -775,7 +785,7 @@ $(document).ready(function() {
   });
 
   //FORMULÁRIO: CRIAR NOTA:
-  $('#formSave').submit(function(ev) {
+  $('#formSave').submit(function (ev) {
     ev.preventDefault();
 
     let _this = this;
@@ -785,11 +795,11 @@ $(document).ready(function() {
 
     //Trabalhar com Tags:
 
-    var arrInserTags = [];
+    let arrInserTags = [];
 
     let tags = $('#select-tags')
       .select2('data')
-      .map(function(el) {
+      .map(function (el) {
         // let rows = sqlite.run(
         //   `SELECT tag_id, COUNT(*) AS total FROM tags WHERE tag_name = ?`,
         //   [el.text.toLowerCase()]
@@ -804,7 +814,7 @@ $(document).ready(function() {
         //   arrInserTags.push(result[0]);
         // } else {
         //   // Se não existir
-        //   var last_insert_id = sqlite.run('INSERT INTO tags (tag_name) VALUES (?)', [
+        //   let last_insert_id = sqlite.run('INSERT INTO tags (tag_name) VALUES (?)', [
         //     el.text.toLowerCase()
         //   ]);
         //   arrInserTags.push({
@@ -815,7 +825,7 @@ $(document).ready(function() {
         // return el.text;
       });
 
-    // var obj = {
+    // let obj = {
     //   note_title: title,
     //   note_description: description,
     //   note_code: code,
@@ -823,8 +833,8 @@ $(document).ready(function() {
     //   note_type_language: language.value
     // };
 
-    var formData = new FormData();
-    var form = document.getElementById('formSave');
+    let formData = new FormData();
+    let form = document.getElementById('formSave');
 
     formData.append('title', form.title.value);
     formData.append('description', description);
@@ -848,18 +858,19 @@ $(document).ready(function() {
     //Insere as tags:
     /*arrInserTags.map(el => {
       sqlite.connect(PATH_DB);
-      var last_insert_id = sqlite.run(
+      let last_insert_id = sqlite.run(
         `INSERT INTO note_tag (nt_note_fk_id, nt_tag_fk_id) VALUES (?, ?);`,
         [obj.note_id, el.tag_id]
       );
     });*/
     return false;
   });
+
   carregarCategorias();
 
-  var isDetailOpen = true;
+  let isDetailOpen = true;
 
-  $('#collapse-snippets').click(function() {
+  $('#collapse-snippets').click(function () {
     if (!isDetailOpen) {
       $(this)
         .html('visibility_off')

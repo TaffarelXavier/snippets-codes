@@ -21,7 +21,7 @@
     <script src="assets/js/highlight.min.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-50858402-2"></script>
-	
+
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() {
@@ -30,7 +30,8 @@
         gtag('js', new Date());
         gtag('config', 'UA-50858402-2');
     </script>
-	<script data-ad-client="ca-pub-9334601625562127" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-9334601625562127" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <style>
         body {
             display: flex;
@@ -403,7 +404,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div style="text-align: center;">
+                                            <div style="text-align: center;" id="div-carregar__mais">
                                                 <button id="carregar-mais" class="mdc-fab mdc-fab--extended">
                                                     <span class="material-icons mdc-fab__icon">refresh</span>
                                                     <span class="mdc-button__ripple"></span>Carregar mais...</button>
@@ -481,8 +482,8 @@
     <script src="assets/js/select2.min.js"></script>
     <!-- jquery.mark.min.js: SERVE PARA MARCAR, À MEDIDA QUE FAZEMOS ALGUMA PESQUISA -->
     <script src="assets/js/jquery.mark.min.js"></script>
-    <script src="assets/js/framework.min.js"></script>
-    <script src="assets/js/index.min.js"></script>
+    <script src="assets/js/framework.js"></script>
+    <script src="assets/js/index.js"></script>
 
     <script>
         const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
@@ -596,12 +597,12 @@
             }, false);
 
         document.getElementById('carregar-mais').onclick = () => {
-
             this.
                 $('#carregar-mais')
                 .attr('disabled', true)
                 .html('<span class="material-icons mdc-fab__icon">refresh</span> Carregando, aguarde...')
-            endless.load();
+           
+                endless.load();
 
             window.setTimeout(() => {
                 this.
@@ -609,8 +610,15 @@
                     .attr('disabled', false)
                     .html('<span class="material-icons mdc-fab__icon">refresh</span> Carregar mais...');
 
-            }, 500)
+                let quantNotasAbertasNoBrowser = document.getElementsByClassName('notas');
 
+                let { total } = JSON.parse($('#' + window.location.hash.replace('#', '').toUpperCase()).attr("data-category"));
+
+                if (quantNotasAbertasNoBrowser.length >= total) {
+                    $("#div-carregar__mais").attr('hidden', true);
+                }
+
+            }, 500)
 
         }
 
