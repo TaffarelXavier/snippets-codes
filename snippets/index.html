@@ -21,6 +21,7 @@
     <script src="assets/js/highlight.min.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-50858402-2"></script>
+	
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() {
@@ -29,6 +30,7 @@
         gtag('js', new Date());
         gtag('config', 'UA-50858402-2');
     </script>
+	<script data-ad-client="ca-pub-9334601625562127" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <style>
         body {
             display: flex;
@@ -78,7 +80,11 @@
         @media (min-width: 576px) and (max-width: 767.98px) {}
 
         /* Medium devices (tablets, 768px and up) */
-        @media (min-width: 768px) and (max-width: 991.98px) {}
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            body {
+                zoom: 60%;
+            }
+        }
 
         /* Large devices (desktops, 992px and up) */
         @media (min-width: 992px) and (max-width: 1440px) {
@@ -94,6 +100,12 @@
                 margin-left: 340px !important;
                 margin-right: 0;
             }
+
+            body {
+                zoom: 80%;
+                -moz-transform: scale(70%);
+                -moz-transform-origin: 0 0;
+            }
         }
 
         @media (min-width: 1450px) {
@@ -103,13 +115,17 @@
 
             .mdc-drawer {
                 width: 350px !important;
-                /* border:1px solid lime; */
             }
 
             .mdc-drawer-app-content {
                 margin-left: 350px !important;
                 margin-right: 0;
-                /* border:5px solid red; */
+            }
+
+            body {
+                zoom: 90%;
+                -moz-transform: scale(90%);
+                -moz-transform-origin: 0 0;
             }
         }
 
@@ -528,10 +544,10 @@
                     var categoryName = window.location.hash.replace('#', '');
 
                     if (categoryName.length > 0) {
-                        xhr.open('GET', `http://127.0.0.1:3000/notes-por-category-id/${categoryName.toUpperCase()}/${nextPg}`, true);
+                        xhr.open('GET', `${config[INDEX].baseApiRestUrl}/notes-por-category-id/${categoryName.toUpperCase()}/${nextPg}`, true);
                     }
                     else {
-                        xhr.open('GET', "http://127.0.0.1:3000/notes?pagina=" + nextPg, true);
+                        xhr.open('GET', `${config[INDEX].baseApiRestUrl}/notes?pagina=` + nextPg, true);
                     }
 
                     xhr.onload = function () {
