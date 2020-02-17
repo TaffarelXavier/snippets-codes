@@ -68,12 +68,13 @@ class NoteController {
   async update ({ params, request, response }) {
 
  try {
-    const {titulo, codigo, note_id} = request.post();	
+    const {titulo, codigo, description, note_id} = request.post();	
     const note = await Note.find(parseInt(note_id));
     note.note_title = titulo;
     note.note_code = codigo;
-    await note.save().
-    console.log('Summoner saved !')
+    note.note_description = description;
+    await note.save();
+    return note;
   } catch (error) {
     
   }

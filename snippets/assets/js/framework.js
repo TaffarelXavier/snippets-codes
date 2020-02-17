@@ -94,6 +94,7 @@ function dynamicSort(property) {
  |  
  */
 var notas = (notas, tagsArr) => {
+
   let {
     note_id,
     note_title,
@@ -121,6 +122,7 @@ var notas = (notas, tagsArr) => {
     category_id: note_category_id,
     type_language: note_type_language
   };
+
   note_code = note_code || null;
 
   let content = `<div id="note_card_${note_id}" class="notas">

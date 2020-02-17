@@ -22,8 +22,6 @@ var escapeHtml = unsafe => {
   const [description, setCescription] = useState(note_description);
   const [inf, setInf] = useState(info);
 
-console.log(description);
-
   function handlerChangeCodigo(ev) {
     setCodigo(ev.target.value);
   }
@@ -31,6 +29,11 @@ console.log(description);
   function handlerChangeTitulo(ev) {
     setTitulo(ev.target.value);
   }
+  
+  function handlerChangeDescription(ev) {
+    setCescription(ev.target.value);
+  }
+
 
   const handlerSave = () =>{
 
@@ -39,7 +42,7 @@ console.log(description);
 	headers: {
     	'Content-Type': 'application/json'
   	},
- 	body: JSON.stringify({note_id, titulo, codigo})
+ 	body: JSON.stringify({note_id, titulo, codigo, description})
       }).then(response=>{
           console.log(response)
       })
@@ -64,6 +67,15 @@ console.log(description);
               onChange={handlerChangeTitulo}
               value={titulo}
             />
+
+	  <h2>Descrição:</h2>
+            <Form.Control
+              as="textarea"
+              rows="4"
+              onChange={handlerChangeDescription}
+              value={description}
+            />
+
             <h2>Código:</h2>
             <Form.Control
               as="textarea"
@@ -94,8 +106,8 @@ App.getInitialProps = async function(context) {
    const { id } = context.query;
 
   const res =  await fetch(`${ADDRESS_SERVE_ADONIS}/notes/${id}/edit`)
-  let note = await res.text();
-  
+
+  let note = await res.text();  
   
   if(note.length > 0){
     note = JSON.parse(note);
