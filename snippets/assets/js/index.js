@@ -33,6 +33,7 @@ let mediaQuery = () => {
 function funcoesNota() {
   //Editar Nota
   $('.editar-nota').click(function () {
+   
     let {
       note_id,
       note_title,
@@ -42,6 +43,8 @@ function funcoesNota() {
       category_id,
       type_language
     } = JSON.parse($(this).attr('data-nota'));
+
+    window.open(`${config[INDEX].endereco}/${note_id}`)
 
     let categoriaElement = document.getElementById('gd-gategory'),
       linguagemFormatacaoElement = document.getElementById('gd-language'),
