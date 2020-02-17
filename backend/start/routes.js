@@ -16,16 +16,6 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Database = use("Database");
 const Route = use("Route");
-const Config = use("Config");
-const fs = use("fs");
-const Helpers = use("Helpers");
-const readFile = Helpers.promisify(fs.readFile);
-const View = use("View");
-
-View.global("currentTime", function() {
-  return new Date().getTime();
-});
-
 //Faz o login
 Route.post("/login", "UserController.login").middleware("guest");
 
@@ -37,24 +27,6 @@ Route.get("users/:id", "UserController.show").middleware("auth");
 
 //Faz o logout
 Route.get("/logout", "UserController.logout");
-
-
-Route.get("/test", async ({ response }) => {
-  return response.status(200).send("Login First");
-});
-
-Route.get("/a", ({ session, response }) => {
-  session.put("user_id", 1002);
-  session.put("username", "virk");
-  response.redirect("/hello-world");
-});
-
-Route.get("hello-world", ({ session, view }) => {
-  return view.render("hello-world", {
-    nome: session.get("username"),
-    user_id: session.get("user_id")
-  });
-});
 
 //Grupo de Imagens:
 

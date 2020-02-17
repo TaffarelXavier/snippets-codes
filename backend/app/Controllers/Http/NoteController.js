@@ -44,6 +44,14 @@ class NoteController {
     return notes;
   }
 
+  async edit({ request, params, response, view }) {
+    const { pagina } = request.get();
+
+    const note = await Note.find(282);
+
+    return note;
+  }
+
   /*
    */
   async getCategoriesComTotal({ params }) {
