@@ -45,11 +45,39 @@ class NoteController {
   }
 
   async edit({ request, params, response, view }) {
+    
     const { pagina } = request.get();
 
-    const note = await Note.find(282);
+    const {id} = params;
+    
+   if(id){
+ 	return await Note.find(parseInt(id));
+    }
+    	
+    return {erro:'error'};
+  }
 
-    return note;
+  /**
+   * Update userproduct details.
+   * PUT or PATCH userproducts/:id
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   */
+  async update ({ params, request, response }) {
+
+ try {
+    const {titulo, codigo, note_id} = request.post();	
+    const note = await Note.find(parseInt(note_id));
+    note.note_title = titulo;
+    note.note_code = codigo;
+    await note.save().
+    console.log('Summoner saved !')
+  } catch (error) {
+    
+  }
+
   }
 
   /*

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 const ReactMarkdown = require('react-markdown');
 import Form from 'react-bootstrap/Form';
 import { useRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch';
-
 
 var escapeHtml = unsafe => {
     return unsafe
@@ -15,11 +14,15 @@ var escapeHtml = unsafe => {
       .replace(/'/g, '&#039;');
   };
 
-const App = ({ note }) => {
-  const { note_id, note_title, note_code } = note;
-
-  const [codigo, setCodigo] = useState(note_code);
+  const App = ({ note,ADDRESS_SERVE_ADONIS, info}) => {
+	
+  const { note_id, note_title, note_code, note_description} = note;
   const [titulo, setTitulo] = useState(note_title);
+  const [codigo, setCodigo] = useState(note_code);
+  const [description, setCescription] = useState(note_description);
+  const [inf, setInf] = useState(info);
+
+console.log(description);
 
   function handlerChangeCodigo(ev) {
     setCodigo(ev.target.value);
@@ -30,10 +33,13 @@ const App = ({ note }) => {
   }
 
   const handlerSave = () =>{
-      console.log(titulo)
-      console.log(escapeHtml(codigo))
-      fetch(`http://192.168.129.141:3300/notes/${note_id}/edit`,{
-          method:'POST'
+
+      fetch(`${ADDRESS_SERVE_ADONIS}/notes/${note_id}`,{
+	method:'PUT',
+	headers: {
+    	'Content-Type': 'application/json'
+  	},
+ 	body: JSON.stringify({note_id, titulo, codigo})
       }).then(response=>{
           console.log(response)
       })
@@ -41,6 +47,12 @@ const App = ({ note }) => {
 
   return (
     <Container>
+<Row style={{marginTop:50}}>
+	<Col>
+		<h1>Editar nota</h1>
+	</Col>
+</Row>
+<hr />
       <Row>
         <Col xs={8} md={8}>
           <Form.Group controlId="exampleForm.ControlTextarea1">
@@ -63,7 +75,7 @@ const App = ({ note }) => {
           <hr />
           <Button onClick={handlerSave}>Salvar</Button>
         </Col>
-        <Col xs={2} md={2}>
+        <Col xs={4} md={4} sm={4} style={{borderWidth:0, borderColor:'red', borderStyle:'solid'}}>
           <h2>Saída:</h2>
           <ReactMarkdown source={codigo} 
           escapeHtml={false}
@@ -74,14 +86,24 @@ const App = ({ note }) => {
   );
 };
 
+
+let ADDRESS_SERVE_ADONIS = process.env.adonis_address;
+
 App.getInitialProps = async function(context) {
-  const { id } = context.query;
+  
+   const { id } = context.query;
 
-  const res = await fetch(`http://192.168.129.141:3300/notes/${id}/edit`);
+  const res =  await fetch(`${ADDRESS_SERVE_ADONIS}/notes/${id}/edit`)
+  let note = await res.text();
+  
+  
+  if(note.length > 0){
+    note = JSON.parse(note);
+    return {ADDRESS_SERVE_ADONIS, note, 'info':'success'};
+  }
+   return {ADDRESS_SERVE_ADONIS, 'info':'not_found'};
+ 
 
-  const note = await res.json();
-
-  return { note };
 };
 
 export default App;

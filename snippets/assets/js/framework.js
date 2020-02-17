@@ -1,23 +1,27 @@
 ﻿const config = [
   {
-    baseApiRestUrl: 'http://127.0.0.1:3300', //---->0,
+    baseApiRestUrl: 'http://127.0.0.1:3300', //		---->0,
     endereco:'http://127.0.0.1:3300'
   },
   {
-    baseApiRestUrl: 'http://192.168.129.171:3300', //---->1
+    baseApiRestUrl: 'http://192.168.129.171:3300', //	---->1
     endereco:'http://127.0.0.1:3300'
   },
   {
-    baseApiRestUrl: `http://192.168.129.141:3300`, //---->2
+    baseApiRestUrl: `http://192.168.129.141:3300`, //	---->2
     endereco:'http://192.168.129.141:3000'
   },
   {
-    baseApiRestUrl: 'https://api.rsvtelecom.com.br', //---->3
+    baseApiRestUrl: `http://192.168.11.59:3300`, //	---->3
+    endereco:'http://192.168.11.59:3000'
+  },
+  {
+    baseApiRestUrl: 'https://api.rsvtelecom.com.br', //	---->4
     endereco:'http://127.0.0.1:3300'
   }
 ];
 
-const INDEX = 2;
+const INDEX = 3;
 
 /**
  | 
