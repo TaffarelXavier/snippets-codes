@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -22,9 +22,7 @@ class CategoryController {
    * @param {View} ctx.view
    */
   async index({ request, response, view }) {
-    const categories = await Category.query()
-      .select("*")
-      .fetch();
+    const categories = await Category.all();
     return categories;
   }
   /**

@@ -5,128 +5,63 @@ import Form from 'react-bootstrap/Form';
 import fetch from 'isomorphic-unfetch';
 import _escapeHtml from '../src/scapeHtml';
 
-const Saida = ({titulo, descricao, codigo}) =>{
-  return (<>
-  <h3>Título:</h3>
-  <ReactMarkdown source={titulo} escapeHtml={false} />
-  <h3>Descrição:</h3>
-  <ReactMarkdown source={descricao} escapeHtml={false} />
-  <h3>Código:</h3>
-  <ReactMarkdown source={codigo} escapeHtml={false} /></>)
-}
+const Saida = ({ titulo, descricao, codigo }) => {
+	return (
+		<>
+			<ReactMarkdown source={descricao} escapeHtml={false} />
+			<ReactMarkdown source={codigo} escapeHtml={false} />
+		</>
+	);
+};
 
 const App = ({ note, ADDRESS_SERVE_ADONIS, info }) => {
-  
-  const { note_id, note_title, note_code, note_description } = note;
-  const [titulo, setTitulo] = useState(note_title);
-  const [codigo, setCodigo] = useState(note_code);
-  const [description, setDescription] = useState(note_description);
-  const [btnSaveDisable, setBtnSaveDisable] = useState(true);
 
-const disableButton = (enable) =>{
-  setBtnSaveDisable(enable);
-}
+	const { note_id, note_title, note_code, note_description } = note;
+	const [titulo, setTitulo] = useState(note_title);
+	const [codigo, setCodigo] = useState(note_code);
+	const [description, setDescription] = useState(note_description);
 
-  function handlerChangeCodigo(ev) {
-    setCodigo(ev.target.value);
-    disableButton(false);
-  }
-
-  function handlerChangeTitulo(ev) {
-    setTitulo(ev.target.value);
-    disableButton(false);
-  }
-
-  function handlerChangeDescription(ev) {
-    setDescription(ev.target.value);
-    disableButton(false);
-  }
-
-  const handlerSave = () => {
-
-    fetch(`${ADDRESS_SERVE_ADONIS}/notes/${note_id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ note_id, titulo, codigo, description })
-    }).then(response => {
-      console.log(response);
-      disableButton(true);
-    });
-  };
-
-  return (
-    <Container>
-      <Row style={{ marginTop: 20 }}>
-        <Col>
-          <h1>Editar nota</h1>
-        </Col>
-      </Row>
-      <hr />
-      <Row>
-        <Col xs={8} md={8}>
-          <Form.Group controlId="exampleForm.ControlTextarea1">
-            <h3>Título:</h3>
-            <Form.Control
-              as="input"
-              rows="10"
-              autoFocus
-              onChange={handlerChangeTitulo}
-              value={titulo}
-            />
-
-            <h3>Descrição:</h3>
-            <Form.Control
-              as="textarea"
-              rows="4"
-              onChange={handlerChangeDescription}
-              value={description}
-            />
-
-            <h3>Código:</h3>
-            <Form.Control
-              as="textarea"
-              rows="10"
-              onChange={handlerChangeCodigo}
-              value={codigo}
-            />
-          </Form.Group>
+	return (
+		<Container>
+			<Row style={{ marginTop: 20 }}>
+				<Col xs={2} md={2} sm={2}>
+				</Col>
+				<Col xs={8} md={8} sm={8}>
+					<h1>{titulo}</h1><a href={`/editar/${note_id}`}>Editar</a>
           <hr />
-          <Button onClick={handlerSave} variant="primary" disabled={btnSaveDisable}>Salvar</Button>
-        </Col>
-        <Col
-          xs={4}
-          md={4}
-          sm={4}
-          style={{ borderWidth: 0, borderColor: 'red', borderStyle: 'solid' }}
-        >
-          <Saida titulo={titulo} descricao={description} codigo={codigo} />
-        </Col>
-      </Row>
-    </Container>
-  );
+				</Col>
+					<Col xs={2} md={2} sm={2}>
+				</Col>
+			</Row>
+			<Row>
+							<Col xs={2} md={2} sm={2}>
+				</Col>
+				<Col xs={8} md={8} sm={8}>
+					<Saida titulo={titulo} descricao={description} codigo={codigo} />
+				</Col>
+				<Col xs={2} md={2} sm={2}>
+				</Col>
+			</Row>
+		</Container>
+	);
 };
 
 let ADDRESS_SERVE_ADONIS = process.env.adonis_address;
 
 App.getInitialProps = async function(context) {
+	const { id } = context.query;
 
-  const { id } = context.query;
+	const res = await fetch(`${ADDRESS_SERVE_ADONIS}/notes/${id}/edit`);
 
-  const res = await fetch(`${ADDRESS_SERVE_ADONIS}/notes/${id}/edit`);
+	let note = await res.text();
 
-  let note = await res.text();
+	if (note.length > 0) {
+		note = JSON.parse(note);
 
-  if (note.length > 0) {
+		return { ADDRESS_SERVE_ADONIS, note, info: 'success' };
+	}
 
-    note = JSON.parse(note);
-
-    return { ADDRESS_SERVE_ADONIS, note, info: 'success' };
-
-  }
-
-  return { ADDRESS_SERVE_ADONIS, info: 'not_found' };
+	return { ADDRESS_SERVE_ADONIS, info: 'not_found' };
 };
 
 export default App;

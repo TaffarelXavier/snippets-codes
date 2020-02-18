@@ -44,7 +44,7 @@ function funcoesNota() {
       type_language
     } = JSON.parse($(this).attr('data-nota'));
 
-    window.open(`${config[INDEX].endereco}/${note_id}`)
+    window.open(`${config[INDEX].endereco}/editar/${note_id}`)
 
     let categoriaElement = document.getElementById('gd-gategory'),
       linguagemFormatacaoElement = document.getElementById('gd-language'),
@@ -167,6 +167,16 @@ function funcoesNota() {
       carregarCategorias();
     }
  
+  });
+
+  //Exluir nota:
+  $('.view-nota').click(function () {
+    
+      
+    let {
+      note_id
+    } = JSON.parse($(this).attr('data-nota'));
+      window.open(`${config[INDEX].endereco}/${note_id}`)
   });
 
   $('.tag').click(function (ev) {

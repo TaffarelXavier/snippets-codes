@@ -12,12 +12,12 @@
     endereco:'http://192.168.129.141:3000'
   },
   {
-    baseApiRestUrl: `http://192.168.11.59:3300`, //		---->3
+    baseApiRestUrl: `http://192.168.11.59:3300`, //	---->3
     endereco:'http://192.168.11.59:3000'
   },
   {
     baseApiRestUrl: 'https://api.rsvtelecom.com.br', //	---->4
-    endereco:'http://127.0.0.1:3300'
+    endereco:'https://editar.rsvtelecom.com.br'
   },
   {
     baseApiRestUrl: `http://10.0.75.1:3300`, //		---->5
@@ -25,7 +25,7 @@
   },
 ];
 
-const INDEX = 5;
+const INDEX = 3;
 
 /**
  | 
@@ -160,6 +160,11 @@ var notas = (notas, tagsArr) => {
                         data-nota='${JSON.stringify(edicao)}'>
                           edit
                         </i>
+                        <i class="material-icons view-nota" 
+                        title="Visualizar Nota"
+                        data-nota='${JSON.stringify(edicao)}'>
+                        visibility
+                        </i>
                     </div>
                 </div>
                 <div class="editor" id="note_${note_id}" data-note='${JSON.stringify(
@@ -189,6 +194,11 @@ var notas = (notas, tagsArr) => {
                     title="Editar Nota"
                     data-nota='${JSON.stringify(edicao)}'>
                       edit
+                    </i>
+                    <i class="material-icons view-nota" 
+                    title="Visualizar Nota"
+                    data-nota='${JSON.stringify(edicao)}'>
+                    visibility
                     </i>
                 </div>
             </div></div>

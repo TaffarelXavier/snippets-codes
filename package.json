@@ -1,0 +1,22 @@
+{
+  "name": "snippets-codes",
+  "version": "1.0.0",
+  "description": "<div align=\"center\">\r <br>\r <br>\r <img width=\"200\" src=\"snippets/assets/imagens/logo.svg\" alt=\"snippets-code\">\r <br>\r <br>\r </div>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"concurrently \"cd admin && yarn dev\" \"cd backend && nodemon --watch app server.js\" \"cd snippets && serve\"",
+    "start":"concurrently \"cd admin && yarn start\" \"cd backend && nodemon --watch app server.js\" \"cd snippets && serve\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TaffarelXavier/snippets-codes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TaffarelXavier/snippets-codes/issues"
+  },
+  "homepage": "https://github.com/TaffarelXavier/snippets-codes#readme"
+}
