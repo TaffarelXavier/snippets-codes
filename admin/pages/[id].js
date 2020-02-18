@@ -1,65 +1,73 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 const ReactMarkdown = require('react-markdown');
 import Form from 'react-bootstrap/Form';
-import { useRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch';
+import _escapeHtml from '../src/scapeHtml';
 
-var escapeHtml = unsafe => {
-    return unsafe
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  };
+const Saida = ({titulo, descricao, codigo}) =>{
+  return (<>
+  <h3>Título:</h3>
+  <ReactMarkdown source={titulo} escapeHtml={false} />
+  <h3>Descrição:</h3>
+  <ReactMarkdown source={descricao} escapeHtml={false} />
+  <h3>Código:</h3>
+  <ReactMarkdown source={codigo} escapeHtml={false} /></>)
+}
 
-  const App = ({ note,ADDRESS_SERVE_ADONIS, info}) => {
-	
-  const { note_id, note_title, note_code, note_description} = note;
+const App = ({ note, ADDRESS_SERVE_ADONIS, info }) => {
+  
+  const { note_id, note_title, note_code, note_description } = note;
   const [titulo, setTitulo] = useState(note_title);
   const [codigo, setCodigo] = useState(note_code);
-  const [description, setCescription] = useState(note_description);
-  const [inf, setInf] = useState(info);
+  const [description, setDescription] = useState(note_description);
+  const [btnSaveDisable, setBtnSaveDisable] = useState(true);
+
+const disableButton = (enable) =>{
+  setBtnSaveDisable(enable);
+}
 
   function handlerChangeCodigo(ev) {
     setCodigo(ev.target.value);
+    disableButton(false);
   }
 
   function handlerChangeTitulo(ev) {
     setTitulo(ev.target.value);
+    disableButton(false);
   }
-  
+
   function handlerChangeDescription(ev) {
-    setCescription(ev.target.value);
+    setDescription(ev.target.value);
+    disableButton(false);
   }
 
+  const handlerSave = () => {
 
-  const handlerSave = () =>{
-
-      fetch(`${ADDRESS_SERVE_ADONIS}/notes/${note_id}`,{
-	method:'PUT',
-	headers: {
-    	'Content-Type': 'application/json'
-  	},
- 	body: JSON.stringify({note_id, titulo, codigo, description})
-      }).then(response=>{
-          console.log(response)
-      })
-  }
+    fetch(`${ADDRESS_SERVE_ADONIS}/notes/${note_id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ note_id, titulo, codigo, description })
+    }).then(response => {
+      console.log(response);
+      disableButton(true);
+    });
+  };
 
   return (
     <Container>
-<Row style={{marginTop:50}}>
-	<Col>
-		<h1>Editar nota</h1>
-	</Col>
-</Row>
-<hr />
+      <Row style={{ marginTop: 20 }}>
+        <Col>
+          <h1>Editar nota</h1>
+        </Col>
+      </Row>
+      <hr />
       <Row>
         <Col xs={8} md={8}>
           <Form.Group controlId="exampleForm.ControlTextarea1">
-            <h2>Título:</h2>
+            <h3>Título:</h3>
             <Form.Control
               as="input"
               rows="10"
@@ -68,7 +76,7 @@ var escapeHtml = unsafe => {
               value={titulo}
             />
 
-	  <h2>Descrição:</h2>
+            <h3>Descrição:</h3>
             <Form.Control
               as="textarea"
               rows="4"
@@ -76,7 +84,7 @@ var escapeHtml = unsafe => {
               value={description}
             />
 
-            <h2>Código:</h2>
+            <h3>Código:</h3>
             <Form.Control
               as="textarea"
               rows="10"
@@ -85,37 +93,40 @@ var escapeHtml = unsafe => {
             />
           </Form.Group>
           <hr />
-          <Button onClick={handlerSave}>Salvar</Button>
+          <Button onClick={handlerSave} variant="primary" disabled={btnSaveDisable}>Salvar</Button>
         </Col>
-        <Col xs={4} md={4} sm={4} style={{borderWidth:0, borderColor:'red', borderStyle:'solid'}}>
-          <h2>Saída:</h2>
-          <ReactMarkdown source={codigo} 
-          escapeHtml={false}
-          />
+        <Col
+          xs={4}
+          md={4}
+          sm={4}
+          style={{ borderWidth: 0, borderColor: 'red', borderStyle: 'solid' }}
+        >
+          <Saida titulo={titulo} descricao={description} codigo={codigo} />
         </Col>
       </Row>
     </Container>
   );
 };
 
-
 let ADDRESS_SERVE_ADONIS = process.env.adonis_address;
 
 App.getInitialProps = async function(context) {
-  
-   const { id } = context.query;
 
-  const res =  await fetch(`${ADDRESS_SERVE_ADONIS}/notes/${id}/edit`)
+  const { id } = context.query;
 
-  let note = await res.text();  
-  
-  if(note.length > 0){
+  const res = await fetch(`${ADDRESS_SERVE_ADONIS}/notes/${id}/edit`);
+
+  let note = await res.text();
+
+  if (note.length > 0) {
+
     note = JSON.parse(note);
-    return {ADDRESS_SERVE_ADONIS, note, 'info':'success'};
-  }
-   return {ADDRESS_SERVE_ADONIS, 'info':'not_found'};
- 
 
+    return { ADDRESS_SERVE_ADONIS, note, info: 'success' };
+
+  }
+
+  return { ADDRESS_SERVE_ADONIS, info: 'not_found' };
 };
 
 export default App;

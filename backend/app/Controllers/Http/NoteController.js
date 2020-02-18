@@ -45,16 +45,15 @@ class NoteController {
   }
 
   async edit({ request, params, response, view }) {
-    
-    const { pagina } = request.get();
+    //const { pagina } = request.get();
 
-    const {id} = params;
-    
-   if(id){
- 	return await Note.find(parseInt(id));
+    const { id } = params;
+
+    if (id) {
+      return await Note.find(parseInt(id));
     }
-    	
-    return {erro:'error'};
+
+    return { erro: "error" };
   }
 
   /**
@@ -65,20 +64,16 @@ class NoteController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
-
- try {
-    const {titulo, codigo, description, note_id} = request.post();	
-    const note = await Note.find(parseInt(note_id));
-    note.note_title = titulo;
-    note.note_code = codigo;
-    note.note_description = description;
-    await note.save();
-    return note;
-  } catch (error) {
-    
-  }
-
+  async update({ params, request, response }) {
+    try {
+      const { titulo, codigo, description, note_id } = request.post();
+      const note = await Note.find(parseInt(note_id));
+      note.note_title = titulo;
+      note.note_code = codigo;
+      note.note_description = description;
+      await note.save();
+      return note;
+    } catch (error) {}
   }
 
   /*
@@ -137,7 +132,6 @@ class NoteController {
   }
 
   async show({ request, response, params }) {
-
     const { id } = params;
     const { page } = request.get();
 
@@ -159,12 +153,39 @@ class NoteController {
       .innerJoin("languages", "languages.lang_id", "notes.note_type_language")
       .innerJoin("categories", "notes.category_id", "categories.category_id")
       .where("notes.note_title", "LIKE", "%" + decodeURIComponent(id) + "%")
-      .orWhere("notes.note_description", "LIKE", "%" + decodeURIComponent(id) + "%")
-      .orWhere("languages.lang_name", "LIKE", "%" + decodeURIComponent(id) + "%")
+      .orWhere(
+        "notes.note_description",
+        "LIKE",
+        "%" + decodeURIComponent(id) + "%"
+      )
+      .orWhere(
+        "languages.lang_name",
+        "LIKE",
+        "%" + decodeURIComponent(id) + "%"
+      )
       .forPage(page, 20)
       .fetch();
 
     return notes;
+  }
+  /**
+   * Delete a userproduct with id.
+   * DELETE userproducts/:id
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   */
+  async destroy({ params, request, response }) {
+    try {
+      const { id } = params;
+
+      const user = await Note.find(id);
+
+      const del = await user.delete();
+      console.log(del);
+      return user;
+    } catch (error) {}
   }
 }
 

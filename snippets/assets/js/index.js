@@ -152,24 +152,21 @@ function funcoesNota() {
 
   //Exluir nota:
   $('.excluir-nota').click(function () {
-    let note_id = parseInt($(this).attr('data-nota-id'));
 
-    let options = {
-      type: 'question',
-      buttons: ['Não', 'Sim'],
-      title: 'Deseja realmente excluir esta nota?',
-      message: 'Esta operação não poderá ser revertida.',
-      detail: 'Algum detalhe aqui',
-      defaultId: 0,
-      cancelId: -1
-    };
+    if(confirm('Deseja realmente excluir esta nota?')){
+      
+      let note_id = parseInt($(this).attr('data-nota-id'));
 
-    remote.dialog.showMessageBox(win, options, response => {
-      if (response == 1) {
-        $(`#note_card_${note_id}`).remove();
-        carregarCategorias();
-      }
-    });
+      $(`#note_card_${note_id}`).remove();
+
+      fetch(config[INDEX].baseApiRestUrl + `/notes/${note_id}`, {
+        method: 'DELETE'
+      }).then(response => {
+        console.log(response);
+      });
+      carregarCategorias();
+    }
+ 
   });
 
   $('.tag').click(function (ev) {
@@ -709,12 +706,12 @@ $(document).ready(function () {
     modalEditarNota('Editar Snippet', 'modalEditarNota', 'btnAlterarNota')
   );
 
-  (function () {
+  /*(function () {
     let body = document.getElementsByTagName('body')[0]; //Adiciona à tag head
     let script = document.createElement('script');
     script.src = 'https://unpkg.com/showdown/dist/showdown.min.js';
     body.appendChild(script);
-  })();
+  })();*/
 
   $('#description').keyup(function (ev) {
     let descricao = $(this).val();
