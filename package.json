@@ -4,9 +4,8 @@
   "description": "<div align=\"center\">\r <br>\r <br>\r <img width=\"200\" src=\"snippets/assets/imagens/logo.svg\" alt=\"snippets-code\">\r <br>\r <br>\r </div>",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"concurrently \"cd admin && yarn dev\" \"cd backend && nodemon --watch app server.js\" \"cd snippets && serve\"",
-    "start":"concurrently \"cd admin && yarn start\" \"cd backend && nodemon --watch app server.js\" \"cd snippets && serve\""
+    "dev":"concurrently \"cd admin && yarn dev\" \"cd snippets && serve\"  \"cd backend && ENV_PATH=.env.linux adonis serve\"",
+    "start":"concurrently \"cd admin && yarn start\" \"cd snippets && serve\" \"cd backend && nodemon --watch app server.js\""
   },
   "repository": {
     "type": "git",

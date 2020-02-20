@@ -1,11 +1,13 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { Button, Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 const ReactMarkdown = require('react-markdown');
-import Form from 'react-bootstrap/Form';
 import fetch from 'isomorphic-unfetch';
 import _escapeHtml from '../src/scapeHtml';
+import getConfig from 'next/config';
+const {serverRuntimeConfig} = getConfig();
 
-const Saida = ({ titulo, descricao, codigo }) => {
+
+const Saida = ({ descricao, codigo }) => {
 	return (
 		<>
 			<ReactMarkdown source={descricao} escapeHtml={false} />
@@ -14,7 +16,7 @@ const Saida = ({ titulo, descricao, codigo }) => {
 	);
 };
 
-const App = ({ note, ADDRESS_SERVE_ADONIS, info }) => {
+const App = ({ note }) => {
 
 	const { note_id, note_title, note_code, note_description } = note;
 	const [titulo, setTitulo] = useState(note_title);
@@ -46,7 +48,7 @@ const App = ({ note, ADDRESS_SERVE_ADONIS, info }) => {
 	);
 };
 
-let ADDRESS_SERVE_ADONIS = process.env.adonis_address;
+let ADDRESS_SERVE_ADONIS = serverRuntimeConfig.adonis_address;
 
 App.getInitialProps = async function(context) {
 	const { id } = context.query;

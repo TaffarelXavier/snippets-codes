@@ -1,16 +1,24 @@
-function Error({ statusCode }) {
-    return (
-      <p>
-        {statusCode
-          ? `An error ${statusCode} occurred on server`
-          : 'An error occurred on client'}
-      </p>
-    )
+import React from 'react'
+import ErrorPage from 'next/error'
+
+export default Component => {
+  return class WithError extends React.Component {
+    static async getInitialProps(ctx) {
+      const props =
+        (Component.getInitialProps
+          ? await Component.getInitialProps(ctx)
+          : null) || {}
+      if (props.statusCode && ctx.res) {
+        ctx.res.statusCode = props.statusCode
+      }
+      return props;
+    }
+    render() {
+      console.log(this.props.statusCode)
+      if (this.props.statusCode) {
+        return (<>Taffarl <ErrorPage statusCode={this.props.statusCode} /></>)
+      }
+      return <Component {...this.props} />
+    }
   }
-  
-  Error.getInitialProps = ({ res, err }) => {
-    const statusCode = res ? res.statusCode : err ? err.statusCode : 404
-    return { statusCode }
-  }
-  
-  export default Error
+}
