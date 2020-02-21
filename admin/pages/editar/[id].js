@@ -8,7 +8,6 @@ import Saida from '../../components/Saida';
 import ToastDemo from '../../components/ToastDemo';
 import getConfig from 'next/config';
 const { serverRuntimeConfig } = getConfig();
-// const ReactMarkdown = require('react-markdown');
 
 const App = ({ note, ADDRESS_SERVE_ADONIS, info }) => {
   const [note_id, setNoteId] = useState('');
@@ -132,10 +131,10 @@ const App = ({ note, ADDRESS_SERVE_ADONIS, info }) => {
   );
 };
 
-let ADDRESS_SERVE_ADONIS = serverRuntimeConfig.adonis_address;
-
 App.getInitialProps = async function(context) {
   try {
+	let ADDRESS_SERVE_ADONIS = serverRuntimeConfig[0].baseURL;
+
     const { id } = context.query;
 
     const res = await fetch(`${ADDRESS_SERVE_ADONIS}/notes/${id}/edit`);

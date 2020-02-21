@@ -1,7 +1,7 @@
 ﻿const config = [
   {
     baseApiRestUrl: 'http://127.0.0.1:3300', //		---->0,
-    endereco:'http://127.0.0.1:3300'
+    endereco:'http://127.0.0.1:3000'
   },
   {
     baseApiRestUrl: 'http://192.168.129.171:3300', //	---->1
@@ -25,7 +25,7 @@
   },
 ];
 
-const INDEX = 2;
+const INDEX = 0;
 
 /**
  | 

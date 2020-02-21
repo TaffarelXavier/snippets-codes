@@ -6,7 +6,6 @@ import _escapeHtml from '../src/scapeHtml';
 import getConfig from 'next/config';
 const {serverRuntimeConfig} = getConfig();
 
-
 const Saida = ({ descricao, codigo }) => {
 	return (
 		<>
@@ -48,9 +47,9 @@ const App = ({ note }) => {
 	);
 };
 
-let ADDRESS_SERVE_ADONIS = serverRuntimeConfig.adonis_address;
-
 App.getInitialProps = async function(context) {
+	let ADDRESS_SERVE_ADONIS = serverRuntimeConfig[0].baseURL;
+
 	const { id } = context.query;
 
 	const res = await fetch(`${ADDRESS_SERVE_ADONIS}/notes/${id}/edit`);
