@@ -183,7 +183,6 @@ class NoteController {
       const user = await Note.find(id);
 
       const del = await user.delete();
-      console.log(del);
       return user;
     } catch (error) {}
   }

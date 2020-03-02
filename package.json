@@ -4,8 +4,8 @@
   "description": "<div align=\"center\">\r <br>\r <br>\r <img width=\"200\" src=\"snippets/assets/imagens/logo.svg\" alt=\"snippets-code\">\r <br>\r <br>\r </div>",
   "main": "index.js",
   "scripts": {
-    "dev":"concurrently \"cd admin && yarn dev\" \"cd snippets && serve\"  \"cd backend && adonis serve --dev\"",
-    "start":"concurrently \"cd admin && yarn start\" \"cd snippets && serve\" \"cd backend && adonis serve --dev\""
+    "linux:dev":"concurrently \"cd admin && yarn dev\" \"cd snippets && serve\"  \"cd backend && ENV_PATH=.env.linux adonis serve --dev\"",
+    "start":"concurrently \"cd admin && yarn start\" \"cd snippets && serve\" \"cd backend && ENV_PATH=.env.linux adonis serve\""
   },
   "repository": {
     "type": "git",

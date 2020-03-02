@@ -4,11 +4,11 @@
     endereco:'http://127.0.0.1:3000'
   },
   {
-    baseApiRestUrl: 'http://192.168.129.171:3300', //	---->1
+    baseApiRestUrl: 'http://192.168.129.171:3300', //	---->notebook
     endereco:'http://127.0.0.1:3300'
   },
   {
-    baseApiRestUrl: `http://192.168.129.141:3300`, //	---->2
+    baseApiRestUrl: `http://192.168.129.141:3300`, //	----> linux (2)
     endereco:'http://192.168.129.141:3000'
   },
   {
@@ -16,7 +16,7 @@
     endereco:'http://192.168.11.59:3000'
   },
   {
-    baseApiRestUrl: 'https://api.rsvtelecom.com.br', //	---->4
+    baseApiRestUrl: 'https://api.rsvtelecom.com.br', //	---->umbler
     endereco:'https://editar.rsvtelecom.com.br'
   },
   {
@@ -25,7 +25,7 @@
   },
 ];
 
-const INDEX = 0;
+const INDEX = 2;
 
 /**
  | 

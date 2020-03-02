@@ -17,23 +17,23 @@
 const Database = use("Database");
 const Route = use("Route");
 //Faz o login
-Route.post("/login", "UserController.login").middleware("guest");
+//Route.post("/login", "UserController.login").middleware("guest");
 
 //Cadastrar um novo usuário:
-Route.post('/register', 'UserController.register')
+//Route.post('/register', 'UserController.register')
 
 //Buscar um usuário pelo ID dele
-Route.get("users/:id", "UserController.show").middleware("auth");
+// Route.get("users/:id", "UserController.show").middleware("auth");
 
-//Faz o logout
-Route.get("/logout", "UserController.logout");
+// //Faz o logout
+// Route.get("/logout", "UserController.logout");
 
 //Grupo de Imagens:
 
 Route.group(() => {
   Route.get("/:path", "ImageController.show");
   Route.post("/store", "ImageController.store");
-}).prefix("images"); //Prefixo
+}).prefix("images");
 
 //Mostra notas por categoria id
 Route.get(

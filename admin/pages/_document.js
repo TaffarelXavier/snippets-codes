@@ -1,7 +1,6 @@
 import React from 'react';
 import Document, {Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/styles';
-import theme from '../src/theme';
 
 class MyDocument extends Document {
   render() {
@@ -16,7 +15,7 @@ class MyDocument extends Document {
           />
 
           {/* PWA primary color */}
-          <meta name="theme-color" content={theme.palette.primary.main} />
+
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
@@ -37,6 +36,7 @@ MyDocument.getInitialProps = async ctx => {
 
   // Render app and page and get the context of the page with collected side effects.
   const sheets = new ServerStyleSheets();
+
   const originalRenderPage = ctx.renderPage;
 
   ctx.renderPage = () =>

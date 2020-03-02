@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Toast from 'react-bootstrap/Toast';
+import Button from 'react-bootstrap/Button';
 
+//Componente 1
 const ToastTest = props => {
   const [show, setShow] = useState(false);
 
@@ -35,4 +37,14 @@ const ToastTest = props => {
   );
 };
 
-export default ToastTest;
+const App = () => {
+  const [showToast, setShowToast] = useState(false);
+  return (
+    <>
+      <ToastTest show={showToast} message={'Alterações salvas com sucesso!'} />
+      <Button onClick={() => setShowToast(!showToast)}>Abrir</Button>
+    </>
+  );
+};
+
+export default App;

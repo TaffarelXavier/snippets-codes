@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
-import {Row, Col, Alert} from 'react-bootstrap';
+import {Alert} from 'react-bootstrap';
 
 
 function AlertDismissibleExample() {
     const [show, setShow] = useState(true);
-  
     if (show) {
       return (
         <Alert variant="warning" onClose={() => setShow(false)} dismissible>

@@ -375,6 +375,7 @@ function carregarNotasPorCategoria(el, { total, category_id, category_name, cate
 
   //Busca as 10 primeiras notas pelo ID de uma categoria
   getNotesByCategoryId(category_id, 1, function (res) {
+
     $('#get-notes').html('');
 
     let content = '';
@@ -394,10 +395,6 @@ function carregarNotasPorCategoria(el, { total, category_id, category_name, cate
       $('#esqueleto').attr('hidden', true);
       $("#div-carregar__mais").removeAttr('hidde')
     }
-
-    console.log(total)
-    console.log(document.getElementsByClassName('notas'));
-
 
   });
 
@@ -455,6 +452,7 @@ function carregarCategorias() {
             row.total = total;
             window.location.hash = category_name.toLowerCase();
             carregarNotasPorCategoria(el, row);
+            window.localStorage.setItem('category', JSON.stringify(row,null,2));
           };
 
           const ICON_PADRAO =
@@ -589,6 +587,16 @@ $(document).ready(function () {
         .select();
     }, 500);
   });
+
+
+  //Esconhe o painel informativo
+if(Boolean(window.localStorage.getItem('mostrar.painel.informativo'))){
+  $('#secao-infomativa-sistema').hide();
+}
+
+  $('#fechar-painel-informativo').click(function(){
+    window.localStorage.setItem('mostrar.painel.informativo', false);
+  })
 
   /**
     Pesquisar Categorias:

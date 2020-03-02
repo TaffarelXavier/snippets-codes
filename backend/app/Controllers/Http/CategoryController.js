@@ -34,10 +34,10 @@ class CategoryController {
 
       if (Boolean(category_name)) {
         const categories = await Category.query()
-        .with("notes")
-        .whereRaw("category_name = ?", category_name.toUpperCase())
-        .limit(1)
-        .fetch();
+          .with("notes")
+          .whereRaw("category_name = ?", category_name.toUpperCase())
+          .limit(1)
+          .fetch();
         return categories;
       }
       const categories = await Category.all();
@@ -50,19 +50,23 @@ class CategoryController {
   /*
    */
   async getCategoriesComTotalDeNotas({ request, response, view }) {
-    const categories = await Category.query()
-      .select(
-        "categories.category_id",
-        "categories.category_name",
-        "categories.category_icon",
-        "categories.category_order",
-        "categories.category_placeholder_icon",
-        Database.raw("COUNT(*) AS total")
-      )
-      .innerJoin("notes", "categories.category_id", "notes.category_id")
-      .groupBy("notes.category_id")
-      .fetch();
-    return categories;
+    try {
+      const categories = await Category.query()
+        .select(
+          "categories.category_id",
+          "categories.category_name",
+          "categories.category_icon",
+          "categories.category_order",
+          "categories.category_placeholder_icon",
+          Database.raw("COUNT(*) AS total")
+        )
+        .innerJoin("notes", "categories.category_id", "notes.category_id")
+        .groupBy("notes.category_id")
+        .fetch();
+     if(Object.keys(categories).length >= 3){
+      return categories;
+     }
+    } catch (error) {}
   }
 
   async convertToJpeg() {
