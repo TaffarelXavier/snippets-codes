@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="description"
+        content="O snippets code é um sistema web desenvolvido para ajudar programadores de todo o mundo a ter produtividade." />
+    <meta rel="canonical" href="https://snippets.now.sh" />
+    <meta name="keywords" content="Snipet, Snippet, Snippets, Snippt, Code, código, trecho, trexo" />
+    <meta name="author" content="Taffarel Xavier" />
+    <meta name="robos" content="index" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Snippet CodesTX</title>
+    <link rel="stylesheet" href="assets/css/style.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" />
+    <link rel="stylesheet" href="assets/css/bootstrap-material-design.min.css" />
+    <link rel="stylesheet" href="assets/css/material-components-web.min.css" />
+    <link rel="shortcut icon" href="assets/imagens/favicon.png" type="image/png" />
+    <!-- <link rel="stylesheet" href="https://material-responsive-drawer.glitch.me/bundle.css"> -->
+    <link rel="stylesheet" href="assets/css/select2.min.css" />
+    <script src="assets/js/highlight.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!--<script async src="https://www.googletagmanager.com/gtag/js?id=UA-50858402-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-50858402-2');
+    </script>-->
+    <!-- <script data-ad-client="ca-pub-9334601625562127" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            padding: 0px;
+            margin: 0;
+            overflow: hidden;
+            overflow-y: auto;
+            counter-reset: section;
+        }
+
+        .mdc-drawer-app-content {
+            flex: auto;
+            position: relative;
+        }
+
+        .mdc-list {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .main-content {
+            height: 100%;
+        }
+
+        .mdc-top-app-bar {
+            z-index: 7;
+        }
+
+        /*SKELETON*/
+        .mdc-drawer__content {
+            padding: 0px;
+        }
+
+        #termo-filtrado {
+            text-align: center;
+        }
+
+        /* xtra small devices (portrait phones, less than 576px) */
+        @media (max-width: 575.98px) {
+            #termo-filtrado {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Small devices (landscape phones, 576px and up) */
+        @media (min-width: 576px) and (max-width: 767.98px) {}
+
+        /* Medium devices (tablets, 768px and up) */
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            body {
+                zoom: 60%;
+            }
+        }
+
+        /* Large devices (desktops, 992px and up) */
+        @media (min-width: 992px) and (max-width: 1440px) {
+            #termo-filtrado {
+                font-size: 1.6rem;
+            }
+
+            .mdc-drawer {
+                width: 340px;
+            }
+
+            .mdc-drawer-app-content {
+                margin-left: 340px !important;
+                margin-right: 0;
+            }
+
+            body {
+                zoom: 80%;
+                -moz-transform: scale(70%);
+                -moz-transform-origin: 0 0;
+            }
+        }
+
+        @media (min-width: 1450px) {
+            #termo-filtrado {
+                font-size: 1.6rem;
+            }
+
+            .mdc-drawer {
+                width: 350px !important;
+            }
+
+            .mdc-drawer-app-content {
+                margin-left: 350px !important;
+                margin-right: 0;
+            }
+
+            body {
+                zoom: 90%;
+                -moz-transform: scale(90%);
+                -moz-transform-origin: 0 0;
+            }
+        }
+
+        .contador::before {
+            counter-increment: section;
+            content: counter(section);
+        }
+
+        #visualizacao-markdown {
+            font-size: 80%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAV BAR -->
+    <header class="mdc-top-app-bar mdc-top-app-bar--fixed" id="app-bar" style="background:#018786;">
+        <div class="mdc-top-app-bar__row">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <button class="demo-menu mdc-icon-button  material-icons mdc-top-app-bar__navigation-icon">menu</button>
+                <a href=""><img src="assets/imagens/bitmap.png" class="lazy" data-src="assets/imagens/logo.svg"
+                        id="logo-do-site-snippets-code" alt="logo-do-site-snippets-code"
+                        style=" margin:0px !important;border:0px solid red;height: 40px;width:150px;" />
+                </a><span class="mdc-top-app-bar__title">SnippetCode</span>
+            </section>
+
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+                <!-- <input type="search" class="form-control col-ms-2 col-md-2" placeholder="Pesq. por Tag"
+                    id="input-pesquisar-tag" list="datalist-languages" /><datalist id="datalist-languages"></datalist> -->
+                <div class="mdc-text-field mdc-text-field--fullwidth">
+                    <input class="mdc-text-field__input" style="color:#fff;" type="search" id="input-pesquisar-geral"
+                        placeholder="Pesquisar Snippets por nome ou descrição"
+                        aria-label="Pesquisar por nome ou descrição">
+                </div>
+                <button class="mdc-fab mdc-fab--extended" id="btn-pesquisar">
+                    <span class="material-icons">search</span>
+                </button>
+            </section>
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+                <button class="mdc-fab mdc-fab--extended" data-toggle="modal" data-target="#modalCriarNota">
+                    <span class="material-icons mdc-fab__icon">add</span>
+                    <span class="mdc-fab__label">CRIAR SNIPPET</span>
+                </button>
+            </section>
+        </div>
+    </header>
+    <!-- DRAWER -->
+    <aside class="mdc-drawer mdc-drawer--dismissible" style="position: fixed;">
+        <div class="mdc-drawer__header">
+            <h3 class="mdc-drawer__title">Snippet Code</h3>
+            <h6 class="mdc-drawer__subtitle">taffarel_deus@hotmail.com</h6>
+        </div>
+        <div class="mdc-drawer__content">
+            <nav class="mdc-list">
+                <div class="row">
+                    <div class="col-ms-12 col-md-12">
+                        <div class="alert alert-success" style="border:1px dashed #ccc;margin-top:0px!important">
+                            <button class="float-right" title="Clique para adicionar uma nova categoria"
+                                data-toggle="modal" data-target="#exampleModal" id="abrir-modal-criador-categoria">
+                                <i class="material-icons">add_circle_outline</i>
+                            </button>
+                            <label for="categoria"><strong>Suas Categorias:</strong></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-ms-12 col-md-12">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="categoria" placeholder="Filtrar categoria"
+                                style="border:0 solid red;padding:15px" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sx-12">
+                        <ul class="list-group" id="category">
+                            <!-- <li class="list-group-item list-group-item-action"></li> -->
+                            <div class="skeleton">
+                                <div class="skeleton-icon  animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="skeleton">
+                                <div class="skeleton-icon  animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="skeleton">
+                                <div class="skeleton-icon  animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="skeleton">
+                                <div class="skeleton-icon  animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="skeleton">
+                                <div class="skeleton-icon  animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="skeleton">
+                                <div class="skeleton-icon  animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="skeleton">
+                                <div class="skeleton-icon  animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="skeleton">
+                                <div class="skeleton-icon  animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="skeleton">
+                                <div class="skeleton-icon  animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="skeleton">
+                                <div class="skeleton-icon  animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                            <div class="skeleton">
+                                <div class="skeleton-icon  animate"></div>
+                                <div class="skeleton-category-name animate"></div>
+                                <div class="skeleton-badge animate"></div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+        </nav>
+        </div>
+    </aside> <!-- FIM DRAWER -->
+    <div class="mdc-drawer-app-content">
+        <main class="main-content" id="main-content">
+            <div class="mdc-top-app-bar--fixed-adjust">
+
+                <div class="container">
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-9 col-md-9">
+                            <div class="row">
+                                <!-- CONTEÚDO -->
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="row">
+                                        <div class="col-ms-12 col-md-12">
+                                            <section id="secao-infomativa-sistema" role="alert" class="alert">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close" id="fechar-painel-informativo">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h1 style="line-height: 40px;margin-bottom: 35px;font-size:3rem;">
+                                                    <strong>Snippets</strong> são pequenos <strong>trechos</strong> de
+                                                    códigos que
+                                                    ajudam na produtividade.
+                                                </h1>
+                                                <h4>
+                                                    No mundo do <b>desenvolvimento de sistemas</b>, esse termo é usado
+                                                    para designar
+                                                    pequenos <strong>trechos de códigos</strong>, usados com frequência,
+                                                    que ajudam no
+                                                    desenvolvimento de
+                                                    seu sistema. Se você estiver executando o mesmo código,
+                                                    repetidamente, considere
+                                                    sempre entrar nesta página à medida que precisar de um código
+                                                    rápido.
+                                                </h4>
+                                                <h4>
+                                                    Cara, sinceramente, é verdade que nem sempre armazenaremos tudo em
+                                                    nossa mente; eu,
+                                                    particularmente, às vezes, passo algum tempo de minha vida
+                                                    pesquisando alguma coisa,
+                                                    que, pelo incrível que pareça, eu já tinha feito antes durante o
+                                                    desenvolvimento de
+                                                    algum sistema.
+                                                </h4>
+                                                <h4>
+                                                    Portanto, quero lhe fazer um pergunta para finalizar:
+                                                    Você lembra da API de conversão de datas, IO, e outras mais, ao
+                                                    ponto de realizar uma prova, em um notepad++,
+                                                    tendo que realizar métodos que realizem alguma funcionalidade que
+                                                    exija conhecimento da API, <strong>SEM ACESSO À
+                                                        PESQUISA?</strong><br />
+                                                    Sim?<span style='font-size:1.3rem;'>&#128533;</span> =( Você não
+                                                    precisará deste site.<br />
+                                                    <strong>Não? Ótimo! Você poderá recorrer sempre a este site para
+                                                        qualquer pesquisa na área de programação.</strong>
+                                                </h4>
+                                            </section>
+                                            <!-- PESQUISAR NOTAS -->
+                                            <!-- <div class="row" id="painel-criacao">
+                                                <div class="col-ms-12 col-md-12">
+
+                                                </div>
+                                            </div> -->
+                                            <div class="row" id="painel-termo-filtrado" hidden>
+                                                <div class="col-md-12">
+                                                    <h1 id="termo-filtrado">TERMO FILTRADO: HTML</h1>
+                                                    <span class="material-icons mdc-fab__icon" title="Expandir"
+                                                        id="collapse-snippets">visibility_off</span>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div id="esqueleto">
+                                                <div class="card mb-12 col-sm-12 col-md-12">
+                                                    <div class="card-header"
+                                                        style="border-bottom:1px solid rgba(0,0,0,.1);padding-top:15px;padding-bottom:15px">
+                                                        <div class="comment br animate" style="height:10px;width:50%">
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body text-secondary">
+                                                        <div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:90%"></div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:95%"></div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:100%"></div>
+                                                        </div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:3px"></div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:3px"></div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:5px"></div>
+                                                        <div style="clear:both"></div>
+                                                        <div class="comment br animate" style="height:200px"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="card mb-12 col-sm-12 col-md-12">
+                                                    <div class="card-header"
+                                                        style="border-bottom:1px solid rgba(0,0,0,.1);padding-top:15px;padding-bottom:15px">
+                                                        <div class="comment br animate" style="height:10px;width:50%">
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body text-secondary">
+                                                        <div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:90%"></div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:95%"></div>
+                                                            <div class="comment br animate"
+                                                                style="height:10px;width:100%"></div>
+                                                        </div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:3px"></div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:3px"></div>
+                                                        <div class="comment br animate line-30"
+                                                            style="width:5%;float:left;margin-right:5px"></div>
+                                                        <div style="clear:both"></div>
+                                                        <div class="comment br animate" style="height:200px"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                            </div>
+                                            <div id="get-notes"
+                                                style="border:0 solid red;overflow-y:auto!important;overflow-x:hidden;padding-left:10px;padding-right:10px;">
+                                                <div hidden
+                                                    style="display:flex;height:400px;text-align:center;flex-direction:column;justify-content:center;align-content:center;align-items:center"
+                                                    id="sem-notas">
+                                                    <h3>Hey!</h3>
+                                                    <h4>Você não tem nenhuma nota.</h4>
+                                                    <button class="mdc-fab mdc-fab--extended" data-toggle="modal"
+                                                        data-target="#modalCriarNota">
+                                                        <span class="material-icons mdc-fab__icon">add</span>
+                                                        <span class="mdc-fab__label">Criar nova nota :)</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div style="text-align: center;" id="div-carregar__mais">
+                                                <button id="carregar-mais" class="mdc-fab mdc-fab--extended">
+                                                    <span class="material-icons mdc-fab__icon">refresh</span>
+                                                    <span class="mdc-button__ripple"></span>Carregar mais...</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <!-- ALGUM TEXTO AQUI - PAINEL ESQUERDO-->
+                        </div>
+                    </div>
+                </div>
+                <footer class="border-top pt-4 my-md-5 pt-md-5" style=" padding: 48px 50px 0;
+                background-color: #f1f3f4;color:#5f6368;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3 col-xd-12">
+                                <img src="assets/imagens/bitmap.png" class="lazy" data-src="assets/imagens/logo.svg"
+                                    id="logo-do-site-snippets-code" alt="logo-do-site-snippets-code"
+                                    style=" margin:0px !important;border:0px solid red;width: 100px;" />
+                                <strong>Snippet</strong>
+                                <small class="d-block mb-3 text-muted">&copy; 2020</small>
+                            </div>
+                            <div class="col-md-3 col-xd-12">
+                                <h5>Características</h5>
+                                <ul class="list-unstyled text-small">
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
+                                </ul>
+                            </div>
+                            <!-- <div class="col-md-3 col-xd-12">
+                                <h5>Resources</h5>
+                                <ul class="list-unstyled text-small">
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
+                                    <li><a class="text-muted" href="#">Lorem Ipusem</a></li>
+                                </ul>
+                            </div> -->
+                            <div class="col-md-3 col-xd-12">
+                                <h5>Sobre</h5>
+                                <ul class="list-unstyled text-small">
+                                    <li><a class="text-muted" href="#">Equipe</a></li>
+                                    <li><a class="text-muted" href="#">Localização</a></li>
+                                    <li><a class="text-muted" href="#">Privacidade</a></li>
+                                    <li><a class="text-muted" href="#">Termos de uso</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </main>
+    </div>
+    <button class="mdc-fab mdc-fab--extended" data-toggle="modal" data-target="#modalCriarNota"
+        id="btn-mdc-create-snippet-add" hidden style="position: fixed; bottom: 20px;right: 70px;">
+        <div class="mdc-fab__ripple"></div>
+        <span class="material-icons mdc-fab__icon">add</span>
+        <span class="mdc-fab__label">CRIAR SNIPPET</span>
+    </button>
+    <button type="button" onclick="goToTop()" class="btn btn-primary btn-group-lg bmd-btn-fab" hidden
+        id="btn-mdc-to-top" style="position: fixed; bottom: 15px;right: 10px;">
+        <i class="material-icons">arrow_upward</i>
+    </button>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/select2.config.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/snackbar.min.js"></script>
+    <script src="assets/js/bootstrap-material-design.min.js"></script>
+    <script src="assets/js/material-components-web.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/ace.js"></script>
+    <script src="assets/js/ext-beautify.js"></script>
+    <script src="assets/js/select2.min.js"></script>
+    <script src="assets/js/jquery.mark.min.js"></script>
+    <script src="assets/js/framework.js"></script>
+    <script src="assets/js/index.js"></script>
+    <script src="assets/js/showdown.min.js"></script>
+
+    <script>
+        const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+        const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('.mdc-top-app-bar'));
+        drawer.open = !drawer.open;
+
+        $('#categoria').keydown(function (ev) {
+            if (ev.keyCode == 27) {
+                this.value = "";
+                return false;
+            }
+        })
+
+        topAppBar.listen('MDCTopAppBar:nav', () => {
+            drawer.open = !drawer.open;
+        });
+
+        document.body.addEventListener('MDCDrawer:opened', () => {
+            document.querySelector('#categoria').focus();
+        });
+
+        var scrollableElement = document.getElementsByClassName('mdc-drawer-app-content')[0];
+
+        document.onscroll = (ev) => {
+            var doc = document.documentElement;
+            var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+            if (top >= 650) {
+                $('#btn-mdc-create-snippet-add, #btn-mdc-to-top').removeAttr("hidden");
+            }
+            else {
+                $('#btn-mdc-create-snippet-add, #btn-mdc-to-top').attr("hidden", true);
+            }
+        }
+
+        function goToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+        /**
+         *  BARRA DE ROLAGEM INFINITA
+         * */
+        var endless = {
+            page: 1, // "Página atual",
+            hasMore: true, // Não está no fim, contém mais conteúdo
+            proceed: true, // Carrega a próxima página?
+            load: function () {
+                if (endless.proceed && endless.hasMore) {
+                    // Prvent user from loading too much contents suddenly
+                    // Block the loading until this one is done
+                    endless.proceed = false;
+
+                    // Load the next page
+                    var nextPg = endless.page + 1;
+
+                    // AJAX request
+                    var xhr = new XMLHttpRequest();
+
+                    var categoryName = window.location.hash.replace('#', '');
+
+                    if (categoryName.length > 0) {
+                        
+                        let {category_id} = JSON.parse(window.localStorage.getItem('category'));
+
+                        xhr.open('GET', `${config[INDEX].baseApiRestUrl}/notes-por-category-id/${category_id}/${nextPg}`, true);
+                    }
+                    else {
+                       xhr.open('GET', `${config[INDEX].baseApiRestUrl}/notes?pagina=` + nextPg, true);
+                    }
+
+                    xhr.onload = function () {
+                        // No more contents to load
+
+                        if (this.response == "END") {
+                            //loading.innerHTML = "END";
+                            endless.hasMore = false;
+                        }
+                        // Contents loaded
+                        else {
+                            // Append into container + hide loading message
+                            let notes = JSON.parse(this.response);
+
+                            let content = '';
+
+                            notes.map(nota => {
+                                content += notas(nota, []);
+                            });
+
+                            $('#get-notes').append(content);
+
+                            funcoesNota();
+                            //loading.style.display = "none";
+                            // Set the current page, unblock loading
+                            endless.page = nextPg;
+                            endless.proceed = true;
+                        }
+                    };
+                    xhr.send();
+                }
+            },
+            //Scroll Infinity
+            listen: function () {
+                if ((document.getElementById('get-notes').offsetHeight
+                    - parseInt(window.scrollY)) <= 100) {
+                    endless.load();
+                }
+            }
+        };
+
+        window.addEventListener(
+            'hashchange', (ev) => {
+                //Define para a página número 1:
+                endless.page = 1;
+            }, false);
+
+        document.getElementById('carregar-mais').onclick = () => {
+            this.
+                $('#carregar-mais')
+                .attr('disabled', true)
+                .html('<span class="material-icons mdc-fab__icon">refresh</span> Carregando, aguarde...')
+           
+                endless.load();
+
+            window.setTimeout(() => {
+                this.
+                    $('#carregar-mais')
+                    .attr('disabled', false)
+                    .html('<span class="material-icons mdc-fab__icon">refresh</span> Carregar mais...');
+
+                let quantNotasAbertasNoBrowser = document.getElementsByClassName('notas');
+
+                let {category_name, total} = JSON.parse(window.localStorage.getItem('category'));
+
+                if (quantNotasAbertasNoBrowser.length >= total) {
+                    $("#div-carregar__mais").attr('hidden', true);
+                }
+
+            }, 500)
+
+        }
+
+    </script>
+</body>
+
+</html>

@@ -156,7 +156,7 @@ const App = ({ note, ADDRESS_SERVE_ADONIS }) => {
 
 App.getInitialProps = async function(context) {
   try {
-    let ADDRESS_SERVE_ADONIS = serverRuntimeConfig[2].baseURL;
+    let ADDRESS_SERVE_ADONIS = serverRuntimeConfig[1].baseURL;
 
     const { id } = context.query;
 

@@ -6,7 +6,7 @@ module.exports = {
   },
   {
     baseURL: 'http://192.168.129.171:3300', //	---->1
-    endereco:'http://127.0.0.1:3300'
+    endereco:'http://127.0.0.1:3000'
   },
   {
     baseURL: `http://192.168.129.141:3300`, //	---->2

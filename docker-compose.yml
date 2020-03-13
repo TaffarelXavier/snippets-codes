@@ -1,0 +1,54 @@
+version: '3'
+services: 
+    frontend:
+        container_name: frontend-cnt
+        image: nginx
+        volumes: 
+            - ./frontend:/usr/share/nginx/html/
+        ports: 
+            - 80:80
+    backend:
+        container_name: backend-cnt
+        build: .
+        working_dir: /usr/share/backend/
+        ports:
+            - "3300:3300"
+        volumes:
+            - ./backend:/usr/share/backend/
+        command: ['npm','start']
+    admin:
+        container_name: admin-cnt
+        image: node:12
+        working_dir: /usr/share/admin/
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./admin:/usr/share/admin/
+        command: bash -c "npm start"
+    db:
+        container_name: mysql
+        image: mysql:5.6
+        volumes:
+          - ./data/mysql:/var/lib/mysql
+        restart: always
+        ports:
+          - "3306:3306"
+        environment:
+          - MYSQL_ROOT_PASSWORD=chkdsk
+          - MYSQL_DATABASE=notes_db
+          - MYSQL_USER=root
+          - MYSQL_PASSWORD=chkdsk
+    phpmyadmin:
+        container_name: phpmyadmin-cnt
+        image: phpmyadmin/phpmyadmin:latest
+        links:
+            - db
+        ports:
+            - 8080:80
+        depends_on:
+            - db
+        environment:
+            - PMA_ARBITRARY=1
+            - MYSQL_ROOT_PASSWORD=chkdsk
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=chkdsk

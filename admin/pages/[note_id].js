@@ -53,7 +53,7 @@ const App = ({ note }) => {
 };
 
 App.getInitialProps = async function(context) {
-  let ADDRESS_SERVE_ADONIS = serverRuntimeConfig[2].baseURL;
+  let ADDRESS_SERVE_ADONIS = serverRuntimeConfig[1].baseURL;
   const { note_id } = context.query;
   const res = await fetch(`${ADDRESS_SERVE_ADONIS}/notes/${note_id}/edit`);
   let note = await res.text();
