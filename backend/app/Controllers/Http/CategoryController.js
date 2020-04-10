@@ -8,6 +8,8 @@ const Database = use("Database");
 const Helpers = use("Helpers");
 const sharp = require("sharp");
 
+/* Test Live Code in VScode */
+
 /**
  * Resourceful controller for interacting with categories
  */

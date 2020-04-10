@@ -6,7 +6,6 @@
 <br>
 </div>
 
-
        The C# code will be highlighted __after__ the rest of this document.
 
 # Taffarel 
